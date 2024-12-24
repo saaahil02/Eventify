@@ -89,11 +89,14 @@ Let me know if you encounter any issues!
 
 Updation::
 
-Open GIt bash
+Open GIt bash .
 
 git add .
+
 git status
+
 git commit -m "changes updated"
+
 git puch origin main
 
 
