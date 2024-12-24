@@ -91,13 +91,19 @@ Updation::
 
 Open GIt bash .
 
-git add .
+cd path/to/Eventify         # Navigate to your project
+
+git pull origin main        # Sync with the remote repository
+
+# Make your changes here
+
+git add .                   # Stage all changes
 
 git status
 
-git commit -m "changes updated"
+git commit -m "Added user profiles and fixed login bug"  # Commit with a clear message
 
-git puch origin main
+git push origin main        # Push the changes
 
 
 
