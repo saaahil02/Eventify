@@ -1,0 +1,81 @@
+/* General Styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5; /* Light background color for contrast */
+  }
+  
+  /* Form Container */
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+  }
+  
+  /* Form */
+  .register-form {
+    width: 400px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  /* Form Header */
+  .register-form h3 {
+    text-align: center;
+    color: #1234e1; /* Match primary branding color */
+    margin-bottom: 20px;
+  }
+  
+  /* Form Items */
+  .register-form .ant-form-item-label > label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .register-form .ant-form-item {
+    margin-bottom: 20px;
+  }
+  
+  /* Input Fields */
+  .register-form input {
+    height: 40px;
+    border-radius: 5px;
+  }
+  
+  /* Buttons */
+  .register-form button {
+    width: 100%;
+    background-color: #1234e1;
+    color: white;
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .register-form button:hover {
+    background-color: #0f2bb8; /* Darker shade for hover effect */
+  }
+  
+  /* Links */
+  .register-form a {
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    color: #1234e1;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .register-form a:hover {
+    text-decoration: underline;
+  }
+  
