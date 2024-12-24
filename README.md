@@ -95,8 +95,6 @@ cd path/to/Eventify         # Navigate to your project
 
 git pull origin main        # Sync with the remote repository
 
-# Make your changes here
-
 git add .                   # Stage all changes
 
 git status
