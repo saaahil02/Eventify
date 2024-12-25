@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import Spinner from './components/Spinner';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import PublicRoute from './components/PublicRoute';
+import IntroPage from './pages/IntroPage';
+
 function App() {
   const {loading}=useSelector(state =>state.alerts)
   return (
@@ -16,7 +18,11 @@ function App() {
       :(
         <Routes>
 
-      <Route path='/' element={
+        <Route path='/' element={
+        <PublicRoute><IntroPage/></PublicRoute>
+        }/>
+
+      <Route path='/home' element={
         <ProtectedRoutes><HomePage/></ProtectedRoutes>
       }/>
 
