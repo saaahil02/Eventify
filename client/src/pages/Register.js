@@ -31,29 +31,69 @@ const Register = () => {
   }
 
   return (
-    <>
-    <div className="form-container">
+    <div className="outer-container">
     <Form layout="vertical"  onFinish={onfinishHandler} className='register-form'>
       <h3>Register Here !!</h3>
-      <Form.Item label="Username" name="name">
-        <Input type='text' required></Input>
-      </Form.Item>
-      <Form.Item label="Email" name="email">
-        <Input type='email' required></Input>
-      </Form.Item>
-      <Form.Item label="Contact Number" name="contact">
-        <Input type='number' required></Input>
-      </Form.Item>
-      <Form.Item label="Password" name="password">
-        <Input type='password' required></Input>
-      </Form.Item>
+      <Form.Item
+          name="name"
+          label="Name"
+          rules={[
+            { required: true, message: 'Name is required' },
+            {
+        pattern: /^[A-Za-z\s]+$/,
+        message: 'User Name should contain only alphabets and spaces',
+      },
+          ]}
+        >
+          <Input placeholder="Enter your name" />
+        </Form.Item>
+
+        {/* Email */}
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            { required: true, message: 'Email is required' },
+            { type: 'email', message: 'Invalid email format' },
+          ]}
+        >
+          <Input placeholder="Enter your email" />
+        </Form.Item>
+
+        {/* Contact */}
+        <Form.Item
+          name="contact"
+          label="Contact Number"
+          rules={[
+            {
+              pattern: /^\d{10}$/,
+              message: 'Contact number must be a 10-digit number',
+            },
+          ]}
+        >
+          <Input placeholder="Enter your contact number (optional)" />
+        </Form.Item>
+
+        {/* Password */}
+        <Form.Item
+          name="password"
+          label="Password"
+          rules={[
+            { required: true, message: 'Password is required' },
+            { min: 5, message: 'Password must be at least 5 characters' },
+          ]}
+        >
+          <Input.Password placeholder="Enter your password" />
+        </Form.Item>
+
       <Form.Item >
         <Button htmlType='submit'>Register</Button>
       </Form.Item>
       <Link to="/login">Already have an account? Login here</Link><br/>
     </Form>
     </div>
-    </>
+    
+    
   )
 }
 

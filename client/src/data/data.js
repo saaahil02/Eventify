@@ -1,27 +1,23 @@
+import '../styles/data.css'
 export const userMenu = [
     {
         name:'Home',
-        path:'/',
+        path:'/home',
         icon:' fa-solid fa-house',
     },
     {
-        name:" Your Events",
-        path:"/PEvents",
-        icon:"fa-solid fa-list",
-    },
-    {
-        name:"Organizer Dashboard",
+        name:"OrganizerDashboard",
         path:"/OrganizerDashboard",
         icon:"fa-solid fa-user-tie",
     },
     {
-        name:"Sponsor Dashboard",
+        name:"SponsorDashboard",
         path:"/SponsorDashboard",
         icon:"fa-solid fa-user-tie",
     },
     {
-        name:"User Profile",
-        path:"/UserProfile",
+        name:"Profile",
+        path:"/Profile",
         icon:"fa-solid fa-user",
     },
    
