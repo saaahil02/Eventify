@@ -8,7 +8,10 @@ cd path/to/Eventify         # Navigate to your project
 
 git pull origin main        # Sync with the remote repository
 
+git remote set-url origin https://github.com/Tanmay1809/Eventify_Project.git
+
 git add .                   # Stage all changes
+
 
 git status
 
