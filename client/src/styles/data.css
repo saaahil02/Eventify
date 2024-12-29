@@ -1,0 +1,146 @@
+/* Sidebar Styling */
+.sidebar {
+  width: 250px;
+  background-color: #1e1e2f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
+  transition: width 0.3s ease, padding 0.3s ease; /* Added transition for padding */
+}
+
+/* Collapsed Sidebar Styling */
+.sidebar.collapsed {
+  width: 70px;
+  padding: 15px 0; /* Adjusted padding */
+}
+
+/* Logo Styling */
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+  transition: opacity 0.3s ease;
+}
+
+/* Hide logo when sidebar is collapsed */
+.sidebar.collapsed .logo {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hamburger Icon for Sidebar Toggle */
+.sidebar .hamburger {
+  font-size: 30px;
+  color: #fff;
+  cursor: pointer;
+  padding: 15px;
+  display: block;
+  position: absolute;
+  top: 5px;  /* Slightly moved up */
+  left: 0px; /* Slightly moved to the left */
+  z-index: 2;
+}
+
+/* Menu Container */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+/* Menu Item */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  min-height: 40px; /* Added minimum height for better click area */
+}
+
+.menu-item i {
+  margin-right: 10px;
+  font-size: 18px;
+  transition: margin-right 0.3s ease;
+}
+
+/* Active Menu Item */
+.menu-item.active {
+  background-color: #e94560;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Hover Effect */
+.menu-item:hover {
+  background-color: #16213e;
+  color: #e94560;
+}
+
+/* Link Styling */
+.menu-item a {
+  text-decoration: none;
+  color: inherit;
+  flex-grow: 1;
+}
+
+/* Adjustments for Collapsed Sidebar */
+.sidebar.collapsed .menu-item {
+  font-size: 14px; /* Smaller font for collapsed sidebar */
+  text-align: center; /* Centered text when collapsed */
+}
+
+.sidebar.collapsed .menu-item i {
+  margin-right: 0; /* No space between icon and text */
+}
+
+.sidebar.collapsed .menu-item span {
+  display: none; /* Hide text when collapsed */
+}
+
+/* Show only icon when collapsed */
+.sidebar.collapsed .menu-item a {
+  display: flex;
+  justify-content: center; /* Center the icon */
+}
+
+/* Show text when sidebar is expanded */
+.sidebar:not(.collapsed) .menu-item span {
+  display: inline-block;
+  margin-left: 10px; /* Space between icon and text */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px; /* Adjust sidebar width for smaller screens */
+  }
+
+  .menu-item {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .menu-item i {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 60px; /* Narrower sidebar on small screens */
+  }
+
+  .menu-item {
+    font-size: 12px;
+  }
+
+  .content {
+    margin: 5px;
+  }
+}

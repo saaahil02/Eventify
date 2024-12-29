@@ -3,11 +3,13 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import OrganizerDashboard from './pages/OrganizerDashboard';
+import SponsorDashboard from './pages/SponsorDashboard';
 import { useSelector } from 'react-redux';
 import Spinner from './components/Spinner';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import PublicRoute from './components/PublicRoute';
 import IntroPage from './pages/IntroPage';
+import Profile from './pages/Profile';
 
 function App() {
   const {loading}=useSelector(state =>state.alerts)
@@ -35,7 +37,11 @@ function App() {
         }/>
 
         
-      <Route path='/OrganizerDashboard' element={<OrganizerDashboard/>}/>
+      <Route path='/OrganizerDashboard' element={<ProtectedRoutes><OrganizerDashboard/></ProtectedRoutes>}/>
+
+      <Route path='/Profile' element={<ProtectedRoutes><Profile/></ProtectedRoutes>}/>
+
+      <Route path='/SponsorDashboard' element={<ProtectedRoutes><SponsorDashboard/></ProtectedRoutes>}/>
     </Routes>
       )
       }

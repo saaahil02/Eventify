@@ -1,19 +1,19 @@
 import React from 'react'
-import Layout from '../components/Layout.js'
+import Layout from '../components/Layout'
 import { Form,Input,Button } from 'antd'
-import '../styles/OrganizerRegister.css'
+import "../styles/OrganizerRegister.css"
 
-const OrganizerDashboard = () => {
-    const handlefinish = (values) => {
-        console.log(values)
-    }
+const SponsorDashboard = () => {
+  const handlefinish = (values) => {
+    console.log(values)
+}
   return (
-    
+    <div>
       <Layout>
       <div className="form-wrapper">
         <div className="form-container">
-        <h3 className='text-center'>Organizer Form Register</h3>
-        <Form layout='vertical' onFinish={handlefinish}>
+        <h3 className="text-center">Sponsor Dashboard</h3>
+      <Form layout='vertical' onFinish={handlefinish}>
         <Form.Item
     name="organizationName"
     label="Organization Name"
@@ -209,8 +209,8 @@ const OrganizerDashboard = () => {
         </div>
       </div>
       </Layout>
-    
+    </div>
   )
 }
 
-export default OrganizerDashboard
+export default SponsorDashboard

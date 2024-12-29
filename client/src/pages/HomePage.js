@@ -27,7 +27,7 @@ const HomePage = () => {
   return (
     <div>
       <Layout>
-        <h3>Home Page</h3>
+        HomePage
       </Layout>
     </div>
   )

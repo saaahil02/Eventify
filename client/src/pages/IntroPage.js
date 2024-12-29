@@ -35,14 +35,20 @@ const IntroPage = () => {
                         <button className="btn-primary" onClick={() => navigate("/register")}>Sign Up</button>
                     </div>
                 </div>
-                <p>The ultimate platform to manage and discover events.</p>
+                <p >The ultimate platform to manage and discover events.</p>
             </header>
 
             {/* Features Section */}
             <section className="features-section">
-                <h2>The best of Eventify</h2>
-                <p>Explore our key features designed for seamless event management.</p>
                 <div className="features-grid">
+                    {/* Add the first feature card and center it */}
+                    <div className="feature-card intro-card center-card">
+                        <div className="feature-icon">✨</div>
+                        <p><strong>The best of Eventify</strong></p>
+                        <p>Explore our key features designed for seamless event management.</p>
+                    </div>
+
+                    {/* Display the rest of the feature cards */}
                     {features.map((feature, index) => (
                         <FeatureCard key={index} icon={feature.icon} name={feature.name} />
                     ))}
