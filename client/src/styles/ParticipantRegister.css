@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh; /* Full screen height */
-  background: #16213e; /* Apply the background color to the outer container */
+  background-color: #16213e; /* Apply the background color to the outer container */
 }
 
 /* Register form container styling */

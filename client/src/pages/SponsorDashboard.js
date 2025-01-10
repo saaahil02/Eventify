@@ -1,11 +1,99 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
-import { Form,Input,Button } from 'antd'
+import { Form,Input,Button,message } from 'antd'
 import "../styles/OrganizerRegister.css"
+import {useSelector,useDispatch} from 'react-redux'
+import {useNavigate,Link} from 'react-router-dom'
+import { hideLoading, showLoading } from '../redux/features/alertSlice.js'
+import axios from 'axios'
+import { isEmail, isURL } from 'validator';
 
 const SponsorDashboard = () => {
-  const handlefinish = (values) => {
-    console.log(values)
+   const {user} = useSelector(state => state.user)
+   const [hasSubmitted, setHasSubmitted] = useState(false); // State to track submission status
+    const dispatch=useDispatch()
+    const navigate=useNavigate()
+
+    // Check if the user has already submitted the form
+  useEffect(() => {
+    if (!user || !user._id) {
+      // If user data is not available, skip the API call or show a loading spinner
+      return;
+    }
+  
+    const checkSubmissionStatus = async () => {
+      try {
+        const res = await axios.get('/api/v1/user/check-sponsor-status', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          params: {
+            userId: user._id,
+          },
+        });
+        if (res.data.submitted) {
+          setHasSubmitted(true);
+        }
+      } catch (error) {
+        console.error('Error checking submission status:', error);
+      }
+    };
+  
+    checkSubmissionStatus();
+  }, [user]);
+
+
+  const handlefinish = async(values) => {
+    if (!user || !user._id) {
+          message.error('User is not authenticated');
+          return;
+        }
+    try {
+      dispatch(showLoading())
+      const res = await axios.post('/api/v1/user/Sponsor-Register',{...values,userId:user._id},{
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      dispatch(hideLoading())
+       if(res.data.success){
+        message.success(res.data.message)
+       }
+       else{
+        message.error(res.data.success)
+        message.error('hhh')
+       }
+    } catch (error) {
+      dispatch(hideLoading())
+      console.log(error)
+      message.error('Something went wrong')
+    }
+}
+if (hasSubmitted) {
+  if(user.isSponsor){
+    return (
+      <Layout>
+        <div className="form-wrapper">
+          <div className="form-container">
+            <h3 className="text-center">Your request has been approved!</h3>
+            <p className="text-center">You can now access the organizer dashboard.</p>
+            <Link to="/sponsor/profile/:id">CLick here</Link>
+          </div>
+        </div>
+      </Layout>
+    ); 
+  }else{
+    return (
+      <Layout>
+        <div className="form-wrapper">
+          <div className="form-container">
+            <h3 className="text-center">Your request has been submitted!</h3>
+
+          </div>
+        </div>
+      </Layout>
+    ); 
+  }
 }
   return (
     <div>
@@ -41,9 +129,11 @@ const SponsorDashboard = () => {
         message: 'Organization Email is required',
       },
       {
-        type: 'email',
-        message: 'Please provide a valid email address',
-      },
+            validator: (_, value) =>
+              value && isEmail(value)
+                ? Promise.resolve()
+                : Promise.reject(new Error('Please provide a valid email address')),
+          },
     ]}
   >
     <Input />

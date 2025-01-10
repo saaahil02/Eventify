@@ -1,5 +1,5 @@
 {
-  "name": "das",
+  "name": "Eventify",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,6 @@
     "server": "nodemon index.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
-
   },
   "keywords": [],
   "author": "Tanmay",
@@ -23,6 +22,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.1",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.4"
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.4",
+    "validator": "^13.12.0"
   }
 }

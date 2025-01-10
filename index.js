@@ -25,6 +25,10 @@ const port=process.env.PORT || 8080;
 //routes
 app.use("/api/v1/user",require("./routes/userRoutes"));
 
+app.use("/api/v1/admin",require("./routes/adminRoutes"));
+
+app.use("/api/v1/organizer",require("./routes/organizerRoutes"));
+
 //listen
 app.listen(port,() => {
     console.log(`Server running in ${process.env.NODE_MODE} on port ${process.env.PORT}`.bgBlue.black);
