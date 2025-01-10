@@ -1,117 +1,112 @@
 const mongoose=require('mongoose');
+const validator=require('validator');
 
-const SponsorSchema = new mongoose.schema({
-    organizationName: {
-        type: String,
-        required: [true, 'Organization Name is required'],
-        validate: {
-          validator: function(v) {
-            return /^[A-Za-z\s]+$/.test(v); // Allows only letters and spaces
-          },
-          message: props => `${props.value} is not a valid organization name!`
-        }
-      },
-    
-      // Organization Email: Accepts only valid email addresses
-      organizationEmail: {
-        type: String,
-        required: [true, 'Organization Email is required'],
-        match: [/\S+@\S+\.\S+/, 'Please provide a valid email address']
-      },
-    
-      // Organization Type: Accepts only specified types
-      organizationType: {
-        type: String,
-        required: [true, 'Organization Type is required'],
-        enum: ['Non-profit', 'Individual', 'Corporation'],
-        message: props => `${props.value} is not a valid organization type!`
-      },
-    
-      // Organization Affiliation Certificate: Accepts only valid documents
-      affiliationCertificate: {
-        type: String,
-        required: [true, 'Organization Affiliation Certificate is required'],
-        validate: {
-          validator: function(v) {
-            return /\.(pdf|docx|jpg|png)$/i.test(v); // Accepts PDF, DOCX, JPG, PNG files
-          },
-          message: props => `${props.value} is not a valid document type!`
-        }
-      },
-    
-      // Organization Proof of Address: Accepts only valid documents
-      proofOfAddress: {
-        type: String,
-        required: [true, 'Organization Proof of Address is required'],
-        validate: {
-          validator: function(v) {
-            return /\.(pdf|docx|jpg|png)$/i.test(v); // Accepts PDF, DOCX, JPG, PNG files
-          },
-          message: props => `${props.value} is not a valid document type!`
-        }
-      },
-    
-      // Organization Website: Accepts only valid website links
-      website: {
-        type: String,
-        required: [true, 'Organization Website is required'],
-        match: [/(https?:\/\/[^\s]+)/, 'Please provide a valid website URL']
-      },
-    
-      // Representative Name: Accepts only proper names
-      representativeName: {
-        type: String,
-        required: [true, 'Representative Name is required'],
-        validate: {
-          validator: function(v) {
-            return /^[A-Za-z\s]+$/.test(v); // Allows only letters and spaces
-          },
-          message: props => `${props.value} is not a valid representative name!`
-        }
-      },
-    
-      // Representative Contact Number: Accepts only 10-digit numbers
-      representativeContactNo: {
-        type: String,
-        required: [true, 'Representative Contact Number is required'],
-        validate: {
-          validator: function(v) {
-            return /^\d{10}$/.test(v); // Ensures exactly 10 digits
-          },
-          message: props => `${props.value} is not a valid contact number!`
-        }
-      },
-    
-      // Representative Role in Organization: Accepts the role of representative
-      representativeRole: {
-        type: String,
-        required: [true, 'Representative Role is required'],
-        enum: ['Principal', 'Manager', 'Director'],
-        message: props => `${props.value} is not a valid representative role!`
-      },
-    
-      // Username: Accepts only proper names
-      username: {
-        type: String,
-        required: [true, 'Username is required'],
-        validate: {
-          validator: function(v) {
-            return /^[A-Za-z\s]+$/.test(v); // Allows only letters and spaces
-          },
-          message: props => `${props.value} is not a valid username!`
-        }
-      },
-    
-      // Password: While the user enters password, the field should show characters as ‘*’
-      password: {
-        type: String,
-        required: [true, 'Password is required'],
-        minlength: [5, 'Password must be at least 5 characters long']
-      }
+
+const SponsorSchema = new mongoose.Schema({
+  userId: {
+      type: String,
+    },
+   organizationName: {
+       type: String,
+       required: [true, 'Organization Name is required'],
+      //  match: [/^[A-Za-z\s]+$/, 'Organization Name should contain only alphabets and spaces'],
+      //  trim: true,
+     },
+     
+     // Organization Email: Valid email format
+     organizationEmail: {
+       type: String,
+       required: [true, 'Organization Email is required'],
+      //  unique: true,
+      //  validate: [validator.isEmail, 'Please provide a valid email address'],
+      //  lowercase: true,
+      //  trim: true,
+     },
+     
+     // Organization Type: Non-profit, Individual, Corporation
+     organizationType: {
+       type: String,
+       required: [true, 'Organization Type is required'],
+       enum: ['Non-profit', 'Individual', 'Corporation'],
+     },
+     
+     // Organization Affiliation Certificate: Must be a valid document (string for now, can be extended for file validation)
+     organizationAffiliationCertificate: {
+       type: String,
+       required: [true, 'Organization Affiliation Certificate is required'],
+      //  validate: {
+      //    validator: function(value) {
+      //      // Add document validation logic (e.g., file types, size)
+      //      return value && value.length > 0; // For simplicity, assuming a non-empty string
+      //    },
+      //    message: 'Please upload a valid document',
+      //  },
+     },
+     
+     // Organization Proof of Address: Must be a valid document
+     organizationProofOfAddress: {
+       type: String,
+       required: [true, 'Organization Proof of Address is required'],
+      //  validate: {
+      //    validator: function(value) {
+      //      return value && value.length > 0;
+      //    },
+      //    message: 'Please upload a valid document',
+      //  },
+     },
+     
+     // Organization Website: Valid URL format
+     organizationWebsite: {
+       type: String,
+       required: [true, 'Organization Website is required'],
+      //  validate: [validator.isURL, 'Please provide a valid website link'],
+     },
+     
+     // Representative Name: Proper name
+     representativeName: {
+       type: String,
+       required: [true, 'Representative Name is required'],
+      //  match: [/^[A-Za-z\s]+$/, 'Representative Name should contain only alphabets and spaces'],
+      //  trim: true,
+     },
+     
+     // Representative Contact No: Must be a 10-digit number
+     representativeContactNo: {
+       type: String,
+       required: [true, 'Representative Contact Number is required'],
+      //  match: [/^\d{10}$/, 'Representative Contact Number should be a 10-digit number'],
+     },
+     
+     // Representative Role in Organization: The role (e.g., Principal)
+     representativeRole: {
+       type: String,
+       required: [true, 'Representative Role is required'],
+      //  trim: true,
+     },
+     
+     // Username: Proper name
+     username: {
+       type: String,
+       required: [true, 'Username is required'],
+      //  match: [/^[A-Za-z0-9]+$/, 'Username should contain only alphabets and numbers'],
+      //  trim: true,
+     },
+     
+     // Password: It should be stored as a hashed value, but here we ensure it has a minimum length
+     password: {
+       type: String,
+       required: [true, 'Password is required'],
+      //  minlength: [5, 'Password should be at least 5 characters long'],
+     },
+     
+     status:{
+       type:String,
+       default:'pending'
+     }
     
 },{timestamps:true});
 
 
-const SponsorModel = mongoose.model('users',SponsorSchema);
+const SponsorModel = mongoose.model('sponsors',SponsorSchema);
 
 module.exports=SponsorModel;

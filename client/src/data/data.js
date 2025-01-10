@@ -6,20 +6,21 @@ export const userMenu = [
         icon:' fa-solid fa-house',
     },
     {
-        name:"OrganizerDashboard",
-        path:"/OrganizerDashboard",
-        icon:"fa-solid fa-user-tie",
-    },
-    {
-        name:"SponsorDashboard",
-        path:"/SponsorDashboard",
-        icon:"fa-solid fa-user-tie",
-    },
-    {
-        name:"Profile",
+        name:"User Profile",
         path:"/Profile",
         icon:"fa-solid fa-user",
     },
+    {
+        name:"Organizer Dashboard",
+        path:"/Organizer-Register",
+        icon:"fa-solid fa-user-tie",
+    },
+    {
+        name:"Sponsor Dashboard",
+        path:"/Sponsor-Register",
+        icon:"fa-solid fa-user-tie",
+    },
+    
    
 
 ]
@@ -33,19 +34,20 @@ export const adminMenu = [
         icon:' fa-solid fa-house',
     },
     {
-        name:"Organizers",
-        path:"/Organizers",
+        name:"Users List",
+        path:"/admin/UsersList",
         icon:"fa-solid fa-user-tie",
     },
     {
-        name:"Sponsors",
-        path:"/Sponsors",
+        name:"Organizer Approval",
+        path:"/admin/OrganizersList",
         icon:"fa-solid fa-user-tie",
     },
     {
-        name:"Users",
-        path:"/Users",
-        icon:"fa-solid fa-user",
+        name:"Sponsor Approval",
+        path:"/admin/SponsorsList",
+        icon:"fa-solid fa-user-tie",
     },
+    
 
 ]

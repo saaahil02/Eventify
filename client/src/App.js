@@ -10,6 +10,15 @@ import ProtectedRoutes from './components/ProtectedRoutes';
 import PublicRoute from './components/PublicRoute';
 import IntroPage from './pages/IntroPage';
 import Profile from './pages/Profile';
+import NotificationPage from './pages/NotificationPage';
+import Organizers from './pages/admin/Organizers';
+import Sponsors from './pages/admin/Sponsors';
+import Users from './pages/admin/Users';
+import OrgProfile from './pages/Organizers/OrgProfile';
+import SpoProfile from './pages/Sponsor/SpoProfile';
+import OrgRoute from './components/OrgRoute';
+import SpoRoute from './components/SpoRoute';
+import CreateEvent from './pages/Organizers/CreateEvent';
 
 function App() {
   const {loading}=useSelector(state =>state.alerts)
@@ -37,11 +46,27 @@ function App() {
         }/>
 
         
-      <Route path='/OrganizerDashboard' element={<ProtectedRoutes><OrganizerDashboard/></ProtectedRoutes>}/>
+      <Route path='/Organizer-Register' element={<ProtectedRoutes><OrganizerDashboard/></ProtectedRoutes>}/>
 
       <Route path='/Profile' element={<ProtectedRoutes><Profile/></ProtectedRoutes>}/>
 
-      <Route path='/SponsorDashboard' element={<ProtectedRoutes><SponsorDashboard/></ProtectedRoutes>}/>
+      <Route path='/Sponsor-Register' element={<ProtectedRoutes><SponsorDashboard/></ProtectedRoutes>}/>
+
+      <Route path='/notification' element={<ProtectedRoutes><NotificationPage/></ProtectedRoutes>}/>
+
+      <Route path='/admin/OrganizersList' element={<ProtectedRoutes><Organizers/></ProtectedRoutes>}/>
+
+      <Route path='/admin/SponsorsList' element={<ProtectedRoutes><Sponsors/></ProtectedRoutes>}/>
+
+      <Route path='/admin/UsersList' element={<ProtectedRoutes><Users/></ProtectedRoutes>}/>
+
+      <Route path='/organizer/profile/:id' element={<ProtectedRoutes><OrgRoute><OrgProfile/></OrgRoute></ProtectedRoutes>}/>
+
+      <Route path='/organizer/CreateEvent' element={<ProtectedRoutes><OrgRoute><CreateEvent/></OrgRoute></ProtectedRoutes>}/>
+
+      <Route path='/sponsor/profile/:id' element={<ProtectedRoutes><SpoRoute><SpoProfile/></SpoRoute></ProtectedRoutes>}/>
+
+
     </Routes>
       )
       }

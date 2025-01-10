@@ -3,7 +3,7 @@ import '../styles/LayoutStyles.css';
 import { adminMenu, userMenu } from '../data/data';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { message } from 'antd';
+import { Badge, message } from 'antd';
 
 const Layout = ({ children }) => {
   const { user } = useSelector((state) => state.user);
@@ -19,11 +19,30 @@ const Layout = ({ children }) => {
     navigate('/');
   };
 
+  //Organizer Menu
+  const organizerMenu = [
+    {
+        name:'Home',
+        path:'/home',
+        icon:' fa-solid fa-house',
+    },
+    {
+        name:"Profile",
+        path:`/organizer/profile/${user?._id}`,
+        icon:"fa-solid fa-user",
+    },
+   
+
+]
+
   // Toggle sidebar collapse/expand
   const toggleSidebar = () => setSidebarCollapsed(prevState => !prevState);
 
-  // Determine Sidebar menu based on user role
+  // Determine Sidebar menu based on user role 
   const SidebarMenu = user?.isAdmin ? adminMenu : userMenu;
+
+
+
 
   // Check if menu item is active based on current pathname
   const isActiveMenuItem = (path) => location.pathname === path;
@@ -97,9 +116,17 @@ const Layout = ({ children }) => {
         {/* Main Content */}
         <div className="content">
           <div className="header">
-            <div className="header-content">
-              <i className="fa-solid fa-bell"></i>
-              <Link to="/UserProfile">{user?.name}</Link>
+            <div className="header-content" style={{cusor:"pointer"}}>
+          {/* user && user.notification.length */}
+            {user?.isAdmin && (
+              <Badge count={user && user.notification.length} onClick={()=>{navigate('/notification')}}>
+            {/* <i className="fa-solid fa-bell"></i> */}
+            <span className="notification-icon">
+            <i className="fa-solid fa-bell"></i>
+            </span>
+            </Badge>
+            )}
+              <Link to="/Profile">{user?.name}</Link>
             </div>
           </div>
           <div className="body">{children}</div>

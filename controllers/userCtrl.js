@@ -1,6 +1,8 @@
 const userModel =require('../models/userModels');
 const bcrypt =require('bcryptjs');
 const jwt=require('jsonwebtoken');
+const OrganizerModel=require('../models/OrganizerModels');
+const SponsorModel=require('../models/SponsorModels');
 
 //Register callback
 const registerController =async(req,res)=>{
@@ -44,31 +46,349 @@ const loginController = async(req,res)=> {
     }
 }
 
-const authController=async(req,res)=>{
+// const authController=async(req,res)=>{
+//     try {
+//         const user = await userModel.findById({_id:req.body.userId})
+//         user.password=undefined;
+//         if(!user){
+//             return res.status(200).send({message:'User not Found',success:false})
+//         }
+//         else{
+//             res.status(200).send({
+//                 success : true,
+//                 data:user
+//             })
+//         }
+//     } catch (error) {
+//         console.log(error)
+//         res.status(500).send({
+//             message : "auth ERROR",
+//             success : false,
+//             error
+//         })
+//     }
+// }
+
+const authController = async (req, res) => {
     try {
-        const user = await userModel.findById({_id:req.body.userId})
-        user.password=undefined;
-        if(!user){
-            return res.status(200).send({message:'User not Found',success:false})
+        const user = await userModel.findById({ _id: req.body.userId });
+
+        if (!user) {
+            return res.status(200).send({ message: 'User not found', success: false });
         }
-        else{
-            res.status(200).send({
-                success : true,
-                data:user
-            })
+
+        // Exclude the password field from the response
+        user.password = undefined;
+
+          // Update the message if user.isOrganizer is true
+          let message = 'Your request has been submitted!';
+          if (user.isOrganizer) {
+              message = 'Your request has been approved!';
+          }
+
+        res.status(200).send({
+            success: true,
+            data: user,
+            message: message, // Include the dynamic message
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+            message: 'auth ERROR',
+            success: false,
+            error: error.message || error,
+        });
+    }
+};
+
+
+// const applyOrganizerController = async(req,res)=>{
+//     try {
+//          // Check if the email already exists
+//         //  const existinguserOrg =await OrganizerModel.findOne({email:req.body.email});
+//         // if(existinguserOrg){
+//         //     return res.status(200).send({message:'User Already Exist',success:false});
+//         // }
+//         const newOrganizer = await OrganizerModel({...req.body,status:'pending'})
+//         await newOrganizer.save()
+//         const adminUser = await userModel.findOne({isAdmin:true})
+//         const notification=adminUser.notification
+//         notification.push({
+//             type:'apply-organizer-requset',
+//             message: `${newOrganizer.organizationName} ${newOrganizer.organizationEmail} has applied for an organizer account`,
+//             data:{
+//                 organizerId:newOrganizer._id,
+//                 name: newOrganizer.organizationName,
+//                 onClickPath :'/admin/organizers'
+//             }
+//         })
+//         await userModel.findByIdAndUpdate(adminUser._id,{notification})
+//         res.status(201).send({
+//             success:true,
+//             message:'Organizer Account Applied Succesfully'
+//         })
+//     } catch (error) {
+//         console.log(error)
+//         res.status(500).send({
+//             success:false,
+//             error,
+//             message:"An Error Occured while registering for Organizer"
+//         })
+//     }
+// }
+
+const applyOrganizerController = async (req, res) => {
+    try {
+        const { organizationName, organizationEmail } = req.body;
+
+        // Validate incoming data (consider using Joi or express-validator)
+        if (!organizationName || !organizationEmail) {
+            return res.status(400).send({
+                success: false,
+                message: "Organization name and email are required"
+            });
         }
+
+        // Create new organizer document
+        const newOrganizer = new OrganizerModel({
+            ...req.body,
+            status: 'pending'
+        });
+
+        // Save organizer to the database
+        await newOrganizer.save();
+
+        // Retrieve admin user
+        const adminUser = await userModel.findOne({ isAdmin: true });
+        if (!adminUser) {
+            return res.status(404).send({
+                success: false,
+                message: "Admin user not found"
+            });
+        }
+
+        // Add notification for the admin
+        const notification = adminUser.notification || [];
+        notification.push({
+            type: 'apply-organizer-request',
+            message: `${newOrganizer.organizationName} (${newOrganizer.organizationEmail}) has applied for an organizer account`,
+            data: {
+                organizerId: newOrganizer._id,
+                name: newOrganizer.organizationName,
+                onClickPath: '/admin/organizers'
+            }
+        });
+
+        // Update admin notifications
+        await userModel.findByIdAndUpdate(adminUser._id, { notification });
+
+        // Respond to the client
+        res.status(201).send({
+            success: true,
+            message: 'Organizer account applied successfully'
+        });
+    } catch (error) {
+        console.error("Error during applyOrganizerController:", error);
+        res.status(500).send({
+            success: false,
+            message: "An error occurred while registering for organizer",
+            error: error.message || error
+        });
+    }
+};
+
+
+const applySponsorController = async(req,res)=>{
+    try {
+        const { organizationName, organizationEmail } = req.body;
+
+        // Validate incoming data (consider using Joi or express-validator)
+        if (!organizationName || !organizationEmail) {
+            return res.status(400).send({
+                success: false,
+                message: "Organization name and email are required"
+            });
+        }
+
+        // Create new sponsor document
+        const newSponsor = new SponsorModel({
+            ...req.body,
+            status: 'pending'
+        });
+
+        // Save organizer to the database
+        await newSponsor.save();
+
+        // Retrieve admin user
+        const adminUser = await userModel.findOne({ isAdmin: true });
+        if (!adminUser) {
+            return res.status(404).send({
+                success: false,
+                message: "Admin user not found"
+            });
+        }
+
+        // Add notification for the admin
+        const notification = adminUser.notification || [];
+        notification.push({
+            type: 'apply-sponsor-request',
+            message: `${newSponsor.organizationName} (${newSponsor.organizationEmail}) has applied for an organizer account`,
+            data: {
+                organizerId: newSponsor._id,
+                name: newSponsor.organizationName,
+                onClickPath: '/admin/sponsors'
+            }
+        });
+
+        // Update admin notifications
+        await userModel.findByIdAndUpdate(adminUser._id, { notification });
+
+        // Respond to the client
+        res.status(201).send({
+            success: true,
+            message: 'Sponsor account applied successfully'
+        });
+    } catch (error) {
+        console.error("Error during applySponsorController:", error);
+        res.status(500).send({
+            success: false,
+            message: "An error occurred while registering for Sponsor",
+            error: error.message || error
+        });
+    }
+}
+
+//notification ctrl
+const getAllNotificationController = async(req,res)=>{
+    try {
+       const user = await userModel.findOne({_id:req.body.userId}) 
+       const  seennotification = user.seennotification
+       const notification = user.notification
+       seennotification.push(...notification)
+       user.notification=[]
+       user.seennotification=notification
+       const updateUser =await user.save()
+       res.status(200).send({success:true,message:'Notification Seen',data:updateUser,})
+
     } catch (error) {
         console.log(error)
         res.status(500).send({
-            message : "auth ERROR",
-            success : false,
+            message:`Error in notification`,
+            success:false,
             error
         })
     }
 }
 
+// delete notifications
+const deleteAllNotificationController = async (req, res) => {
+    try {
+      const user = await userModel.findOne({ _id: req.body.userId });
+      user.notification = [];
+      user.seennotification = [];
+      const updatedUser = await user.save();
+      updatedUser.password = undefined;
+      res.status(200).send({
+        success: true,
+        message: "Notifications Deleted successfully",
+        data: updatedUser,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        success: false,
+        message: "unable to delete all notifications",
+        error,
+      });
+    }
+  };
+
+
+  // Controller to check if the user has already submitted the organizer form
+  const checkSponosrStatusController = async (req, res) => {
+    try {
+        // Extract userId from req.body.userId instead of req.user.id for consistency
+        const userId = req.body.userId;
+
+        if (!userId) {
+            return res.status(400).send({
+                success: false,
+                message: "User ID is required",
+            });
+        }
+
+        // Check if the user has already submitted the organizer form
+        const sponsor = await SponsorModel.findOne({ userId });
+
+        if (sponsor) {
+            return res.status(200).send({
+                success: true,
+                submitted: true,
+                message: "Form already submitted",
+            });
+        }
+
+        // If no record found
+        res.status(200).send({
+            success: true,
+            submitted: false,
+            message: "Form not submitted",
+        });
+    } catch (error) {
+        console.error("Error checking sponsor status:", error);
+        res.status(500).send({
+            success: false,
+            message: "Internal server error",
+            error: error.message || error,
+        });
+    }
+};
+
+ // Controller to check if the user has already submitted the organizer form
+ const checkOrganizerStatusController = async (req, res) => {
+    try {
+        // Extract userId from req.body.userId instead of req.user.id for consistency
+        const userId = req.body.userId;
+
+        if (!userId) {
+            return res.status(400).send({
+                success: false,
+                message: "User ID is required",
+            });
+        }
+
+        // Check if the user has already submitted the organizer form
+        const organizer = await OrganizerModel.findOne({ userId });
+
+        if (organizer) {
+            return res.status(200).send({
+                success: true,
+                submitted: true,
+                message: "Form already submitted",
+            });
+        }
+
+        // If no record found
+        res.status(200).send({
+            success: true,
+            submitted: false,
+            message: "Form not submitted",
+        });
+    } catch (error) {
+        console.error("Error checking organizer status:", error);
+        res.status(500).send({
+            success: false,
+            message: "Internal server error",
+            error: error.message || error,
+        });
+    }
+};
+
+  
+
 module.exports = {
     loginController,
     registerController,
-    authController,
+    authController,applyOrganizerController,applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
+    ,checkSponosrStatusController
   };
