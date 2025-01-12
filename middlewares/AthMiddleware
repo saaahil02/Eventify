@@ -1,0 +1,43 @@
+const JWT = require('jsonwebtoken');
+
+module.exports = async (req, res, next) => {
+    try {
+        // Check if the Authorization header exists
+        const authHeader = req.headers["authorization"];
+        if (!authHeader) {
+            return res.status(401).send({
+                message: "Authorization token is missing",
+                success: false
+            });
+        }
+
+        // Split the token from the header
+        const token = authHeader.split(" ")[1];
+        
+        // Check if the token is missing
+        if (!token) {
+            return res.status(401).send({
+                message: "Authorization token is malformed",
+                success: false
+            });
+        }
+
+        JWT.verify(token, process.env.JWT_SECRET, (err, decode) => {
+            if (err) {
+                return res.status(401).send({
+                    message: "Authorization Failed",
+                    success: false
+                });
+            } else {
+                req.body.userId = decode.id;
+                next();
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(401).send({
+            message: "Auth Failed",
+            success: false
+        });
+    }
+};

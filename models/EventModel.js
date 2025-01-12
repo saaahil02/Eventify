@@ -31,6 +31,8 @@ const EventSchema = new mongoose.Schema({
     // lowercase: true,
     // trim: true,
   },
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Participant' }],
+
 }, { timestamps: true });
 
 
