@@ -1,7 +1,8 @@
 const express= require('express');
 const {registerController,loginController, authController, applyOrganizerController, applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
-  ,checkSponosrStatusController}=require("../controllers/userCtrl");
+  ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants}=require("../controllers/userCtrl");
 const AuthMiddleware = require('../middlewares/AuthMiddleware');
+
 
 
 //router object
@@ -40,5 +41,16 @@ router.post(
 router.get('/check-organizer-status', AuthMiddleware, checkOrganizerStatusController);
 
 router.get('/check-sponsor-status', AuthMiddleware, checkSponosrStatusController);
+
+router.get('/events/:id',AuthMiddleware,EventDisplay)
+
+router.post('/events/:id/register', AuthMiddleware, registerForEvent);
+
+// Fetch organizer's events
+router.get('/organizer/events', AuthMiddleware, getOrganizerEvents);
+
+// Fetch participants for a specific event
+router.get('/organizer/events/:id/participants', AuthMiddleware, getEventParticipants);
+
 
 module.exports= router;

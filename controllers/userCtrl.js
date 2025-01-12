@@ -3,6 +3,8 @@ const bcrypt =require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const OrganizerModel=require('../models/OrganizerModels');
 const SponsorModel=require('../models/SponsorModels');
+const Event=require('../models/EventModel')
+const Participant = require('../models/ParticipantModel');
 
 //Register callback
 const registerController =async(req,res)=>{
@@ -384,11 +386,83 @@ const deleteAllNotificationController = async (req, res) => {
     }
 };
 
+const EventDisplay = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        
+        if (!eventId) {
+            return res.status(400).json({ success: false, message: "Event ID is required" });
+        }
+
+        // Find the event by ID
+        const event = await Event.findById(eventId);
+
+        // If the event does not exist
+        if (!event) {
+            return res.status(404).json({ success: false, message: "Event not found" });
+        }
+
+        // Send success response with the event data
+        res.status(200).json({ success: true, data: event });
+    } catch (error) {
+        // Handle unexpected server errors
+        console.error(error);  // Log the error for debugging purposes
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+};
+
+const registerForEvent = async(req,res)=>{
+    const { id } = req.params;
+    const { name, email, phone } = req.body;
   
+    try {
+      const event = await Event.findById(id);
+      if (!event) {
+        return res.status(404).json({ success: false, message: 'Event not found' });
+      }
+  
+      const newParticipant = await Participant.create({
+        eventId: id,
+        name,
+        email,
+        phone,
+      });
+  
+      res.status(201).json({ success: true, data: newParticipant });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Registration failed' });
+    }
+}
+
+const getOrganizerEvents = async (req, res) => {
+    try {
+      const events = await Event.find({ organizerId: req.user.id }).populate('participants');
+      const data = events.map((event) => ({
+        ...event._doc,
+        participantsCount: event.participants.length,
+      }));
+      res.status(200).json({ success: true, data });
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      res.status(500).json({ success: false, message: 'Failed to fetch events' });
+    }
+  };
+
+  const getEventParticipants = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const participants = await Participant.find({ eventId: id });
+      res.status(200).json({ success: true, data: participants });
+    } catch (error) {
+      console.error('Error fetching participants:', error);
+      res.status(500).json({ success: false, message: 'Failed to fetch participants' });
+    }
+  };
 
 module.exports = {
     loginController,
     registerController,
     authController,applyOrganizerController,applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
-    ,checkSponosrStatusController
+    ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants
   };

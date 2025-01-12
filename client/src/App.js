@@ -19,6 +19,9 @@ import SpoProfile from './pages/Sponsor/SpoProfile';
 import OrgRoute from './components/OrgRoute';
 import SpoRoute from './components/SpoRoute';
 import CreateEvent from './pages/Organizers/CreateEvent';
+import EventRegister from './pages/EventRegister';
+import YourEvents from './pages/Organizers/YourEvents';
+import EventAnalytics from './pages/Organizers/EventAnalytics';
 
 function App() {
   const {loading}=useSelector(state =>state.alerts)
@@ -60,9 +63,16 @@ function App() {
 
       <Route path='/admin/UsersList' element={<ProtectedRoutes><Users/></ProtectedRoutes>}/>
 
+      <Route path='/user/event/:id' element={<ProtectedRoutes><EventRegister/></ProtectedRoutes>}/>
+
       <Route path='/organizer/profile/:id' element={<ProtectedRoutes><OrgRoute><OrgProfile/></OrgRoute></ProtectedRoutes>}/>
 
       <Route path='/organizer/CreateEvent' element={<ProtectedRoutes><OrgRoute><CreateEvent/></OrgRoute></ProtectedRoutes>}/>
+
+      <Route path='/organizer/YourEvents' element={<ProtectedRoutes><OrgRoute><YourEvents/></OrgRoute></ProtectedRoutes>}/>
+
+      <Route path='/organizer/EventAnalytics' element={<ProtectedRoutes><OrgRoute><EventAnalytics/></OrgRoute></ProtectedRoutes>}/>
+
 
       <Route path='/sponsor/profile/:id' element={<ProtectedRoutes><SpoRoute><SpoProfile/></SpoRoute></ProtectedRoutes>}/>
 

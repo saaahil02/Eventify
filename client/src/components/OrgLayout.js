@@ -31,6 +31,16 @@ const OrgLayout = ({ children }) => {
       path:"/organizer/CreateEvent",
       icon:"fa-solid fa-user",
   },
+  {
+      name:"Your Events",
+      path:"/organizer/YourEvents",
+      icon:"fa-solid fa-user",
+  },
+  {
+      name:"Event Analytics",
+      path:"/organizer/EventAnalytics",
+      icon:"fa-solid fa-user",
+  },
     {
         name:"Back to Home",
         path:"/home",
