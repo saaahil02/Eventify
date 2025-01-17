@@ -36,7 +36,12 @@ const userSchema = new mongoose.Schema({
     seennotification:{
         type:Array,
         default:[]
-    }
+    },
+    events: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'events' 
+      }], // Add this line to track the events the user is participating in
+    
 },{timestamps:true});
 
 const userModel = mongoose.model('users',userSchema);

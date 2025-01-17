@@ -1,0 +1,61 @@
+.event-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .event-image img {
+    max-width: 200px; /* Set maximum width for the image */
+    height: auto; /* Maintain aspect ratio */
+    border: 1px solid #ddd; /* Optional: add a border for better visuals */
+    border-radius: 5px; /* Optional: round the corners */
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  }
+  
+  .btn {
+    margin-right: 10px; /* Space between buttons */
+    padding: 5px 10px; /* Adjust padding for smaller buttons */
+    font-size: 14px; /* Adjust font size */
+    border-radius: 4px; /* Slight rounding for modern look */
+  }
+  
+  .btn-success {
+    background-color: #28a745; /* Bootstrap green */
+    color: white;
+    border: none;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545; /* Bootstrap red */
+    color: white;
+    border: none;
+  }
+  
+  .btn:hover {
+    opacity: 0.9; /* Slight opacity on hover */
+    cursor: pointer; /* Pointer cursor for buttons */
+  }
+  
+  .collapse-panel {
+    margin-bottom: 20px; /* Add spacing between panels */
+  }
+  
+  .ant-collapse-header {
+    font-size: 16px; /* Larger font size for headers */
+    font-weight: bold;
+    color: #333;
+  }
+  
+  h4 {
+    margin-bottom: 20px; /* Add spacing below the heading */
+    color: #444;
+    text-align: center;
+  }
+  
+  .table-container {
+    margin-top: 20px; /* Spacing above the table */
+  }
+  
+  

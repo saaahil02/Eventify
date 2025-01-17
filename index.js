@@ -18,8 +18,11 @@ const app=express();
 //middlewares
 app.use(express.json());
 app.use(morgan('dev'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 //port
+
 const port=process.env.PORT || 8080;
 
 //routes
@@ -28,6 +31,9 @@ app.use("/api/v1/user",require("./routes/userRoutes"));
 app.use("/api/v1/admin",require("./routes/adminRoutes"));
 
 app.use("/api/v1/organizer",require("./routes/organizerRoutes"));
+
+app.use("/api/v1/sponsor",require("./routes/sponsorRoutes"));
+
 
 //listen
 app.listen(port,() => {

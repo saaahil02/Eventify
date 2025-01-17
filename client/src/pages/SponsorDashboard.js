@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
-import { Form,Input,Button,message } from 'antd'
+import { Form,Input,Button,message,Upload } from 'antd'
 import "../styles/OrganizerRegister.css"
 import {useSelector,useDispatch} from 'react-redux'
 import {useNavigate,Link} from 'react-router-dom'
 import { hideLoading, showLoading } from '../redux/features/alertSlice.js'
 import axios from 'axios'
 import { isEmail, isURL } from 'validator';
+import { UploadOutlined } from '@ant-design/icons';
 
 const SponsorDashboard = () => {
    const {user} = useSelector(state => state.user)
@@ -50,7 +51,44 @@ const SponsorDashboard = () => {
         }
     try {
       dispatch(showLoading())
-      const res = await axios.post('/api/v1/user/Sponsor-Register',{...values,userId:user._id},{
+
+       const formData = new FormData();
+        
+          // Ensure user email, name, and contact are pulled from the user object
+          formData.append('organizationEmail', user.email || '');
+          formData.append('representativeName', user.name || '');
+          formData.append('representativeContactNo', user.contact || '');
+        
+          // Append other fields
+          formData.append('organizationName', values.organizationName);
+          formData.append('organizationType', values.organizationType);
+          formData.append('organizationWebsite', values.organizationWebsite);
+          formData.append('representativeRole', values.representativeRole);
+          formData.append('userId', user._id);
+        
+         
+        // Validate files before appending and check their properties
+        if (values.organizationAffiliationCertificate && values.organizationAffiliationCertificate[0]) {
+          formData.append('organizationAffiliationCertificate', values.organizationAffiliationCertificate[0].originFileObj);
+        } else {
+          message.error('Please upload the affiliation certificate');
+          return; // Exit early if no file is provided
+        }
+      
+        if (values.organizationProofOfAddress && values.organizationProofOfAddress[0]) {
+          formData.append('organizationProofOfAddress', values.organizationProofOfAddress[0].originFileObj);
+        } else {
+          message.error('Please upload the proof of address');
+          return; // Exit early if no file is provided
+        }
+        
+          // Log formData entries
+          for (let pair of formData.entries()) {
+            console.log(pair[0] + ": " + pair[1]);
+          }
+        
+
+      const res = await axios.post('/api/v1/user/Sponsor-Register',formData,{
         headers:{
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -58,10 +96,10 @@ const SponsorDashboard = () => {
       dispatch(hideLoading())
        if(res.data.success){
         message.success(res.data.message)
+        setHasSubmitted(true);
        }
        else{
         message.error(res.data.success)
-        message.error('hhh')
        }
     } catch (error) {
       dispatch(hideLoading())
@@ -77,7 +115,7 @@ if (hasSubmitted) {
           <div className="form-container">
             <h3 className="text-center">Your request has been approved!</h3>
             <p className="text-center">You can now access the organizer dashboard.</p>
-            <Link to="/sponsor/profile/:id">CLick here</Link>
+            <Link to="/sponsor/profile/:id">Cick here</Link>
           </div>
         </div>
       </Layout>
@@ -125,18 +163,18 @@ if (hasSubmitted) {
     label="Organization Email"
     rules={[
       {
-        required: true,
+        required: false,
         message: 'Organization Email is required',
       },
-      {
-            validator: (_, value) =>
-              value && isEmail(value)
-                ? Promise.resolve()
-                : Promise.reject(new Error('Please provide a valid email address')),
-          },
+      // {
+      //       validator: (_, value) =>
+      //         value && isEmail(value)
+      //           ? Promise.resolve()
+      //           : Promise.reject(new Error('Please provide a valid email address')),
+      //     },
     ]}
   >
-    <Input />
+    <Input defaultValue={user.email} disabled/>
   </Form.Item>
 
   {/* Organization Type */}
@@ -158,8 +196,8 @@ if (hasSubmitted) {
     </select>
   </Form.Item>
 
-  {/* Organization Affiliation Certificate */}
-  <Form.Item
+  
+  {/* <Form.Item
     name="organizationAffiliationCertificate"
     label="Organization Affiliation Certificate"
     rules={[
@@ -172,7 +210,7 @@ if (hasSubmitted) {
     <Input type="file" />
   </Form.Item>
 
-  {/* Organization Proof of Address */}
+  
   <Form.Item
     name="organizationProofOfAddress"
     label="Organization Proof of Address"
@@ -184,7 +222,39 @@ if (hasSubmitted) {
     ]}
   >
     <Input type="file" />
-  </Form.Item>
+  </Form.Item> */}
+
+<Form.Item
+  name="organizationAffiliationCertificate" 
+  label="Affiliation Certificate"
+  valuePropName="fileList" // This binds the file input to the form value
+  getValueFromEvent={(e) => e && e.fileList} // This ensures the file list is accessible
+  rules={[{ required: true, message: 'Please upload the affiliation certificate' }]}
+>
+  <Upload 
+    beforeUpload={() => false} // Disables automatic upload
+    maxCount={1} 
+    accept=".png,.jpg,.jpeg,.pdf" 
+  >
+    <Button icon={<UploadOutlined />}>Click to upload</Button>
+  </Upload>
+</Form.Item>
+
+<Form.Item 
+  name="organizationProofOfAddress" 
+  label="Proof of Address"
+  valuePropName="fileList" 
+  getValueFromEvent={(e) => e && e.fileList}
+  rules={[{ required: true, message: 'Please upload the proof of address' }]}
+>
+  <Upload 
+    beforeUpload={() => false}
+    maxCount={1} 
+    accept=".png,.jpg,.jpeg,.pdf" 
+  >
+    <Button icon={<UploadOutlined />}>Click to upload</Button>
+  </Upload>
+</Form.Item>
 
   {/* Organization Website */}
   <Form.Item
@@ -210,7 +280,7 @@ if (hasSubmitted) {
     label="Representative Name"
     rules={[
       {
-        required: true,
+        required: false,
         message: 'Representative Name is required',
       },
       {
@@ -219,7 +289,7 @@ if (hasSubmitted) {
       },
     ]}
   >
-    <Input />
+    <Input  defaultValue={user.name} disabled />
   </Form.Item>
 
   {/* Representative Contact No */}
@@ -228,7 +298,7 @@ if (hasSubmitted) {
     label="Representative Contact No"
     rules={[
       {
-        required: true,
+        required: false,
         message: 'Representative Contact Number is required',
       },
       {
@@ -237,7 +307,7 @@ if (hasSubmitted) {
       },
     ]}
   >
-    <Input />
+    <Input defaultValue={user.contact} disabled />
   </Form.Item>
 
   {/* Representative Role */}
@@ -252,42 +322,6 @@ if (hasSubmitted) {
     ]}
   >
     <Input />
-  </Form.Item>
-
-  {/* Username */}
-  <Form.Item
-    name="username"
-    label="Username"
-    rules={[
-      {
-        required: true,
-        message: 'Username is required',
-      },
-      {
-        pattern: /^[A-Za-z0-9]+$/,
-        message: 'Username should contain only alphabets and numbers',
-      },
-    ]}
-  >
-    <Input />
-  </Form.Item>
-
-  {/* Password */}
-  <Form.Item
-    name="password"
-    label="Password"
-    rules={[
-      {
-        required: true,
-        message: 'Password is required',
-      },
-      {
-        min: 5,
-        message: 'Password should be at least 5 characters long',
-      },
-    ]}
-  >
-    <Input.Password />
   </Form.Item>
 
  

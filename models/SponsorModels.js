@@ -84,21 +84,6 @@ const SponsorSchema = new mongoose.Schema({
       //  trim: true,
      },
      
-     // Username: Proper name
-     username: {
-       type: String,
-       required: [true, 'Username is required'],
-      //  match: [/^[A-Za-z0-9]+$/, 'Username should contain only alphabets and numbers'],
-      //  trim: true,
-     },
-     
-     // Password: It should be stored as a hashed value, but here we ensure it has a minimum length
-     password: {
-       type: String,
-       required: [true, 'Password is required'],
-      //  minlength: [5, 'Password should be at least 5 characters long'],
-     },
-     
      status:{
        type:String,
        default:'pending'

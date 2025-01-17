@@ -10,14 +10,28 @@ const createEvent = async (req, res) => {
     // Find the organizer by userId
     const organizer = await OrganizerModel.findOne({ userId });
 
+    if (!req.files || !req.files.eventBannerUrl) {
+      return res.status(400).send({
+          success: false,
+          message: 'Event banner is required',
+      });
+  }
+
+    const eventBannerPath = req.files.eventBannerUrl[0].path;
+    const eventBanner=eventBannerPath.replace(/\\/g, '/');
+
     // Check if the organizer exists
     if (!organizer) {
       return res.status(404).json({ message: "Organizer not found" });
     }
 
+    const object=req.body
+    console.log(object)
+
     // Create the event and directly store organizer details
     const newEvent = new EventModel({
       ...req.body,  // Spread all other event fields
+      eventBannerUrl:eventBanner,
       organizer: organizer._id,  // Store the organizer's _id
       organizationEmail: organizer.organizationEmail,  // Store the organizer's email directly
       organizationName: organizer.organizationName,  // Store the organizer's name directly
@@ -54,6 +68,22 @@ const getEvents = async (req, res) => {
     }
   };
   
+  const getOrganizerProfile = async (req, res) => {
+    try {
+      const userId  = req.body.userId; // Extracted from the authenticated token
+      console.log(userId)
+      const organizer = await OrganizerModel.findOne({ userId });
+  
+      if (!organizer) {
+        return res.status(404).json({ success: false, message: 'organizer not found' });
+      }
+  
+      res.status(200).json({ success: true, organizer });
+    } catch (error) {
+      console.error('Error fetching organizer profile:', error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  };
 
 
-module.exports = { createEvent,getEvents };
+module.exports = { createEvent,getEvents,getOrganizerProfile };
