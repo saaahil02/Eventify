@@ -3,6 +3,9 @@
 const mongoose = require('mongoose');
 
 const participantSchema = new mongoose.Schema({
+  userId: {
+      type: String,
+    },
   eventId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event',
@@ -22,4 +25,8 @@ const participantSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Participant', participantSchema);
+
+const ParticipantModel = mongoose.model('Participant', participantSchema);
+
+module.exports=ParticipantModel
+

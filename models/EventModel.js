@@ -7,11 +7,12 @@ const EventSchema = new mongoose.Schema({
     eventName: { type: String, required: true },
     eventDescription: { type: String, required: true },
     eventDate: { type: Date, required: true },
+    eventLastDate:{type:Date,required:true},
     eventLocation: { type: String, required: true },
     eventCategory: { type: String, required: true },
     eventMaxParticipants: { type: Number, required: true },
-    isFreeEvent: { type: Boolean, default: true },
-    ticketPrice: { type: Number, default: 0 },
+    //isFreeEvent: { type: Boolean, default: true },
+    //ticketPrice: { type: Number, default: 0 },
     eventBannerUrl: { type: String, required: true },
       // Reference to the organizer
   organizer: { type: mongoose.Schema.Types.ObjectId, ref: 'organizers', required: true },
@@ -31,7 +32,14 @@ const EventSchema = new mongoose.Schema({
     // lowercase: true,
     // trim: true,
   },
-  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Participant' }],
+  status: {
+    type: String,
+    enum: ['active', 'inactive'],
+    default: 'active', // Default to active
+  },
+   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
+
+    
 
 }, { timestamps: true });
 

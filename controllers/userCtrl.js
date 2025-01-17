@@ -3,8 +3,11 @@ const bcrypt =require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const OrganizerModel=require('../models/OrganizerModels');
 const SponsorModel=require('../models/SponsorModels');
-const Event=require('../models/EventModel')
-const Participant = require('../models/ParticipantModel');
+const Event=require('../models/EventModel');
+const Participant=require('../models/ParticipantModel');
+const mongoose = require('mongoose');
+
+
 
 //Register callback
 const registerController =async(req,res)=>{
@@ -48,28 +51,7 @@ const loginController = async(req,res)=> {
     }
 }
 
-// const authController=async(req,res)=>{
-//     try {
-//         const user = await userModel.findById({_id:req.body.userId})
-//         user.password=undefined;
-//         if(!user){
-//             return res.status(200).send({message:'User not Found',success:false})
-//         }
-//         else{
-//             res.status(200).send({
-//                 success : true,
-//                 data:user
-//             })
-//         }
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).send({
-//             message : "auth ERROR",
-//             success : false,
-//             error
-//         })
-//     }
-// }
+
 
 const authController = async (req, res) => {
     try {
@@ -104,43 +86,11 @@ const authController = async (req, res) => {
 };
 
 
-// const applyOrganizerController = async(req,res)=>{
-//     try {
-//          // Check if the email already exists
-//         //  const existinguserOrg =await OrganizerModel.findOne({email:req.body.email});
-//         // if(existinguserOrg){
-//         //     return res.status(200).send({message:'User Already Exist',success:false});
-//         // }
-//         const newOrganizer = await OrganizerModel({...req.body,status:'pending'})
-//         await newOrganizer.save()
-//         const adminUser = await userModel.findOne({isAdmin:true})
-//         const notification=adminUser.notification
-//         notification.push({
-//             type:'apply-organizer-requset',
-//             message: `${newOrganizer.organizationName} ${newOrganizer.organizationEmail} has applied for an organizer account`,
-//             data:{
-//                 organizerId:newOrganizer._id,
-//                 name: newOrganizer.organizationName,
-//                 onClickPath :'/admin/organizers'
-//             }
-//         })
-//         await userModel.findByIdAndUpdate(adminUser._id,{notification})
-//         res.status(201).send({
-//             success:true,
-//             message:'Organizer Account Applied Succesfully'
-//         })
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).send({
-//             success:false,
-//             error,
-//             message:"An Error Occured while registering for Organizer"
-//         })
-//     }
-// }
+
 
 const applyOrganizerController = async (req, res) => {
     try {
+
         const { organizationName, organizationEmail } = req.body;
 
         // Validate incoming data (consider using Joi or express-validator)
@@ -151,11 +101,29 @@ const applyOrganizerController = async (req, res) => {
             });
         }
 
-        // Create new organizer document
-        const newOrganizer = new OrganizerModel({
-            ...req.body,
-            status: 'pending'
-        });
+        // Check if files are uploaded
+        if (!req.files || !req.files.organizationAffiliationCertificate || !req.files.organizationProofOfAddress) {
+            return res.status(400).send({
+                success: false,
+                message: 'Both affiliation certificate and proof of address are required',
+            });
+        }
+
+           // Get file paths
+           const affiliationCertificatePath = req.files.organizationAffiliationCertificate[0].path;
+           const proofOfAddressPath = req.files.organizationProofOfAddress[0].path;
+
+             // Convert backslashes to forward slashes before saving to database
+            const formattedAffiliationCertificate = affiliationCertificatePath.replace(/\\/g, '/');
+            const formattedProofOfAddress = proofOfAddressPath.replace(/\\/g, '/');
+
+            // Create new organizer document
+            const newOrganizer = new OrganizerModel({
+                ...req.body,
+                status: 'pending',
+                organizationAffiliationCertificate: formattedAffiliationCertificate,
+                organizationProofOfAddress: formattedProofOfAddress
+            });
 
         // Save organizer to the database
         await newOrganizer.save();
@@ -204,19 +172,39 @@ const applySponsorController = async(req,res)=>{
     try {
         const { organizationName, organizationEmail } = req.body;
 
-        // Validate incoming data (consider using Joi or express-validator)
-        if (!organizationName || !organizationEmail) {
+       
+
+          // Validate incoming data (consider using Joi or express-validator)
+          if (!organizationName || !organizationEmail) {
             return res.status(400).send({
                 success: false,
                 message: "Organization name and email are required"
             });
         }
 
-        // Create new sponsor document
-        const newSponsor = new SponsorModel({
-            ...req.body,
-            status: 'pending'
-        });
+        // Check if files are uploaded
+        if (!req.files || !req.files.organizationAffiliationCertificate || !req.files.organizationProofOfAddress) {
+            return res.status(400).send({
+                success: false,
+                message: 'Both affiliation certificate and proof of address are required',
+            });
+        }
+
+           // Get file paths
+           const affiliationCertificatePath = req.files.organizationAffiliationCertificate[0].path;
+           const proofOfAddressPath = req.files.organizationProofOfAddress[0].path;
+
+            // Convert backslashes to forward slashes before saving to database
+            const formattedAffiliationCertificate = affiliationCertificatePath.replace(/\\/g, '/');
+            const formattedProofOfAddress = proofOfAddressPath.replace(/\\/g, '/');
+
+            // Create new sponsor document
+            const newSponsor = new SponsorModel({
+                ...req.body,
+                status: 'pending',
+                organizationAffiliationCertificate: formattedAffiliationCertificate,
+                organizationProofOfAddress: formattedProofOfAddress
+            });
 
         // Save organizer to the database
         await newSponsor.save();
@@ -250,14 +238,14 @@ const applySponsorController = async(req,res)=>{
             success: true,
             message: 'Sponsor account applied successfully'
         });
-    } catch (error) {
-        console.error("Error during applySponsorController:", error);
-        res.status(500).send({
-            success: false,
-            message: "An error occurred while registering for Sponsor",
-            error: error.message || error
-        });
-    }
+        } catch (error) {
+            console.error("Error during applySponsorController:", error);
+            res.status(500).send({
+                success: false,
+                message: "An error occurred while registering for Sponsor",
+                error: error.message || error
+            });
+        }
 }
 
 //notification ctrl
@@ -386,83 +374,260 @@ const deleteAllNotificationController = async (req, res) => {
     }
 };
 
+const UserProfile=async(req,res)=>{
+    try {
+        // Ensure userId exists
+        if (!req.body.userId) {
+          return res.status(400).json({ success: false, message: 'Invalid user ID' });
+        }
+    
+        // Fetch user details
+        const user = await userModel.findById(req.body.userId).select('-password');
+        if (!user) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+         // Fetch events the user has participated in
+         const participatedEvents = await Event.find({
+            participants: req.body.userId, // Match events where the user is a participant
+        });
+    
+        // Send user profile response
+        res.status(200).json({
+          success: true,
+          user:{
+            ...user.toObject(),
+            events: participatedEvents, // Add events to user profile response
+          },
+        });
+      } catch (error) {
+        console.error('Error in UserProfile:', error);
+        res.status(500).json({
+          success: false,
+          message: 'Server error',
+        });
+      }
+    
+}
+
+
 const EventDisplay = async (req, res) => {
     try {
         const eventId = req.params.id;
-        
+
         if (!eventId) {
             return res.status(400).json({ success: false, message: "Event ID is required" });
         }
 
         // Find the event by ID
-        const event = await Event.findById(eventId);
+        const event = await Event.findById(eventId).populate('participants','_id').exec();
+
+       
 
         // If the event does not exist
         if (!event) {
             return res.status(404).json({ success: false, message: "Event not found" });
         }
+       
 
-        // Send success response with the event data
-        res.status(200).json({ success: true, data: event });
+        // Send success response with the event data and registration status
+        res.status(200).json({
+            success: true,
+            data: event,
+            
+        });
     } catch (error) {
         // Handle unexpected server errors
-        console.error(error);  // Log the error for debugging purposes
+        console.error(error); // Log the error for debugging purposes
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
 
-const registerForEvent = async(req,res)=>{
-    const { id } = req.params;
-    const { name, email, phone } = req.body;
-  
+const registerForEvent = async (req, res) => {
+    const { id } = req.params; // Event ID from the URL
+    const { name, email, phone, } = req.body; // Participant details from the request body
+   
     try {
-      const event = await Event.findById(id);
-      if (!event) {
-        return res.status(404).json({ success: false, message: 'Event not found' });
-      }
-  
-      const newParticipant = await Participant.create({
-        eventId: id,
-        name,
-        email,
-        phone,
-      });
-  
-      res.status(201).json({ success: true, data: newParticipant });
+        // Check if the event exists
+        const event = await Event.findById(id);
+        if (!event) {
+            return res.status(404).json({ success: false, message: 'Event not found' });
+        }
+
+       
+        const isRegistered =await Participant.findOne({eventId:id,email})
+
+        if (isRegistered) {
+            return res.status(400).json({
+                success: false,
+                message: 'You are already registered for this event.',
+                data:isRegistered,
+            });
+        }
+        else{
+            // Create a new participant entry
+        const newParticipant = new Participant({
+            eventId:id,
+            name,
+            email,
+            phone,
+            userId: req.body.userId, // Assuming userId is the logged-in user's ID
+        });
+
+        event.participants.push(req.body.userId);
+
+       
+        // Save the updated event with the new participant
+        await event.save();
+
+        await newParticipant.save();
+        }
+
+        // Send a success response
+        res.status(201).json({
+            success: true,
+            message: 'Registration successful!',
+            data: event, // Optionally return the updated event
+        });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Registration failed' });
+        console.error('Error during registration:', error);
+        res.status(500).json({ success: false, message: 'Registration failed', error: error.message });
     }
-}
+};
+
+
+const unregisterForEvent = async (req, res) => {
+    const { id } = req.params; // Event ID from the URL
+    const { email } = req.body; // Participant's email from the request body
+
+    try {
+        // Check if the event exists
+        const event = await Event.findById(id);
+        if (!event) {
+            return res.status(404).json({ success: false, message: 'Event not found' });
+        }
+
+        // Find the participant by email and eventId
+        const existingParticipant = await Participant.findOne({ eventId: id, email });
+        if (!existingParticipant) {
+            return res.status(400).json({
+                success: false,
+                message: 'You are not registered for this event.',
+            });
+        }
+
+        // Delete the participant entry
+        await Participant.deleteOne({ _id: existingParticipant._id });
+
+        // Send a success response confirming the unregistration
+        res.status(200).json({
+            success: true,
+            message: 'Unregistration successful!',
+        });
+    } catch (error) {
+        console.error('Error during unregistration:', error);
+        res.status(500).json({ success: false, message: 'Unregistration failed', error: error.message });
+    }
+};
+
 
 const getOrganizerEvents = async (req, res) => {
     try {
-      const events = await Event.find({ organizerId: req.user.id }).populate('participants');
-      const data = events.map((event) => ({
-        ...event._doc,
-        participantsCount: event.participants.length,
-      }));
-      res.status(200).json({ success: true, data });
-    } catch (error) {
-      console.error('Error fetching events:', error);
-      res.status(500).json({ success: false, message: 'Failed to fetch events' });
-    }
-  };
+        // Accessing userId from req.body (set by the middleware)
+        const userId = req.body.userId;
 
-  const getEventParticipants = async (req, res) => {
-    const { id } = req.params;
-    try {
-      const participants = await Participant.find({ eventId: id });
-      res.status(200).json({ success: true, data: participants });
+        // Check if userId exists in the request body
+        if (!userId) {
+            return res.status(400).send({
+                message: "User ID is missing in the request.",
+                success: false
+            });
+        }
+
+         // Get the current date and time
+        // const currentDate = new Date().toISOString();
+        // console.log(currentDate)
+
+        const currentDate = new Date();
+        // const offset = -date.getTimezoneOffset(); // Timezone offset in minutes
+        // const sign = offset >= 0 ? '+' : '-';
+        // const pad = num => String(Math.abs(num)).padStart(2, '0');
+
+        // const localISO = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.${String(date.getMilliseconds()).padStart(3, '0')}${sign}${pad(Math.floor(offset / 60))}:${pad(offset % 60)}`;
+        // console.log(localISO);
+
+        // const selectedDate = req.body.eventDate; // e.g., 2025-01-28
+        // const selectedTime = req.body.eventTime; // e.g., 14:30
+
+        // const eventDateTime = new Date(`${selectedDate}T${selectedTime}:00.000Z`);
+        // console.log("Combined Date-Time:", eventDateTime);
+
+        // Fetch the events for the organizer using the userId
+        const events = await Event.find({ userId: userId,
+            eventDate:{$gt:currentDate}, });
+
+        if (!events || events.length === 0) {
+            return res.status(404).send({
+                message: `No events found for the given organizer with user ID: ${userId}`,
+                success: false
+            });
+        }
+
+        res.status(200).send({
+            message: "Events retrieved successfully.",
+            success: true,
+            data: events
+        });
     } catch (error) {
-      console.error('Error fetching participants:', error);
-      res.status(500).json({ success: false, message: 'Failed to fetch participants' });
+        console.log(error);
+        res.status(500).send({
+            message: "An error occurred while retrieving events.",
+            success: false
+        });
     }
-  };
+};
+
+
+  
+
+
+
+const getEventParticipants = async (req, res) => {
+  const { eventId } = req.params;
+
+  try {
+    // Ensure that eventId is converted to ObjectId type
+    const objectId = new mongoose.Types.ObjectId(eventId); // Use 'new' here
+    const participants = await Participant.find({ eventId: objectId });
+
+    if (!participants || participants.length === 0) {
+      return res.status(404).json({ message: 'No participants found for this event' });
+    }
+
+    return res.status(200).json({ data: participants });
+  } catch (err) {
+    console.error('Error fetching participants:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+  const getUserData = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        res.status(200).json({ success: true, data: { ...user._doc, isOrganizer: user.isOrganizer } });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
 
 module.exports = {
     loginController,
     registerController,
     authController,applyOrganizerController,applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
-    ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants
+    ,checkSponosrStatusController,EventDisplay,registerForEvent,unregisterForEvent,getOrganizerEvents,getEventParticipants,getUserData,UserProfile
   };

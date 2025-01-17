@@ -45,7 +45,7 @@ const getAllSponsorsController= async(req,res)=>{
         const sponsors = await SponsorModel.find({})
         res.status(200).send({
             success:true,
-            message:'sponsorss data',
+            message:'sponsors data',
             data:sponsors
         })
     } catch (error) {

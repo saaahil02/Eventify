@@ -67,7 +67,7 @@ function App() {
 
       <Route path='/organizer/profile/:id' element={<ProtectedRoutes><OrgRoute><OrgProfile/></OrgRoute></ProtectedRoutes>}/>
 
-      <Route path='/organizer/CreateEvent' element={<ProtectedRoutes><OrgRoute><CreateEvent/></OrgRoute></ProtectedRoutes>}/>
+      <Route path='/organizer/CreateEvent' element={<OrgRoute><ProtectedRoutes><CreateEvent/></ProtectedRoutes></OrgRoute>}/>
 
       <Route path='/organizer/YourEvents' element={<ProtectedRoutes><OrgRoute><YourEvents/></OrgRoute></ProtectedRoutes>}/>
 

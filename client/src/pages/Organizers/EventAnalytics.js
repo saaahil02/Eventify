@@ -14,13 +14,18 @@ const EventAnalytics = () => {
 
   // Fetch organizer's events
   const fetchEvents = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authorization token is missing');
+      return;
+    }
     try {
-      const response = await axios.get('/api/v1/user/events', {
+      const response = await axios.get('/api/v1/user/organizer/events', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      setEvents(response.data.data || []);
+      setEvents(response.data.data || []);  // Ensure response data is in the expected format
     } catch (err) {
       console.error('Failed to fetch events:', err);
     } finally {
@@ -31,10 +36,15 @@ const EventAnalytics = () => {
   // Fetch participants for a specific event
   const fetchParticipants = async (eventId) => {
     setParticipantsLoading(true);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authorization token is missing');
+      return;
+    }
     try {
       const response = await axios.get(`/api/v1/user/events/${eventId}/participants`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setParticipants(response.data.data || []);
@@ -69,17 +79,12 @@ const EventAnalytics = () => {
     {
       title: 'Participants',
       key: 'participantsCount',
-      render: (record) => record.participantsCount || 0,
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
       render: (record) => (
         <Button
-          type="primary"
+          type="link"
           onClick={() => {
             setSelectedEvent(record);
-            fetchParticipants(record._id); // Fetch participants for this event
+            fetchParticipants(record._id);  // Fetch participants for this event
           }}
         >
           View Participants
@@ -113,24 +118,28 @@ const EventAnalytics = () => {
         footer={null}
       >
         {participantsLoading ? (
-          <Spin size="large" />
-        ) : participants.length > 0 ? (
-          participants.map((participant) => (
-            <div key={participant._id} style={{ marginBottom: '10px' }}>
-              <Paragraph>
-                <strong>Name:</strong> {participant.name}
-              </Paragraph>
-              <Paragraph>
-                <strong>Email:</strong> {participant.email}
-              </Paragraph>
-              <Paragraph>
-                <strong>Phone:</strong> {participant.phone}
-              </Paragraph>
-            </div>
-          ))
-        ) : (
-          <Paragraph>No participants registered for this event.</Paragraph>
-        )}
+  <Spin size="large" />
+) : participants.length > 0 ? (
+  participants.map((participant, index) => (
+    <div key={participant._id} style={{ marginBottom: '10px' }}>
+      <Paragraph>
+        <strong>Participant No:</strong> {index + 1} {/* Display participant number */}
+      </Paragraph>
+      <Paragraph>
+        <strong>Name:</strong> {participant.name}
+      </Paragraph>
+      <Paragraph>
+        <strong>Email:</strong> {participant.email}
+      </Paragraph>
+      <Paragraph>
+        <strong>Phone:</strong> {participant.phone}
+      </Paragraph>
+    </div>
+  ))
+) : (
+  <Paragraph>No participants registered for this event.</Paragraph>
+)}
+
       </Modal>
     </OrgLayout>
   );

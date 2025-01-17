@@ -1,7 +1,12 @@
 const express= require('express');
 const {registerController,loginController, authController, applyOrganizerController, applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
-  ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants}=require("../controllers/userCtrl");
+  ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants,
+  getUserData,
+  UserProfile,
+ 
+  unregisterForEvent}=require("../controllers/userCtrl");
 const AuthMiddleware = require('../middlewares/AuthMiddleware');
+const upload=require('../multer')
 
 
 
@@ -19,13 +24,21 @@ router.post('/register',registerController);
 router.post('/getUserData',AuthMiddleware,authController);
 
 //org register || POST
-router.post('/Organizer-Register',AuthMiddleware,applyOrganizerController);
+router.post('/Organizer-Register',
+ upload.fields([{name:'organizationAffiliationCertificate',maxCount:1},
+  {name:'organizationProofOfAddress',maxCount:1},
+ ]) 
+  ,AuthMiddleware,applyOrganizerController);
 
 //Org noti || POST
 router.post('/Organizer-Notification',AuthMiddleware,getAllNotificationController);
 
 //Spon noti ||POST
-router.post('/Sponsor-Register',AuthMiddleware,applySponsorController);
+router.post('/Sponsor-Register',
+  upload.fields([{name:'organizationAffiliationCertificate',maxCount:1},
+    {name:'organizationProofOfAddress',maxCount:1},
+   ])
+  ,AuthMiddleware,applySponsorController);
 
 
 //Sponsor noti || POST
@@ -46,11 +59,19 @@ router.get('/events/:id',AuthMiddleware,EventDisplay)
 
 router.post('/events/:id/register', AuthMiddleware, registerForEvent);
 
+router.get('/profile',AuthMiddleware,UserProfile)
+
 // Fetch organizer's events
 router.get('/organizer/events', AuthMiddleware, getOrganizerEvents);
 
 // Fetch participants for a specific event
-router.get('/organizer/events/:id/participants', AuthMiddleware, getEventParticipants);
+router.get(`/events/:eventId/participants`, AuthMiddleware, getEventParticipants);
+
+
+router.post('/getUserData',AuthMiddleware,getUserData)
+// 
+router.post('/events/:id/unregister',AuthMiddleware,unregisterForEvent)
+
 
 
 module.exports= router;

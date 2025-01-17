@@ -66,6 +66,7 @@ const Register = () => {
           label="Contact Number"
           rules={[
             {
+              required: true,
               pattern: /^\d{10}$/,
               message: 'Contact number must be a 10-digit number',
             },
