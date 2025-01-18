@@ -22,6 +22,7 @@ import CreateEvent from './pages/Organizers/CreateEvent';
 import EventRegister from './pages/EventRegister';
 import YourEvents from './pages/Organizers/YourEvents';
 import EventAnalytics from './pages/Organizers/EventAnalytics';
+import GoogleForm from './pages/GoogleForm';
 
 function App() {
   const {loading}=useSelector(state =>state.alerts)
@@ -64,6 +65,8 @@ function App() {
       <Route path='/admin/UsersList' element={<ProtectedRoutes><Users/></ProtectedRoutes>}/>
 
       <Route path='/user/event/:id' element={<ProtectedRoutes><EventRegister/></ProtectedRoutes>}/>
+
+      <Route path='/user/googleForm' element={<ProtectedRoutes><OrgRoute><GoogleForm/></OrgRoute></ProtectedRoutes>}/>
 
       <Route path='/organizer/profile/:id' element={<ProtectedRoutes><OrgRoute><OrgProfile/></OrgRoute></ProtectedRoutes>}/>
 

@@ -54,3 +54,19 @@
     cursor: pointer;
   }
   
+  .message-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em; /* Smaller text for the meta information */
+    margin-bottom: 5px; /* Add some space between meta and the message */
+  }
+  
+  .message-email {
+    text-align: left;
+    color: #555; /* Optional, change the color for email */
+  }
+  
+  .message-time {
+    text-align: right;
+    color: #888; /* Optional, change the color for time */
+  }

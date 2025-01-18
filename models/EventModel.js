@@ -39,6 +39,15 @@ const EventSchema = new mongoose.Schema({
   },
    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
 
+   chatroom: [
+        {
+            senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }, // User ID of the sender
+            senderEmail: { type:String, required: false }, // User ID of the sender
+            message: { type: String, required: true }, // Chat message content
+            timestamp: { type: Date, default: Date.now }, // When the message was sent
+        },
+    ],
+
     
 
 }, { timestamps: true });
