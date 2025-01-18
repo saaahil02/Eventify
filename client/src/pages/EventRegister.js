@@ -255,7 +255,7 @@
 // export default EventRegister;
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import axios from 'axios';
 import { Spin, Typography, Button, Modal, Form, Input, message } from 'antd';
 import Layout from '../components/Layout';
@@ -277,6 +277,8 @@ const EventRegister = () => {
   const [form] = Form.useForm();
   const { user } = useSelector((state) => state.user); // Get user data from Redux
   const dispatch = useDispatch();
+  const isOrganizerMessage = (senderId) => senderId === event.userId; // Check if the message sender is the organizer
+
 
   const fetchEventDetails = async () => {
     try {
@@ -289,7 +291,8 @@ const EventRegister = () => {
 
       if (response.data.data) {
         setEvent(response.data.data); // Update state with the fetched event data
-        setMessages(response.data.data.chatMessages || []); // Set chat messages
+        setMessages(response.data.data.chatroom || []); // Set chat messages
+        console.log(response.data.data.chatroom)
       } else {
         setError('Event not found.');
       }
@@ -311,7 +314,9 @@ const EventRegister = () => {
       dispatch(showLoading());
       const response = await axios.post(
         `/api/v1/user/events/${id}/chat`,
-        { text: newMessage },
+        { message: newMessage ,
+          eventId: id // Pass the `id` in the body
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -319,6 +324,7 @@ const EventRegister = () => {
         }
       );
       dispatch(hideLoading());
+      
 
       if (response.data.success) {
         setMessages((prevMessages) => [...prevMessages, response.data.message]);
@@ -382,9 +388,14 @@ const EventRegister = () => {
     );
   }
 
+  // const isUserRegistered = event?.participants?.some(
+  //   (participant) => participant._id.toString() === user._id.toString() 
+  // ) || user.userId===event.userId;
+ 
   const isUserRegistered = event?.participants?.some(
     (participant) => participant._id.toString() === user._id.toString()
   );
+  
 
   return (
     <Layout>
@@ -415,22 +426,25 @@ const EventRegister = () => {
             ? new Date(event.eventLastDate).toLocaleString()
             : 'Date not available'}
         </Paragraph>
+        
 
-        {isUserRegistered ? (
+        {isUserRegistered || user._id === event.userId  ? (
           <>
             <Paragraph>
               <b>You are already registered for this event.</b>
             </Paragraph>
-            <div className="chatroom">
+            {/* <div className="chatroom">
               <div className="messages">
                 {messages.map((msg, index) => (
                   <div
                     key={index}
                     className={`message ${
-                      msg.isOrganizer ? 'organizer-message' : 'user-message'
+                    //  msg.isOrganizer
+                    isOrganizerMessage(msg.senderId)
+                       ? 'organizer-message' : 'user-message'
                     }`}
                   >
-                    <span>{msg.text}</span>
+                    <span>{msg.message}</span>
                   </div>
                 ))}
               </div>
@@ -438,6 +452,7 @@ const EventRegister = () => {
                 <Input
                   type="text"
                   value={newMessage}
+                  name='message'
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type your message..."
                 />
@@ -445,7 +460,58 @@ const EventRegister = () => {
                   Send
                 </Button>
               </div>
+            </div> */}<hr/>
+            <div className="text-center"><h1>Chatroom</h1></div>
+            <div className="chatroom">
+            <div className="messages">
+              {messages.map((msg, index) => (
+                <div key={index} className="message-wrapper">
+                  {/* Display the user's email and message time */}
+                  <div className="message-meta">
+                    <span className="message-email"><h6>{msg.senderEmail}</h6></span> {/* Assuming msg.senderEmail exists */}
+{/*                     
+                    <span className="message-time">
+                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span> */}
+                    <span className="message-time"><h6>
+                    {new Date(msg.timestamp).toLocaleString([], { 
+                        weekday: 'short', // Short day of the week (e.g., Mon)
+                        year: 'numeric', 
+                        month: 'short', // Short month (e.g., Jan)
+                        day: 'numeric', 
+                        hour: '2-digit', 
+                        minute: '2-digit'
+                      })}
+                    </h6>
+                      
+                    </span>
+                  </div>
+
+                  {/* Display the message */}
+                  <div
+                    className={`message ${
+                      isOrganizerMessage(msg.senderId) ? 'organizer-message' : 'user-message'
+                    }`}
+                  >
+                    <span>{msg.message}</span>
+                  </div>
+                </div>
+              ))}
             </div>
+            <div className="chat-input">
+              <Input
+                type="text"
+                value={newMessage}
+                name="message"
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Type your message..."
+              />
+              <Button type="primary" onClick={handleSendMessage}>
+                Send
+              </Button>
+            </div>
+          </div>
+
           </>
         ) : (
           <Button type="primary" size="large" onClick={() => setIsModalVisible(true)}>

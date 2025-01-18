@@ -6,6 +6,7 @@ const SponsorModel=require('../models/SponsorModels');
 const Event=require('../models/EventModel');
 const Participant=require('../models/ParticipantModel');
 const mongoose = require('mongoose');
+const Question=require('../models/GoogleFormModel')
 
 
 
@@ -625,9 +626,63 @@ const getEventParticipants = async (req, res) => {
     }
 };
 
+const ChatroomController = async(req,res) => {
+   // const { eventId } = req.params;
+    
+    const { message,eventId } = req.body;
+    console.log(eventId)
+    console.log(message)
+    try {
+        // Fetch the event and verify its existence
+        const event = await Event.findById(eventId);
+        if (!event) {
+            return res.status(404).json({ success: false, message: 'Event not found 123' });
+        }
+        const  userId =req.body.userId;
+        console.log(userId)
+       // const {user}=await userModel.findOne({userId})
+       // console.log(user)
+        // Fetch the user by userId and handle the case if the user doesn't exist
+    const user = await userModel.findOne({ _id: userId }); // Use _id instead of userId
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    console.log(user);
+    console.log(user.email)
+
+        // Add the message to the chatroom
+        const newMessage = {
+            senderId: req.body.userId, // Extracted from auth middleware
+            senderEmail:user.email,
+            message,
+        };
+        event.chatroom.push(newMessage);
+        await event.save();
+
+        res.status(200).json({ success: true, message: 'Message added to chatroom', chatroom: event.chatroom });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
+
+const QuestionController = async(req,res) =>{
+    try {
+        const demo=req.body
+        console.log(demo)
+        const Googleform = new Question(req.body)
+        await Googleform.save()
+        res.status(200).send({message:'Form Stored Succesfully',success:true});
+    } catch (error) {
+       console.log(error)
+       res.status(500).send({success:false,message:`GoogleForm Controller ${error.message}`}); 
+    }
+}
+
 module.exports = {
     loginController,
     registerController,
     authController,applyOrganizerController,applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
-    ,checkSponosrStatusController,EventDisplay,registerForEvent,unregisterForEvent,getOrganizerEvents,getEventParticipants,getUserData,UserProfile
+    ,checkSponosrStatusController,EventDisplay,registerForEvent,unregisterForEvent,getOrganizerEvents,getEventParticipants,getUserData,UserProfile,
+    ChatroomController,QuestionController
   };

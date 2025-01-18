@@ -3,7 +3,7 @@ import { Form, Input, DatePicker, Select, Upload, Button, Checkbox, InputNumber,
 import { UploadOutlined } from "@ant-design/icons";
 import OrgLayout from "../../components/OrgLayout";
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { hideLoading, showLoading } from '../../redux/features/alertSlice.js';
 import axios from 'axios';
 import '../../styles/CreateEvent.css'
@@ -228,6 +228,12 @@ const CreateEvent = () => {
             <InputNumber min={0} />
           </Form.Item>
         )} */}
+
+        <hr/>
+        <div className="text-center"><h2>Google Form</h2> <br/>
+        <h3><Link to="/user/googleForm">Click Here</Link></h3>
+        </div>
+        <hr/>
 
         <Form.Item>
           <Button type="primary" htmlType="submit">

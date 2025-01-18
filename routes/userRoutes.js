@@ -2,9 +2,8 @@ const express= require('express');
 const {registerController,loginController, authController, applyOrganizerController, applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
   ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants,
   getUserData,
-  UserProfile,
- 
-  unregisterForEvent}=require("../controllers/userCtrl");
+  UserProfile,unregisterForEvent,ChatroomController,QuestionController
+}=require("../controllers/userCtrl");
 const AuthMiddleware = require('../middlewares/AuthMiddleware');
 const upload=require('../multer')
 
@@ -71,6 +70,10 @@ router.get(`/events/:eventId/participants`, AuthMiddleware, getEventParticipants
 router.post('/getUserData',AuthMiddleware,getUserData)
 // 
 router.post('/events/:id/unregister',AuthMiddleware,unregisterForEvent)
+
+router.post('/events/:id/chat',AuthMiddleware,ChatroomController)
+
+router.post('/questions',AuthMiddleware,QuestionController)
 
 
 
