@@ -4,6 +4,7 @@ import { Spin, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import '../styles/HomePage.css'
+import { Color } from 'antd/es/color-picker';
 
 const { Title, Paragraph } = Typography;
 
@@ -96,6 +97,12 @@ const HomePage = () => {
                 </Paragraph>
                 <Paragraph className="event-organizer">
                   Email: {event.organizer.organizationEmail}
+                </Paragraph>
+                <Paragraph>
+                  Last Date of Registration:
+                  {event.eventLastDate
+                    ? new Date(event.eventLastDate).toLocaleString()
+                    : 'Date not available'}
                 </Paragraph>
                 {/* <Paragraph className="event-date">
                   Date/Time: {new Date(event.eventDate).toLocaleString()}

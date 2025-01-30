@@ -1,78 +1,3 @@
-// import React,{useState} from 'react'
-// import {Link} from 'react-router-dom'
-// import OrgLayout from '../components/OrgLayout'
-// import Navbar from '../components/Navbar'
-// import '../styles/GoogleForm.css'
-// import FormBuilder from '../components/FormBuilder'
-// import FormPreview from '../components/FormPreview'
-// import { Button } from 'antd'
-// import axios from 'axios';
-// import {useDispatch} from 'react-redux'
-// import {hideLoading,showLoading} from '../redux/features/alertSlice'
-
-
-
-// const GoogleForm = () => {
-//     const [questions, setQuestions] = useState([]);
-//     const [activeTab, setActiveTab] = useState("create");
-//     const dispatch=useDispatch()
-
-  
-//     const handleTabChange = (tab) => {
-//       setActiveTab(tab);
-//     };
-
-//     const handleSubmit= async () => {
-//       console.log("Questions:", questions); // Print questions to the console
-//       try {
-//         dispatch(showLoading());
-//         const response = await axios.post('/api/v1/user/questions',
-//           {questions:questions},
-//           {
-//             headers: {
-//               Authorization: `Bearer ${localStorage.getItem('token')}`,
-//             },
-//           }
-//         );
-//         dispatch(hideLoading());
-//         if(response.data.success)
-//         {
-//           alert("Form created successfully");
-//         }
-//         else{
-//           alert("Error creating form");
-//         }
-//          } catch (err) {
-//               console.error(err); // Log error for debugging
-//               dispatch(hideLoading());
-        
-//             } 
-
-//           }
-
-  
-//   return (   
-//     <OrgLayout>
-//         <h1> <Link to="/organizer/CreateEvent">Go back</Link></h1>
-//         <div className="App">
-//       <h1> Google Form </h1>
-//       <Navbar filterItem={handleTabChange} />
-//       {activeTab === "create" && <FormBuilder questions={questions} setQuestions={setQuestions} />}
-//       {activeTab === "preview" && <FormPreview questions={questions} />}
-//       {/* {activeTab === "response" && <FormResponse questions={questions} />} */}
-//       <div className="text-center"><Button onClick={handleSubmit}>Submit</Button></div>
-      
-
-//     </div>
-//     </OrgLayout>
-       
-  
-
-   
-//   )
-// }
-
-// export default GoogleForm
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OrgLayout from '../components/OrgLayout';
@@ -136,7 +61,7 @@ const GoogleForm = () => {
         <Link to="/organizer/CreateEvent">Go back</Link>
       </h1>
       <div className="App">
-        <h1>Google Form</h1>
+        <h1>Custom Filling Form</h1>
         <Navbar filterItem={handleTabChange} />
         {activeTab === 'create' && (
           <FormBuilder questions={questions} setQuestions={setQuestions} />

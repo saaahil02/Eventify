@@ -230,7 +230,7 @@ const CreateEvent = () => {
         )} */}
 
         <hr/>
-        <div className="text-center"><h2>Google Form</h2> <br/>
+        <div className="text-center"><h2>Custom Filling  Form</h2> <br/>
         <h3><Link to="/user/googleForm">Click Here</Link></h3>
         </div>
         <hr/>
