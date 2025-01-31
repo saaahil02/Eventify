@@ -4,6 +4,12 @@ const questionSchema = new mongoose.Schema({
   userId:{
     type:String
   },
+  formId:{
+    type:String
+  },
+  eventId:{
+    type:String
+  },
   questions:[{
     text: {
       type: String,

@@ -1,29 +1,59 @@
-import React, { useState } from "react";
-import { Form, Input, DatePicker, Select, Upload, Button, Checkbox, InputNumber, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, DatePicker, Select, Upload, Button, Checkbox, InputNumber, message,Modal } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import OrgLayout from "../../components/OrgLayout";
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate,Link, useParams } from 'react-router-dom';
 import { hideLoading, showLoading } from '../../redux/features/alertSlice.js';
 import axios from 'axios';
 import '../../styles/CreateEvent.css'
+import Navbar from "../../components/Navbar.js";
+import FormBuilder from "../../components/FormBuilder.js";
+import FormPreview from "../../components/FormPreview.js";
+import '../../styles/GoogleForm.css';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const CreateEvent = () => {
+  
   const { user } = useSelector((state) => state.user);
-    const [hasSubmitted, setHasSubmitted] = useState(false); // State to track submission status
+  const [hasSubmitted, setHasSubmitted] = useState(false); // State to track submission status
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isFreeEvent, setIsFreeEvent] = useState(true);
   const [bannerFile, setBannerFile] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [questions, setQuestions] = useState([]);
+  const [activeTab, setActiveTab] = useState('create');
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const handleSubmit = async () => {
+
+    setIsSubmitted(true)
+
+    if (isSubmitted) {
+      alert('You have already submitted the form!');
+      return;
+    }
+
+    
+    
+   };
+
 
   const handleFinish = async (values) => {
     if (!user || !user._id) {
       message.error('User is not authenticated');
       return;
     }
+    
+    
 
     // if (!bannerFile) {
     //   message.error('Please upload an event banner ///');
@@ -31,7 +61,7 @@ const CreateEvent = () => {
     // }
 
     try{
-      dispatch(showLoading());
+    dispatch(showLoading());
     const formData = new FormData();
     formData.append('eventName',values.eventName)
     formData.append('eventDate',values.eventDate)
@@ -42,6 +72,13 @@ const CreateEvent = () => {
     formData.append('eventCategory',values.eventCategory)
     //formData.append('ticketPrice',values.ticketPrice)
     formData.append('eventMaxParticipants',values.eventMaxParticipants)
+    // questions.forEach((question, index) => 
+    //   formData.append(`questions[${index}]`, question)
+    // );
+
+   
+
+    //formData.append('FormQuestion',FormQuestion)
      if (values.eventBannerUrl && values.eventBannerUrl[0]) {
         formData.append('eventBannerUrl', values.eventBannerUrl[0].originFileObj);
       } else {
@@ -52,6 +89,8 @@ const CreateEvent = () => {
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": " + pair[1]);
       }
+
+      
 
        const res = await axios.post(
               '/api/v1/organizer/create-event',
@@ -76,61 +115,41 @@ const CreateEvent = () => {
             message.error('Something went wrong');
           }
 
-  //   // Convert banner file to Base64
-  //   const reader = new FileReader();
-  //   reader.onload = async () => {
-  //     try {
-  //       dispatch(showLoading());
-  //       const res = await axios.post('/api/v1/organizer/create-event',
-  //         {
-  //           ...values,
-  //           eventBannerUrl: reader.result, // Attach Base64 banner
-  //           userId: user._id,
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //           },
-  //         }
-  //       );
-  //       dispatch(hideLoading());
-  //       if (res.data.success) {
-  //         message.success(res.data.message);
-  //         navigate(`/organizer/profile/${user?._id}`);
-  //       } else {
-  //         message.error(res.data.message);
-  //       }
-  //     } catch (error) {
-  //       dispatch(hideLoading());
-  //       console.error(error);
-  //       message.error('Something went wrong');
-  //     }
-  //   };
-  //   reader.readAsDataURL(bannerFile);
-  // };
 
-  // const beforeUpload = (file) => {
-  //   const isImage = file.type.startsWith('image/');
-  //   const isLt2M = file.size / 1024 / 1024 < 2;
+          try {
+            dispatch(showLoading());
+            const response = await axios.post(
+              '/api/v1/user/questions',
+              { questions: questions },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+              }
+            );
+            dispatch(hideLoading());
+            if (response.data.success) {
+              message.success(response.data.message);
+              setIsSubmitted(true); // Mark the form as submitted
+              navigate('/organizer/CreateEvent'); // Redirect after submission
+            } else {
+              alert('Error creating form');
+            }
+          } catch (err) {
+            console.error(err); // Log error for debugging
+            dispatch(hideLoading());
+            alert('An error occurred while creating the form');
+          }
 
-  //   if (!isImage) {
-  //     message.error('You can only upload image files!');
-  //     return Upload.LIST_IGNORE;
-  //   }
-  //   if (!isLt2M) {
-  //     message.error('Image must be smaller than 2MB!');
-  //     return Upload.LIST_IGNORE;
-  //   }
-  //   setBannerFile(file);
-  //   return false; // Prevent automatic upload
-
+  
       
    };
 
   return (
     <OrgLayout>
       <Form layout="vertical" onFinish={handleFinish}>
-        <Form.Item label="Event Name" name="eventName" rules={[{ required: true, message: "Please enter the event name" }]}>
+      
+      <Form.Item label="Event Name" name="eventName" rules={[{ required: true, message: "Please enter the event name" }]}>
           <Input placeholder="Enter event name" />
         </Form.Item>
 
@@ -155,7 +174,7 @@ const CreateEvent = () => {
         />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
         label="Last Date of Registration in your event"
         name="eventLastDate"
         rules={[{ required: true, message: "Please select the date and time" }]}
@@ -166,7 +185,31 @@ const CreateEvent = () => {
         console.log("Selected Date:", date?.toISOString()); // Send this to the backend
         }}
         />
-        </Form.Item>
+        </Form.Item> */}
+
+        <Form.Item
+                  label="Last Date of Registration"
+                  name="eventLastDate"
+                  rules={[
+                    { required: true, message: "Please select the date and time" },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        const eventDate = getFieldValue('eventDate');
+                        if (!value || !eventDate || value.isBefore(eventDate)) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(new Error("Last Date of Registration should be before the Event Date"));
+                      },
+                    }),
+                  ]}
+                >
+                  <DatePicker
+                    showTime
+                    onChange={(date, dateString) => {
+                      console.log("Selected Last Registration Date:", date?.toISOString());
+                    }}
+                  />
+                </Form.Item>
 
 
         {/* <Form.Item name="eventDate"
@@ -201,7 +244,10 @@ const CreateEvent = () => {
           </Upload>
         </Form.Item> */}
 
-        <Form.Item 
+        
+
+ 
+      <Form.Item 
           name="eventBannerUrl" 
           label="Event Banner"
           valuePropName="fileList" // This binds the file input to the form value
@@ -216,8 +262,7 @@ const CreateEvent = () => {
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
         </Form.Item>
-
-        {/* <Form.Item>
+             {/* <Form.Item>
           <Checkbox checked={isFreeEvent} onChange={(e) => setIsFreeEvent(e.target.checked)}>
             Free Event
           </Checkbox>
@@ -230,10 +275,38 @@ const CreateEvent = () => {
         )} */}
 
         <hr/>
-        <div className="text-center"><h2>Custom Filling  Form</h2> <br/>
-        <h3><Link to="/user/googleForm">Click Here</Link></h3>
+        <div className="text-center"><h2>Custom Filling  Form</h2> 
+        {/* <h3><Link to="/user/googleForm">Click Here</Link></h3> */}
+       
+        
+
+        <Button type="primary" size="large" onClick={() => setIsModalVisible(true)} >
+                Create Custom Form
+                  </Button> 
+          <Modal
+                  title="Custom Form"
+                  visible={isModalVisible}
+                  onCancel={() => setIsModalVisible(false)}
+                  footer={null}
+                >
+                   <div className="App">
+        <h1>Custom Filling Form</h1>
+        <Navbar filterItem={handleTabChange} />
+        {activeTab === 'create' && (
+          <FormBuilder questions={questions} setQuestions={setQuestions} />
+        )}
+        {activeTab === 'preview' && <FormPreview questions={questions} />}
+        {/* {activeTab === "response" && <FormResponse questions={questions} />} */}
+        <div className="text-center">
+          <Button onClick={handleSubmit} disabled={isSubmitted}>
+            {isSubmitted ? 'Form Submitted' : 'Submit'}
+          </Button>
         </div>
-        <hr/>
+      </div>
+                </Modal>
+                </div>
+        
+                  <hr/>
 
         <Form.Item>
           <Button type="primary" htmlType="submit">

@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid'); // Use UUID for unique form IDs if needed
 const userModel =require('../models/userModels');
 const bcrypt =require('bcryptjs');
 const jwt=require('jsonwebtoken');
@@ -668,15 +669,36 @@ const ChatroomController = async(req,res) => {
 
 const QuestionController = async(req,res) =>{
     try {
-        const demo=req.body
-        console.log(demo)
-        const Googleform = new Question(req.body)
+        // const demo=req.body
+        // console.log(demo)
+        // Generate formId based on eventId or fallback to UUID
+        const {userId,questions}=req.body;
+        const event = await Event.findOne({userId}) ;
+        if (!event) {
+            return res.status(404).send({
+              success: false,
+              message: 'Event not found for this user.',
+            });
+          }
+        const Googleform = new Question(
+            {
+                formId:uuidv4(),
+                questions,
+                eventId:event._id,
+                }
+        )
+        //const savedForm = 
         await Googleform.save()
+      // event.questions.push(savedForm.questions);
+      //  await event.save();
         res.status(200).send({message:'Form Stored Succesfully',success:true});
+
+        
     } catch (error) {
        console.log(error)
        res.status(500).send({success:false,message:`GoogleForm Controller ${error.message}`}); 
     }
+    
 }
 
 module.exports = {

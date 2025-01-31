@@ -4,7 +4,7 @@ const EventSchema = new mongoose.Schema({
     userId: {
       type: String,
     },
-    eventName: { type: String, required: true },
+    eventName: { type: String, required: true},
     eventDescription: { type: String, required: true },
     eventDate: { type: Date, required: true },
     eventLastDate:{type:Date,required:true},
@@ -13,9 +13,11 @@ const EventSchema = new mongoose.Schema({
     eventMaxParticipants: { type: Number, required: true },
     //isFreeEvent: { type: Boolean, default: true },
     //ticketPrice: { type: Number, default: 0 },
-    eventBannerUrl: { type: String, required: true },
+     eventBannerUrl: { type: String, required: true },
+    
       // Reference to the organizer
   organizer: { type: mongoose.Schema.Types.ObjectId, ref: 'organizers', required: true },
+  
   organizationName: {
     type: String,
     required: [true, 'Organization Name is required'],
@@ -39,6 +41,9 @@ const EventSchema = new mongoose.Schema({
   },
    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
 
+   questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
+
+
    chatroom: [
         {
             senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }, // User ID of the sender
@@ -47,6 +52,8 @@ const EventSchema = new mongoose.Schema({
             timestamp: { type: Date, default: Date.now }, // When the message was sent
         },
     ],
+
+    
 
     
 

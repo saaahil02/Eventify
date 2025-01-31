@@ -1,11 +1,12 @@
 const EventModel = require('../models/EventModel');
 const OrganizerModel = require('../models/OrganizerModels');
+const GoogleFormModel = require('../models/GoogleFormModel')
 
 // Create Event
 const createEvent = async (req, res) => {
   try {
-    // Extract userId from the request body (added by AuthMiddleware)
-    const { userId } = req.body;
+
+    const { userId,eventDate,eventLastDate } = req.body;
 
     // Find the organizer by userId
     const organizer = await OrganizerModel.findOne({ userId });
@@ -25,8 +26,9 @@ const createEvent = async (req, res) => {
       return res.status(404).json({ message: "Organizer not found" });
     }
 
-    const object=req.body
-    console.log(object)
+    //const object=req.body
+    // console.log(object)
+
 
     // Create the event and directly store organizer details
     const newEvent = new EventModel({
@@ -48,6 +50,8 @@ const createEvent = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
 
 const getEvents = async (req, res) => {
     try {
@@ -85,5 +89,7 @@ const getEvents = async (req, res) => {
     }
   };
 
+ 
 
-module.exports = { createEvent,getEvents,getOrganizerProfile };
+
+module.exports = { createEvent,getEvents,getOrganizerProfile, };

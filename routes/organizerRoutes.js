@@ -1,5 +1,5 @@
 const express=require('express')
-const {createEvent,getEvents, getOrganizerProfile}=require('../controllers/orgCtrl')
+const {createEvent,getEvents, getOrganizerProfile, getFormDetails}=require('../controllers/orgCtrl')
 const AuthMiddleware=require('../middlewares/authMiddleware')
 const upload=require('../multer')
 
@@ -14,6 +14,8 @@ router.post('/create-event',
 router.get('/events', getEvents);
 
 router.get('/profile',AuthMiddleware,getOrganizerProfile)
+
+
 
 
 module.exports=router
