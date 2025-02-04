@@ -1,6 +1,4 @@
-
-
-General Styles
+/* General Styles */
 * {
     margin: 0;
     padding: 0;
@@ -8,66 +6,75 @@ General Styles
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9fafb; /* Light background color for the whole page */
-    color: #333; /* Text color */
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #74a7da; /* Softer background color */
+    color: #216cce;
+    line-height: 1.6;
 }
 
-/* Container for the main content */
+/* Main Container */
 .container {
     max-width: 1200px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff; /* White background for the container */
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.container:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* Back to home link */
 .back-link {
     display: inline-block;
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #007bff;
+    margin-bottom: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #3b82f6;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .back-link:hover {
-    color: #0056b3;
+    color: #2563eb;
+    transform: translateX(-3px);
 }
 
 /* Title */
 .title {
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 30px;
-    color: #333;
+    margin-bottom: 35px;
+    color: #1e293b;
 }
 
 /* Users container */
 .users {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 25px;
     justify-content: center;
 }
 
-/* User card style */
+/* User card */
 .user-card {
-    width: 250px;
-    background-color: #2d2d2d;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 260px;
+    background: linear-gradient(135deg, #ffffff, #f9fafb);
+    color: #314155;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
 }
 
 .user-card:hover {
-    transform: translateY(-5px); /* Hover effect for lifting */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow on hover */
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* User image */
@@ -75,57 +82,96 @@ body {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
 }
 
-/* User name and email */
+.user-card:hover .user-image img {
+    transform: scale(1.05);
+}
+
+/* User details */
 .user-name {
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 22px;
+    font-weight: 700;
     margin-top: 15px;
+    color: #1f2937;
 }
 
 .user-email {
-    font-size: 14px;
-    color: #bbb;
+    font-size: 15px;
+    color: #64748b;
+    margin-top: 5px;
 }
 
-/* Actions (Edit and Delete links) */
+/* Actions */
 .actions {
-    margin-top: 20px;
+    margin-top: 18px;
     display: flex;
     justify-content: space-between;
 }
 
 .edit-link,
 .delete-link {
-    font-size: 14px;
+    font-size: 15px;
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .edit-link {
-    color: #4caf50; /* Green for Edit */
+    color: #3b82f6;
 }
 
 .edit-link:hover {
-    color: #388e3c;
+    color: #2563eb;
+    text-decoration: underline;
 }
 
 .delete-link {
-    color: #f44336; /* Red for Delete */
+    color: #ef4444;
 }
 
 .delete-link:hover {
-    color: #d32f2f;
+    color: #dc2626;
+    text-decoration: underline;
 }
 
-/* No Users message */
+/* No Users Message */
 .no-users {
     text-align: center;
-    font-size: 18px;
-    color: #777;
+    font-size: 20px;
+    color: #64748b;
+    font-weight: 500;
 }
 
-/* Edit and Delete buttons */
+/* Buttons */
+.button {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: none;
+}
 
+.button-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.button-primary:hover {
+    background-color: #2563eb;
+    transform: translateY(-3px);
+}
+
+.button-danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+.button-danger:hover {
+    background-color: #dc2626;
+    transform: translateY(-3px);
+}

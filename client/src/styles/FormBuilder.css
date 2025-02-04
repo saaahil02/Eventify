@@ -1,4 +1,4 @@
-
+/* 
 .form-builder {
     width: 80%;
     margin: 20px auto;
@@ -84,4 +84,106 @@
   .controls button:hover {
     background-color: #a71d2a;
   }
+   */
+
+   .form-builder {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
   
+  .form-builder h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    font-size: 14px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #1e81eb;
+  }
+  
+  .questions-list {
+    margin-top: 20px;
+  }
+  
+  .question {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .question input[type="text"],
+  .question select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .options input {
+    display: block;
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .controls label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .controls button {
+    background-color: #dc3545;
+  }
+  
+  .controls button:hover {
+    background-color: #a71d2a;
+  }
+  
+  /* Validation Dropdown Styling */
+  .validation-container {
+    margin-top: 10px;
+  }
+  
+  .validation-container label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .validation-container select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }

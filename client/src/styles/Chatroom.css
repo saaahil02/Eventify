@@ -1,72 +1,96 @@
 .chatroom {
-    display: flex;
-    flex-direction: column;
-    height: 400px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  
-  .messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 8px;
-    max-width: 70%;
-  }
-  
-  .organizer-message {
-    background-color: green;
-    color: white;
-    align-self: flex-start;
-  }
-  
-  .user-message {
-    background-color: blue;
-    color: white;
-    align-self: flex-end;
-  }
-  
-  .chat-input {
-    display: flex;
-    border-top: 1px solid #ccc;
-    padding: 5px;
-  }
-  
-  .chat-input input {
-    flex: 1;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
-  }
-  
-  .chat-input button {
-    margin-left: 5px;
-    padding: 5px 10px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .message-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8em; /* Smaller text for the meta information */
-    margin-bottom: 5px; /* Add some space between meta and the message */
-  }
-  
-  .message-email {
-    text-align: left;
-    color: #555; /* Optional, change the color for email */
-  }
-  
-  .message-time {
-    text-align: right;
-    color: #888; /* Optional, change the color for time */
-  }
+  display: flex;
+  flex-direction: column;
+  height: 500px; /* Slightly taller for better spacing */
+  width: 100%;
+  border: 1px solid #e0e0e0; /* Softer border color */
+  border-radius: 12px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light background for the chatroom */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden; /* Ensure no overflow */
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px; /* More padding for better spacing */
+  background-color: #0e0e0e; /* White background for messages */
+}
+
+.message {
+  margin-bottom: 12px; /* Slightly more space between messages */
+  padding: 12px; /* More padding for better readability */
+  border-radius: 12px; /* Rounded corners for messages */
+  max-width: 70%;
+  word-wrap: break-word; /* Ensure long words don't overflow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for messages */
+}
+
+.organizer-message {
+  background-color: #db3535; /* Softer green for organizer messages */
+  color: white;
+  align-self: flex-start;
+}
+
+.user-message {
+  background-color: #2196f3; /* Softer blue for user messages */
+  color: white;
+  align-self: flex-end;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #e0e0e0; /* Softer border color */
+  padding: 10px; /* More padding for better spacing */
+  background-color: #ffffff; /* White background for input area */
+}
+
+.chat-input input {
+  flex: 1;
+  border: 1px solid #e0e0e0; /* Softer border color */
+  border-radius: 8px; /* Rounded corners for input */
+  padding: 10px; /* More padding for better typing experience */
+  font-size: 14px; /* Slightly larger font for readability */
+  outline: none; /* Remove default outline */
+  transition: border-color 0.3s ease; /* Smooth transition for focus */
+}
+
+.chat-input input:focus {
+  border-color: #2196f3; /* Highlight input when focused */
+}
+
+.chat-input button {
+  margin-left: 10px; /* More space between input and button */
+  padding: 10px 16px; /* More padding for better clickability */
+  border: none;
+  border-radius: 8px; /* Rounded corners for button */
+  background-color: #2196f3; /* Matching blue for consistency */
+  color: white;
+  font-size: 14px; /* Slightly larger font for readability */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.chat-input button:hover {
+  background-color: #1976d2; /* Darker blue on hover */
+}
+
+.message-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em; /* Smaller text for meta information */
+  margin-bottom: 6px; /* Slightly more space between meta and message */
+  color: #666; /* Softer color for meta information */
+}
+
+.message-email {
+  text-align: left;
+  color: #555; /* Softer color for email */
+  font-weight: bold; /* Make email stand out */
+}
+
+.message-time {
+  text-align: right;
+  color: #888; /* Softer color for time */
+  font-style: italic; /* Italicize time for subtle distinction */
+}
