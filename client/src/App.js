@@ -68,7 +68,7 @@ function App() {
 
       <Route path='/user/googleForm' element={<ProtectedRoutes><OrgRoute><GoogleForm/></OrgRoute></ProtectedRoutes>}/>
 
-      <Route path='/organizer/profile/:id' element={<ProtectedRoutes><OrgRoute><OrgProfile/></OrgRoute></ProtectedRoutes>}/>
+      <Route path='/organizer/profile' element={<ProtectedRoutes><OrgRoute><OrgProfile/></OrgRoute></ProtectedRoutes>}/>
 
       <Route path='/organizer/CreateEvent' element={<OrgRoute><ProtectedRoutes><CreateEvent/></ProtectedRoutes></OrgRoute>}/>
 
@@ -77,7 +77,7 @@ function App() {
       <Route path='/organizer/EventAnalytics' element={<ProtectedRoutes><OrgRoute><EventAnalytics/></OrgRoute></ProtectedRoutes>}/>
 
 
-      <Route path='/sponsor/profile/:id' element={<ProtectedRoutes><SpoRoute><SpoProfile/></SpoRoute></ProtectedRoutes>}/>
+      <Route path='/sponsor/profile' element={<ProtectedRoutes><SpoRoute><SpoProfile/></SpoRoute></ProtectedRoutes>}/>
 
 
     </Routes>

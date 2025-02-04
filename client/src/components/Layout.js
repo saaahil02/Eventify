@@ -1,37 +1,74 @@
 import React, { useState } from 'react';
 import '../styles/LayoutStyles.css';
-import { adminMenu, userMenu } from '../data/data';
+//import { adminMenu, userMenu } from '../data/data';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { Badge, message } from 'antd';
+import {clearUser} from '../redux/features/userSlice'
 
 const Layout = ({ children }) => {
   const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const navigate = useNavigate();
-
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const dispatch = useDispatch();
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   // Logout function
   const handleLogout = () => {
     localStorage.clear();
+    dispatch(clearUser());
     message.success('Logout Successfully');
     navigate('/');
   };
 
-  //Organizer Menu
-  const organizerMenu = [
-    {
-        name:'Home',
-        path:'/home',
-        icon:' fa-solid fa-house',
-    },
-    {
-        name:"Profile",
-        path:`/organizer/profile/${user?._id}`,
-        icon:"fa-solid fa-user",
-    },
-   
+ 
+
+ const userMenu = [
+  {
+      name:'Home',
+      path:'/home',
+      icon:' fa-solid fa-house',
+  },
+  {
+      name:"User Profile",
+      path:"/Profile",
+      icon:"fa-solid fa-user",
+  },
+  {
+      name:"Organizer Dashboard",
+      path:"/Organizer-Register",
+      icon:"fa-solid fa-user-tie",
+  },
+  {
+      name:"Sponsor Dashboard",
+      path:"/Sponsor-Register",
+      icon:"fa-solid fa-user-tie",
+  },
+  
+ 
+
+]
+
+
+//admin menu
+const adminMenu = [
+ 
+  {
+      name:"Users List",
+      path:"/admin/UsersList",
+      icon:"fa-solid fa-user-tie",
+  },
+  {
+      name:"Organizer Approval",
+      path:"/admin/OrganizersList",
+      icon:"fa-solid fa-user-tie",
+  },
+  {
+      name:"Sponsor Approval",
+      path:"/admin/SponsorsList",
+      icon:"fa-solid fa-user-tie",
+  },
+  
 
 ]
 
@@ -51,22 +88,7 @@ const Layout = ({ children }) => {
   const renderMenuItem = (menu) => {
     const isActive = isActiveMenuItem(menu.path);
     return (
-      // <div className={`menu-item ${isActive ? 'active' : ''}`} key={`${menu.name}-${menu.path}`}>
-      //   <i className={menu.icon}></i>
-      //   {!isSidebarCollapsed && <span>{menu.name}</span>} {/* Show name only when not collapsed */}
-      //   <Link to={menu.path}>{menu.name}</Link>
-      // </div>
-//       <div 
-//   className={`menu-item ${isActive ? 'active' : ''} ${isSidebarCollapsed ? 'collapsed' : ''}`} 
-//   key={`${menu.name}-${menu.path}`} 
-//   role="menuitem" 
-//   aria-label={menu.name}
-// >
-//   <Link to={menu.path}>
-//     <i className={menu.icon}></i>
-//     {!isSidebarCollapsed && <span>{menu.name}</span>} {/* Show name only when not collapsed */}
-//   </Link>
-// </div>
+      
 <div 
   className={`menu-item ${isActive ? 'active' : ''} ${isSidebarCollapsed ? 'collapsed' : ''}`} 
   key={`${menu.name}-${menu.path}`} 

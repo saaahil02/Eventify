@@ -16,7 +16,11 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
- user?.isAdmin ? navigate('/admin/UsersList') : console.log("User");
+ //user?.isAdmin ? navigate('/admin/UsersList') : ;
+ if(user?.isAdmin)
+ {
+  navigate('/admin/UsersList')
+ }
 
   // Fetch user data (for login validation or other user-related tasks)
   const getUserData = async () => {
@@ -30,7 +34,6 @@ const HomePage = () => {
           },
         }
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +63,9 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <div className="container">
+
+      {/* <div className="container"> */}
+
         {/* Page Title */}
         <h1 className="title">Upcoming Events</h1>
 
@@ -135,7 +140,9 @@ const HomePage = () => {
             )
           )}
         </div>
-      </div>
+
+      {/* </div> */}
+
     </Layout>
   );
 };

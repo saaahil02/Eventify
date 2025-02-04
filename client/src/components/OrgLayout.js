@@ -9,7 +9,7 @@ const OrgLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   // Logout function
   const handleLogout = () => {
@@ -23,7 +23,7 @@ const OrgLayout = ({ children }) => {
     
     {
         name:"Profile",
-        path:`/organizer/profile/${user?._id}`,
+        path:'/organizer/profile',
         icon:"fa-solid fa-user",
     },
     {
@@ -126,7 +126,7 @@ const OrgLayout = ({ children }) => {
             </span>
             </Badge>
             )}
-              <Link to="/Profile">{user?.name}</Link>
+              <Link to="/organizer/profile">{user?.name}</Link>
             </div>
           </div>
           <div className="body">{children}</div>

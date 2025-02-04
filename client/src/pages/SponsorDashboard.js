@@ -111,24 +111,20 @@ if (hasSubmitted) {
   if(user.isSponsor){
     return (
       <Layout>
-        <div className="form-wrapper">
-          <div className="form-container">
+        
             <h3 className="text-center">Your request has been approved!</h3>
             <p className="text-center">You can now access the organizer dashboard.</p>
-            <Link to="/sponsor/profile/:id">Cick here</Link>
-          </div>
-        </div>
+            <Link to="/sponsor/profile">Cick here</Link>
+        
       </Layout>
     ); 
   }else{
     return (
       <Layout>
-        <div className="form-wrapper">
-          <div className="form-container">
+     
             <h3 className="text-center">Your request has been submitted!</h3>
 
-          </div>
-        </div>
+       
       </Layout>
     ); 
   }

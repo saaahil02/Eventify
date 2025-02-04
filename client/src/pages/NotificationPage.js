@@ -4,6 +4,7 @@ import { Tabs, message } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { showLoading, hideLoading } from '../redux/features/alertSlice';
 import { useNavigate } from 'react-router-dom';
+import {setUser} from '../redux/features/userSlice'
 import axios from 'axios';
 
 const NotificationPage = () => {
@@ -28,6 +29,12 @@ const NotificationPage = () => {
       dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
+        const updatedUser = {
+          ...user,
+          notification: [], // now empty unread notifications
+          seennotification: [...(user.seennotification || []), ...user.notification],
+        };
+        dispatch(setUser(updatedUser)); // Update the global user state
         setReadNotifications([...readNotifications, ...unreadNotifications]); // Move all unread to read
         setUnreadNotifications([]); // Clear unread notifications
       } else {
@@ -55,6 +62,8 @@ const NotificationPage = () => {
       dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
+        const updatedUser = { ...user, seennotification: [] };
+        dispatch(setUser(updatedUser));
         setReadNotifications([]); // Clear all read notifications
       } else {
         message.error(res.data.message);

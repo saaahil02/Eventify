@@ -9,7 +9,7 @@ const SpoLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   // Logout function
   const handleLogout = () => {
@@ -23,7 +23,7 @@ const SpoLayout = ({ children }) => {
     
     {
         name:"Profile",
-        path:`/sponsor/profile/${user?._id}`,
+        path:'/sponsor/profile',
         icon:"fa-solid fa-user",
     },
     {
@@ -110,7 +110,7 @@ const SpoLayout = ({ children }) => {
             </span>
             </Badge>
             )}
-              <Link to="/Profile">{user?.name}</Link>
+              <Link to="/sponsor/profile">{user?.name}</Link>
             </div>
           </div>
           <div className="body">{children}</div>
