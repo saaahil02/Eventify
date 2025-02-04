@@ -156,10 +156,10 @@ const EventRegister = () => {
 
   return (
     <Layout>
-      <div className="container">
+      <div >
         <Title level={2}>{event.eventName}</Title>
         <img
-          className="event-image"
+          // className="event-image"
           src={`/uploads/${event.eventBannerUrl.split('/').pop()}`}
           alt={event.eventName || 'Event Image'}
         />

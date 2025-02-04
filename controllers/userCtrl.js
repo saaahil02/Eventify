@@ -393,14 +393,18 @@ const UserProfile=async(req,res)=>{
          const participatedEvents = await Event.find({
             participants: req.body.userId, // Match events where the user is a participant
         });
-    
+        
+        
         // Send user profile response
-        res.status(200).json({
+        res.status(200).send({
           success: true,
           user:{
             ...user.toObject(),
             events: participatedEvents, // Add events to user profile response
           },
+            message:'Users Profile',
+           
+            
         });
       } catch (error) {
         console.error('Error in UserProfile:', error);
