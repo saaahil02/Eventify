@@ -2,7 +2,7 @@ const express= require('express');
 const {registerController,loginController, authController, applyOrganizerController, applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
   ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants,
   getUserData,
-  UserProfile,unregisterForEvent,ChatroomController,QuestionController
+  UserProfile,unregisterForEvent,ChatroomController,
 }=require("../controllers/userCtrl");
 const AuthMiddleware = require('../middlewares/AuthMiddleware');
 const upload=require('../multer')
@@ -73,7 +73,7 @@ router.post('/events/:id/unregister',AuthMiddleware,unregisterForEvent)
 
 router.post('/events/:id/chat',AuthMiddleware,ChatroomController)
 
-router.post('/questions',AuthMiddleware,QuestionController)
+
 
 
 

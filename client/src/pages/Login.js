@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, Input,message } from 'antd';
 import {Link,useNavigate} from 'react-router-dom';
+import {useSelector} from 'react-redux'
 import {useDispatch} from 'react-redux';
 import {showLoading,hideLoading} from "../redux/features/alertSlice"; 
 import axios from 'axios';
@@ -9,17 +10,19 @@ const Login = () => {
 
   const navigate=useNavigate();
   const dispatch =useDispatch();
+  const { user } = useSelector((state) => state.user);
   // onfinishhandler 
   const onfinishHandler = async(values) => {
     try {
       dispatch(showLoading());
       const res=await axios.post('/api/v1/user/login',values);
-      window.location.reload();
+      
       dispatch(hideLoading());
       if(res.data.success){
         localStorage.setItem("token",res.data.token);
         message.success("Login Succesfully");
-        navigate("/home");
+       navigate('/home');
+        
       }
       else{
         message.error("Loign Failed");

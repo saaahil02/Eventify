@@ -42,7 +42,7 @@ const CreateEvent = () => {
       return;
     }
 
-    
+    console.log({questions: questions})
     
    };
 
@@ -59,7 +59,7 @@ const CreateEvent = () => {
     //   message.error('Please upload an event banner ///');
     //   return;
     // }
-
+    // console.log("Questions t1:", JSON.stringify(questions, null, 2));
     try{
     dispatch(showLoading());
     const formData = new FormData();
@@ -72,6 +72,9 @@ const CreateEvent = () => {
     formData.append('eventCategory',values.eventCategory)
     //formData.append('ticketPrice',values.ticketPrice)
     formData.append('eventMaxParticipants',values.eventMaxParticipants)
+   // formData.append('questions',{ questions: questions })
+    formData.append("questions", JSON.stringify(questions));
+
     // questions.forEach((question, index) => 
     //   formData.append(`questions[${index}]`, question)
     // );
@@ -86,9 +89,9 @@ const CreateEvent = () => {
         return; // Exit early if no file is provided
       }
 
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
+      // for (let pair of formData.entries()) {
+      //   console.log(pair[0] + ": " + pair[1]);
+      // }
 
       
 
@@ -116,30 +119,7 @@ const CreateEvent = () => {
           }
 
 
-          try {
-            dispatch(showLoading());
-            const response = await axios.post(
-              '/api/v1/user/questions',
-              { questions: questions },
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-              }
-            );
-            dispatch(hideLoading());
-            if (response.data.success) {
-              message.success(response.data.message);
-              setIsSubmitted(true); // Mark the form as submitted
-              navigate('/organizer/CreateEvent'); // Redirect after submission
-            } else {
-              alert('Error creating form');
-            }
-          } catch (err) {
-            console.error(err); // Log error for debugging
-            dispatch(hideLoading());
-            alert('An error occurred while creating the form');
-          }
+ 
 
   
       

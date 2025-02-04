@@ -41,7 +41,29 @@ const EventSchema = new mongoose.Schema({
   },
    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
 
-   questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
+   //questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
+
+   questions:[{
+    text: {
+      type: String,
+      required: true, // The question text is mandatory
+    },
+    type: {
+      type: String,
+      enum: ['text', 'radio', 'paragraph', 'checkbox'], // Restrict to valid types
+      required: true, // The question type is mandatory
+    },
+    options: {
+      type: [String], // Array of strings for options, empty if not applicable
+      default: [], // Default to an empty array
+      required:true,
+    },
+    required: {
+      type: Boolean, // Whether the question is mandatory
+      default: false, // Default to false
+    },
+  }
+  ],
 
 
    chatroom: [

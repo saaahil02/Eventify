@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../redux/features/alertSlice';
 import '../styles/EventRegister.css';
 import '../styles/Chatroom.css'
+import '../styles/FormResponse.css'
 
 const { Title, Paragraph } = Typography;
 
@@ -18,10 +19,22 @@ const EventRegister = () => {
   const [messages, setMessages] = useState([]); // Chat messages state
   const [newMessage, setNewMessage] = useState(''); // For user input in chatbox
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible2, setIsModalVisible2] = useState(false);
+  const [isFormFilled,setIsFormFilled]=useState(false);
+  const [responses, setResponses] = useState({});
   const [form] = Form.useForm();
   const { user } = useSelector((state) => state.user); // Get user data from Redux
   const dispatch = useDispatch();
   const isOrganizerMessage = (senderId) => senderId === event.userId; // Check if the message sender is the organizer
+
+  const handleChange = (index, value) => {
+    setResponses({ ...responses, [index]: value });
+  };
+
+  const handleSubmit = () => {
+    console.log("Responses Submitted: ", responses);
+    alert("Form submitted successfully!");
+  };
 
 
   const fetchEventDetails = async () => {
@@ -171,6 +184,77 @@ const EventRegister = () => {
             : 'Date not available'}
         </Paragraph>
         
+        <Button type='primary' onClick={()=>{setIsModalVisible2(true)}}>Fill Event Form </Button>
+        <Modal
+          title="Event Form"
+          visible={isModalVisible2}
+          onCancel={()=>{setIsModalVisible2(false)}}
+        >
+          <div className="form-response">
+      <h2>Submit Your Response</h2>
+      <form onSubmit={(e) => e.preventDefault()}>
+        {event.questions.map((q, index) => (
+          <div key={index} className="question">
+            <p>
+              {q.text} {q.required && <span className="required">*</span>}
+            </p>
+            {q.type === "text" && (
+              <input
+                type="text"
+                onChange={(e) => handleChange(index, e.target.value)}
+                required={q.required}
+              />
+            )}
+            {q.type === "paragraph" && (
+              <textarea
+                rows={4}
+                onChange={(e) => handleChange(index, e.target.value)}
+                required={q.required}
+              ></textarea>
+            )}
+            {q.type === "radio" &&
+              q.options.map((option, oIndex) => (
+                <div key={oIndex}>
+                  <input
+                    type="radio"
+                    id={`${index}-${oIndex}`}
+                    name={`question-${index}`}
+                    onChange={(e) => handleChange(index, option)}
+                  />
+                  <label htmlFor={`${index}-${oIndex}`}>{option}</label>
+                </div>
+              ))}
+            {q.type === "checkbox" &&
+              q.options.map((option, oIndex) => (
+                <div key={oIndex}>
+                  <input
+                    type="checkbox"
+                    id={`${index}-${oIndex}`}
+                    name={`question-${index}`}
+                    onChange={(e) =>
+                      handleChange(index, [
+                        ...(responses[index] || []),
+                        option,
+                      ])
+                    }
+                  />
+                  <label htmlFor={`${index}-${oIndex}`}>{option}</label>
+                </div>
+              ))}
+            {q.type === "file" && (
+              <input
+                type="file"
+                onChange={(e) => handleChange(index, e.target.files[0])}
+                required={q.required}
+              />
+            )}
+          </div>
+        ))}
+        <button onClick={handleSubmit}>Submit</button>
+      </form>
+    </div>
+    
+        </Modal>
 
         {isUserRegistered || user._id === event.userId  ? (
           <>

@@ -1,12 +1,30 @@
 const EventModel = require('../models/EventModel');
 const OrganizerModel = require('../models/OrganizerModels');
-const GoogleFormModel = require('../models/GoogleFormModel')
+
 
 // Create Event
 const createEvent = async (req, res) => {
   try {
 
     const { userId,eventDate,eventLastDate } = req.body;
+    // const questionSchema= questions
+    // console.log('questions =' +questionSchema)
+
+    let questions = [];
+
+    // Parse questions if provided as a JSON string
+    if (req.body.questions) {
+      try {
+        questions = JSON.parse(req.body.questions);
+      } catch (err) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid questions format. Must be a valid JSON array.',
+        });
+      }
+    }
+
+    console.log('Parsed questions:', questions);
 
     // Find the organizer by userId
     const organizer = await OrganizerModel.findOne({ userId });
@@ -33,6 +51,7 @@ const createEvent = async (req, res) => {
     // Create the event and directly store organizer details
     const newEvent = new EventModel({
       ...req.body,  // Spread all other event fields
+      questions,
       eventBannerUrl:eventBanner,
       organizer: organizer._id,  // Store the organizer's _id
       organizationEmail: organizer.organizationEmail,  // Store the organizer's email directly
@@ -40,7 +59,7 @@ const createEvent = async (req, res) => {
     });
 
     await newEvent.save();
-
+    
     res.status(201).json({
       message: "Event created successfully",
       success: true,

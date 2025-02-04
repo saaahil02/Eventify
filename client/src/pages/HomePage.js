@@ -4,6 +4,7 @@ import { Spin, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import '../styles/HomePage.css'
+import {useSelector} from 'react-redux'
 import { Color } from 'antd/es/color-picker';
 
 const { Title, Paragraph } = Typography;
@@ -13,6 +14,9 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
+
+ user?.isAdmin ? navigate('/admin/UsersList') : console.log("User");
 
   // Fetch user data (for login validation or other user-related tasks)
   const getUserData = async () => {
