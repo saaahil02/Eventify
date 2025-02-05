@@ -161,97 +161,7 @@ const Profile = () => {
           </>
         )} */}
         {/*------------------------------------------------------------- */}
-{/*         
-        {loading ? (
-  <div className="loading-container">
-    <Spin size="large" indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-    <p className="loading-text">Loading Profile...</p>
-  </div>
-) : error ? (
-  <div className="error-alert">
-    <ExclamationCircleOutlined style={{ color: '#ff4d4f', fontSize: '24px' }} />
-    <p>{error}</p>
-  </div>
-) : (
-  <div className="profile-container">
-    <div className="profile-header">
-      <UserOutlined className="profile-icon" />
-      <h1>User Profile</h1>
-    </div>
-
-    <div className="profile-grid">
-      <div className="profile-card">
-        <div className="profile-info">
-          <div className="info-item">
-            <IdcardOutlined className="info-icon" />
-            <div>
-              <label>Name</label>
-              <p className="info-value">{userData.name}</p>
-            </div>
-          </div>
-          
-          <div className="info-item">
-            <MailOutlined className="info-icon" />
-            <div>
-              <label>Email</label>
-              <p className="info-value">{userData.email}</p>
-            </div>
-          </div>
-
-          <div className="info-item">
-            <PhoneOutlined className="info-icon" />
-            <div>
-              <label>Contact</label>
-              <p className="info-value">{userData.contact || 'Not provided'}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="events-card">
-        <div className="events-header">
-          <CalendarOutlined className="section-icon" />
-          <h2>Event Participation</h2>
-          <div className="events-badge">
-            {userData.events ? userData.events.length : 0}
-          </div>
-        </div>
-
-        {userData.events && userData.events.length > 0 ? (
-          <div className="events-list">
-            {userData.events.map((event, index) => (
-              <div className="event-card" key={index}>
-                <div className="event-header">
-                  <span className="event-number">#{index + 1}</span>
-                  <h3 className="event-title">{event.eventName}</h3>
-                </div>
-                <p className="event-description">{event.eventDescription}</p>
-                <div className="event-date">
-                  <ClockCircleOutlined />
-                  <span>
-                    {new Date(event.eventDate).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="no-events">
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} 
-                   description="No events participated yet" />
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-)} */}
-{/*--------------------------------------------------------------------- */}
+{/* 
 {loading ? (
         <div className="loading-container">
           <Spin indicator={<LoadingOutlined className="spinner" />} />
@@ -303,10 +213,10 @@ const Profile = () => {
                 <CalendarOutlined className="section-icon" />
                 <h2>Event Participation</h2>
                 <div className="events-badge">
-                  {userData.events ? userData.events.length : 0}
+                  Total Events Participated :{userData.events ? userData.events.length : 0}
                 </div>
               </div>
-
+              <br/>
               {userData.events && userData.events.length > 0 ? (
                 <div className="events-list">
                   {userData.events.map((event, index) => (
@@ -340,7 +250,111 @@ const Profile = () => {
             </div>
           </div>
         </div>
+      )} */}
+
+
+      <>
+      {loading ? (
+        <div className="loading-container">
+          <Spin indicator={<LoadingOutlined className="spinner" />} />
+          <p className="loading-text">Loading Profile...</p>
+        </div>
+      ) : error ? (
+        <div className="error-alert">
+          <ExclamationCircleOutlined className="error-icon" />
+          <p>{error}</p>
+        </div>
+      ) : (
+        <div className="profile-container">
+          {/* User Profile Box */}
+          <div className="profile-box pop-out-card">
+            <div className="profile-header">
+              <UserOutlined className="profile-icon" />
+              <h1>User Profile</h1>
+            </div>
+            
+            <div className="profile-details">
+              <div className="detail-item">
+                <IdcardOutlined className="detail-icon" />
+                <div className="detail-content">
+                  <span className="detail-label">Name</span>
+                  <span className="detail-value">{userData.name}</span>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <MailOutlined className="detail-icon" />
+                <div className="detail-content">
+                  <span className="detail-label">Email</span>
+                  <span className="detail-value">{userData.email}</span>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <PhoneOutlined className="detail-icon" />
+                <div className="detail-content">
+                  <span className="detail-label">Contact</span>
+                  <span className="detail-value">
+                    {userData.contact || 'Not provided'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Events Participation Box */}
+          <div className="events-box pop-out-card">
+            <div className="events-header">
+              <CalendarOutlined className="section-icon" />
+              <h2>Event Participation</h2>
+              <div className="events-count">
+                Total:{userData.events ? userData.events.length : 0}
+              </div>
+            </div>
+
+            <div className="events-grid">
+              {userData.events && userData.events.length > 0 ? (
+                userData.events.map((event, index) => (
+                  <div className="event-card" key={index}>
+                    <div className="event-header">
+                      <span className="event-number">#{index + 1}</span>
+                      <div className="event-image">
+                  <img
+                    //src={event.eventBannerUrl || 'https://via.placeholder.com/300'}
+                    src={`/uploads/${event.eventBannerUrl.split('/').pop()}`}
+                    alt={event.eventName}
+                  />
+                </div>
+                      <h3 className="event-title">{event.eventName}</h3>
+                    </div>
+                    {/* <p className="event-description">{event.eventDescription}</p> */}
+                    <div className="event-date">
+                      <ClockCircleOutlined />
+                      <span>
+                        {new Date(event.eventDate).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="no-events">
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} 
+                        description="No events participated yet" />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       )}
+
+     
+    </>
       </Layout>
     </div>
   );

@@ -30,8 +30,8 @@
 
 /* Collapsed Sidebar Styling */
 .sidebar.collapsed {
-  width: 70px;
-  padding: 10px;
+  width: 100px;
+  /* padding: 10px; */
 }
 
 /* Logo Styling */

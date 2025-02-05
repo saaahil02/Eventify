@@ -1,0 +1,128 @@
+/* SponsorDashboard.css */
+.form-wrapper {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-wrapper:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: #2c3e50;
+  position: relative;
+}
+
+.form-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #1890ff;
+  border-radius: 2px;
+}
+
+.ant-form-item-label label {
+  font-weight: 500;
+  color: #34495e !important;
+}
+
+.ant-input,
+.ant-select-selector {
+  border-radius: 8px !important;
+  padding: 10px 15px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ant-input:hover,
+.ant-select-selector:hover {
+  border-color: #1890ff !important;
+}
+
+.ant-input:focus,
+.ant-select-selector:focus {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+}
+
+.upload-btn {
+  background: #f0f2f5;
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+  border-color: #1890ff;
+  background: #e6f7ff;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 45px;
+  font-weight: 600;
+  background: #1890ff;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(24, 144, 255, 0.3);
+}
+
+.status-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 2rem auto;
+  transition: all 0.3s ease;
+}
+
+.status-card h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.status-card p {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.status-card a {
+  color: #1890ff !important;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.status-card a:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .form-wrapper {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
+}

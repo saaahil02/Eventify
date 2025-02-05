@@ -1,0 +1,105 @@
+.spinner {
+    font-size: 48px;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: spin 1.5s linear infinite;
+  }
+
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  
+/* Add to existing profile styles */
+.profile-section {
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .section-title {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .section-icon {
+    font-size: 1.4rem;
+    color: #1890ff;
+  }
+  
+  .detail-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+  }
+  
+  .detail-item:hover {
+    background: #f8f9fa;
+  }
+  
+  .detail-label {
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .detail-value {
+    color: #333;
+    word-break: break-word;
+  }
+  
+  .website-link {
+    color: #1890ff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.3s ease;
+  }
+  
+  .website-link:hover {
+    opacity: 0.8;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .status-badge.approved {
+    background: #e6fffb;
+    color: #08979c;
+    border: 1px solid #87e8de;
+  }
+  
+  .status-badge.pending {
+    background: #fffbe6;
+    color: #d48806;
+    border: 1px solid #ffe58f;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .detail-item {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    
+    .detail-label {
+      font-size: 0.9rem;
+    }
+  }

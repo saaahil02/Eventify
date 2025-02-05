@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import { Form,Input,Button,message,Upload } from 'antd'
-import "../styles/OrganizerRegister.css"
+import "../styles/Dashboard.css"
 import {useSelector,useDispatch} from 'react-redux'
 import {useNavigate,Link} from 'react-router-dom'
 import { hideLoading, showLoading } from '../redux/features/alertSlice.js'
@@ -9,7 +9,11 @@ import axios from 'axios'
 import { isEmail, isURL } from 'validator';
 import { UploadOutlined } from '@ant-design/icons';
 
+
+
 const SponsorDashboard = () => {
+
+  
    const {user} = useSelector(state => state.user)
    const [hasSubmitted, setHasSubmitted] = useState(false); // State to track submission status
     const dispatch=useDispatch()
@@ -111,21 +115,22 @@ if (hasSubmitted) {
   if(user.isSponsor){
     return (
       <Layout>
-        
-            <h3 className="text-center">Your request has been approved!</h3>
-            <p className="text-center">You can now access the organizer dashboard.</p>
-            <Link to="/sponsor/profile">Cick here</Link>
-        
-      </Layout>
-    ); 
-  }else{
-    return (
-      <Layout>
-     
-            <h3 className="text-center">Your request has been submitted!</h3>
-
+       <div className="status-card">
+          {user.isSponsor ? (
+            <>
+              <h3>Your request has been approved! 🎉</h3>
+              <p>You can now access the sponsor dashboard</p>
+              <Link to="/sponsor/profile">Access Dashboard</Link>
+            </>
+          ) : (
+            <>
+              <h3>Request Submitted Successfully! ✔️</h3>
+              <p>Your application is under review. We'll notify you once approved.</p>
+            </>
+          )}
+        </div>
        
-      </Layout>
+    </Layout>
     ); 
   }
 }
@@ -133,8 +138,7 @@ if (hasSubmitted) {
     <div>
       <Layout>
       <div className="form-wrapper">
-        <div className="form-container">
-        <h3 className="text-center">Sponsor Dashboard</h3>
+        <h3 className="form-title">Sponsor Dashboard</h3>
       <Form layout='vertical' onFinish={handlefinish}>
         <Form.Item
     name="organizationName"
@@ -162,12 +166,6 @@ if (hasSubmitted) {
         required: false,
         message: 'Organization Email is required',
       },
-      // {
-      //       validator: (_, value) =>
-      //         value && isEmail(value)
-      //           ? Promise.resolve()
-      //           : Promise.reject(new Error('Please provide a valid email address')),
-      //     },
     ]}
   >
     <Input defaultValue={user.email} disabled/>
@@ -193,32 +191,6 @@ if (hasSubmitted) {
   </Form.Item>
 
   
-  {/* <Form.Item
-    name="organizationAffiliationCertificate"
-    label="Organization Affiliation Certificate"
-    rules={[
-      {
-        required: true,
-        message: 'Organization Affiliation Certificate is required',
-      },
-    ]}
-  >
-    <Input type="file" />
-  </Form.Item>
-
-  
-  <Form.Item
-    name="organizationProofOfAddress"
-    label="Organization Proof of Address"
-    rules={[
-      {
-        required: true,
-        message: 'Organization Proof of Address is required',
-      },
-    ]}
-  >
-    <Input type="file" />
-  </Form.Item> */}
 
 <Form.Item
   name="organizationAffiliationCertificate" 
@@ -327,7 +299,7 @@ if (hasSubmitted) {
         </Form>
         <hr/><br/>
         </div>
-      </div>
+      
       </Layout>
     </div>
   )
