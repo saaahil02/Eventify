@@ -36,12 +36,12 @@ const Layout = ({ children }) => {
   },
   {
       name:"Organizer Dashboard",
-      path:"/Organizer-Register",
+      path: user?.isOrganizer ?'/organizer/profile' :  "/Organizer-Register",
       icon:"fa-solid fa-user-tie",
   },
   {
       name:"Sponsor Dashboard",
-      path:"/Sponsor-Register",
+      path: user?.isSponsor ? '/sponsor/profile':"/Sponsor-Register",
       icon:"fa-solid fa-user-tie",
   },
   

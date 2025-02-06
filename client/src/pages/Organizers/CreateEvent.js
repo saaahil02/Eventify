@@ -21,7 +21,7 @@ const CreateEvent = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false); // State to track submission status
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isFreeEvent, setIsFreeEvent] = useState(true);
+  const [isFormSelected, setIsFormSelected] = useState(false);
   const [bannerFile, setBannerFile] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -68,7 +68,7 @@ const CreateEvent = () => {
     formData.append('eventLastDate',values.eventLastDate)
     formData.append('eventLocation',values.eventLocation)
     formData.append('eventDescription',values.eventDescription)
-    //formData.append('isFreeEvent', values.isFreeEvent)
+    //formData.append('isFormSelected', values.isFormSelected)
     formData.append('eventCategory',values.eventCategory)
     formData.append('eventSponser',values.eventSponser)
     //formData.append('ticketPrice',values.ticketPrice)
@@ -251,27 +251,37 @@ const CreateEvent = () => {
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
         </Form.Item>
-             {/* <Form.Item>
-          <Checkbox checked={isFreeEvent} onChange={(e) => setIsFreeEvent(e.target.checked)}>
-            Free Event
-          </Checkbox>
-        </Form.Item>
 
-        {!isFreeEvent && (
-          <Form.Item label="Ticket Price" name="ticketPrice" rules={[{ required: true, message: "Please enter ticket price" }]}>
-            <InputNumber min={0} />
-          </Form.Item>
-        )} */}
 
+
+
+        <Form.Item>
+        <Checkbox
+          checked={isFormSelected}
+          onChange={(e) => setIsFormSelected(e.target.checked)}
+        >
+          Add Custom Form (Optional)
+        </Checkbox>
+      </Form.Item>
+
+      {/* Show button conditionally */}
+      {isFormSelected && (
+        <Button type="primary"  onClick={() => navigate('/user/googleForm')}>
+          Create Google Form
+        </Button>
+      )}
+
+        
         <hr/>
         <div className="text-center"><h2>Custom Filling  Form</h2> 
         {/* <h3><Link to="/user/googleForm">Click Here</Link></h3> */}
        
         
 
-        <Button type="primary" size="large" onClick={() => setIsModalVisible(true)} >
+        {/* <Button type="primary" size="large" onClick={() => setIsModalVisible(true)} >
                 Create Custom Form
-                  </Button> 
+                  </Button>  */}
+                 
           <Modal
                   title="Custom Form"
                   visible={isModalVisible}
