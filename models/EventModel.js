@@ -10,6 +10,7 @@ const EventSchema = new mongoose.Schema({
     eventLastDate:{type:Date,required:true},
     eventLocation: { type: String, required: true },
     eventCategory: { type: String, required: true },
+    eventSponser: { type: String, required: true },
     eventMaxParticipants: { type: Number, required: true },
     //isFreeEvent: { type: Boolean, default: true },
     //ticketPrice: { type: Number, default: 0 },

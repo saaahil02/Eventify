@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import '../styles/HomePage.css'
 import {useSelector} from 'react-redux'
-import { Color } from 'antd/es/color-picker';
+//import { Color } from 'antd/es/color-picker';
 
 const { Title, Paragraph } = Typography;
 

@@ -70,6 +70,7 @@ const CreateEvent = () => {
     formData.append('eventDescription',values.eventDescription)
     //formData.append('isFreeEvent', values.isFreeEvent)
     formData.append('eventCategory',values.eventCategory)
+    formData.append('eventSponser',values.eventSponser)
     //formData.append('ticketPrice',values.ticketPrice)
     formData.append('eventMaxParticipants',values.eventMaxParticipants)
    // formData.append('questions',{ questions: questions })
@@ -211,6 +212,14 @@ const CreateEvent = () => {
             <Option value="tech">Technology</Option>
             <Option value="art">Art</Option>
             <Option value="sports">Sports</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="Event Sponser" name="eventSponser" rules={[{ required: true, message: "Requires Sponser For Event" }]}>
+          <Select placeholder="Required Sponser">
+            <Option value="Yes">Yes</Option>
+            <Option value="No">No</Option>
+            
           </Select>
         </Form.Item>
 

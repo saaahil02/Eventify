@@ -22,10 +22,15 @@ const SpoLayout = ({ children }) => {
   const organizerMenu = [
     
     {
-        name:"Profile",
-        path:'/sponsor/profile',
+        name:"listevent",
+        path:'/sponsor/listevent',
         icon:"fa-solid fa-user",
     },
+    {
+      name:"Profile",
+      path:'/sponsor/profile',
+      icon:"fa-solid fa-user",
+  },
     {
         name:"Back to Home",
         path:"/home",

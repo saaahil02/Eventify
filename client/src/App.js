@@ -23,6 +23,7 @@ import EventRegister from './pages/EventRegister';
 import YourEvents from './pages/Organizers/YourEvents';
 import EventAnalytics from './pages/Organizers/EventAnalytics';
 import GoogleForm from './pages/GoogleForm';
+import SpoHomePage from './pages/Sponsor/SpoHomepage';
 
 function App() {
   const {loading}=useSelector(state =>state.alerts)
@@ -48,6 +49,8 @@ function App() {
       <Route path='/register' element={
         <PublicRoute><Register/></PublicRoute>
         }/>
+
+    
 
         
       <Route path='/Organizer-Register' element={<ProtectedRoutes><OrganizerDashboard/></ProtectedRoutes>}/>
@@ -76,8 +79,9 @@ function App() {
 
       <Route path='/organizer/EventAnalytics' element={<ProtectedRoutes><OrgRoute><EventAnalytics/></OrgRoute></ProtectedRoutes>}/>
 
-
+      
       <Route path='/sponsor/profile' element={<ProtectedRoutes><SpoRoute><SpoProfile/></SpoRoute></ProtectedRoutes>}/>
+      <Route path='/sponsor/listevent' element={<ProtectedRoutes><SpoRoute><SpoHomePage/></SpoRoute></ProtectedRoutes>}/>
 
 
     </Routes>
