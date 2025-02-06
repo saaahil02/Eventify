@@ -81,6 +81,7 @@ function App() {
 
       
       <Route path='/sponsor/profile' element={<ProtectedRoutes><SpoRoute><SpoProfile/></SpoRoute></ProtectedRoutes>}/>
+      
       <Route path='/sponsor/listevent' element={<ProtectedRoutes><SpoRoute><SpoHomePage/></SpoRoute></ProtectedRoutes>}/>
 
 

@@ -42,7 +42,11 @@ const HomePage = () => {
   // Fetch events from the backend API
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('api/v1/organizer/events');
+      const response = await axios.get('api/v1/organizer/events', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
       // Filter events based on the eventDate (future events only)
     const currentDate = new Date();
     const futureEvents = response.data.events.filter(

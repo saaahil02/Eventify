@@ -41,7 +41,12 @@ const SpoHomepage = () => {
     
       const fetchEvents = async () => {
         try {
-          const response = await axios.get('api/v1/organizer/events');
+          
+          const response = await axios.get('/api/v1/sponsor/ListEvent', {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
           //Filter events based on the eventDate (future events only)
         const currentDate = new Date();
         const futureEvents = response.data.events.filter(
@@ -56,7 +61,7 @@ const SpoHomepage = () => {
       };
     
       useEffect(() => {
-        getUserData(); // Check user login status
+       // getUserData(); // Check user login status
         fetchEvents(); // Fetch events when the page loads
       }, []);
 

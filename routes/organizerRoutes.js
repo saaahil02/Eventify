@@ -11,7 +11,7 @@ router.post('/create-event',
     upload.fields([{name:'eventBannerUrl',maxCount:1},
        ])
     ,AuthMiddleware,createEvent)
-router.get('/events', getEvents);
+router.get('/events',AuthMiddleware, getEvents);
 
 router.get('/profile',AuthMiddleware,getOrganizerProfile)
 
