@@ -5,3 +5,8 @@
     margin: auto;
     padding: 20px;
   }
+
+  .FormCss{
+    display: flex;
+    flex-direction: row;
+  }
