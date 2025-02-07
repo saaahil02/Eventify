@@ -125,7 +125,7 @@ const SpoHomepage = () => {
                       <div className="actions">
                         <button
                           className="view-details"
-                          onClick={() => navigate(`/user/event/${event._id}`)}
+                          onClick={() => navigate(`/sponsor/EventDetails/${event._id}`)}
                         >
                           View Details
                         </button>

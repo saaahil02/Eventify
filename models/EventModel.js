@@ -11,6 +11,7 @@ const EventSchema = new mongoose.Schema({
     eventLocation: { type: String, required: true },
     eventCategory: { type: String, required: true },
     eventSponser: { type: String, required: true },
+    eventSponserDescription: { type: String },
     eventMaxParticipants: { type: Number, required: true },
     //isFreeEvent: { type: Boolean, default: true },
     //ticketPrice: { type: Number, default: 0 },
