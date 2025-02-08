@@ -37,12 +37,12 @@ const Layout = ({ children }) => {
   {
       name:"Organizer Dashboard",
       path: user?.isOrganizer ?'/organizer/profile' :  "/Organizer-Register",
-      icon:"fa-solid fa-user-tie",
+      icon:"fa-solid fa-calendar-check",
   },
   {
       name:"Sponsor Dashboard",
       path: user?.isSponsor ? '/sponsor/profile':"/Sponsor-Register",
-      icon:"fa-solid fa-user-tie",
+      icon:"fa-solid fa-hand-holding-dollar",
   },
   
  

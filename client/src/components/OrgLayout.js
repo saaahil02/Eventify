@@ -29,17 +29,17 @@ const OrgLayout = ({ children }) => {
     {
       name:"Create Event",
       path:"/organizer/CreateEvent",
-      icon:"fa-solid fa-user",
+      icon:"fa-solid fa-calendar-plus",
   },
   {
       name:"Your Events",
       path:"/organizer/YourEvents",
-      icon:"fa-solid fa-user",
+      icon:"fa-solid fa-list-alt",
   },
   {
       name:"Event Analytics",
       path:"/organizer/EventAnalytics",
-      icon:"fa-solid fa-user",
+      icon:"fa-solid fa-chart-line",
   },
     {
         name:"Back to Home",

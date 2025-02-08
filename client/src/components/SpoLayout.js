@@ -22,14 +22,14 @@ const SpoLayout = ({ children }) => {
   const organizerMenu = [
     
     {
-        name:"listevent",
+        name:"Listed Events",
         path:'/sponsor/listevent',
-        icon:"fa-solid fa-user",
+        icon:"fa-solid fa-calendar-days",
     },
     {
       name:"Profile",
       path:'/sponsor/profile',
-      icon:"fa-solid fa-user",
+      icon:"fa-solid fa-user-circle",
   },
     {
         name:"Back to Home",

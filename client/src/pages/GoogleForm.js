@@ -62,12 +62,14 @@ const GoogleForm = () => {
       </h1>
       <div className="App">
         <h1>Custom Filling Form</h1>
+        
         {/* <Navbar filterItem={handleTabChange} />
         {activeTab === 'create' && (
           <FormBuilder questions={questions} setQuestions={setQuestions} />
         )}
         {activeTab === 'preview' && <FormPreview questions={questions} />} */}
         {/* {activeTab === "response" && <FormResponse questions={questions} />} */}
+
         <div className="text-center">
           <Button onClick={handleSubmit} disabled={isSubmitted}>
             {isSubmitted ? 'Form Submitted' : 'Submit'}
