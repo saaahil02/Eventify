@@ -67,11 +67,11 @@ const SpoHomepage = () => {
 
   return (
     <SpoLayout>
-      <div>SpoHomepage</div>
+     
        {/* <div className="container"> */}
       
               {/* Page Title */}
-              <h1 className="title">Upcoming Events</h1>
+              <h1 className="title"> Events</h1>
       
               {/* Loading Spinner */}
               {loading && (

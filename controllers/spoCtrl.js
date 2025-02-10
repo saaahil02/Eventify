@@ -36,7 +36,9 @@ const getSponsorProfile = async (req, res) => {
         error: error.message,
       });
     }
+
   }
+  
   
   module.exports = { getSponsorProfile ,getSponsoredEvents};
   

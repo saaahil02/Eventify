@@ -77,7 +77,16 @@ const EventSchema = new mongoose.Schema({
         },
     ],
 
-    
+    sponsorRequest:[
+            {
+          sponsorId: { type: mongoose.Schema.Types.ObjectId, ref: 'events', required: true },
+          sponsorName:{type:String,required:true},
+          sponsorEmail:{type:String,required:true},
+          sponsorDescription:{type:String,required:true},
+          sponsorAmount:{type:String,required:true},
+          userId:{type:String,required:false}
+        }
+        ],
 
     
 

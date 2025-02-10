@@ -671,6 +671,44 @@ const ChatroomController = async(req,res) => {
     }
 }
 
+const SponsorRequest = async (req,res) => {
+    const { id } = req.params;
+    const data = req.body;
+    
+    const {sponsorAmount,sponsorDescription} = req.body;
+    console.log(sponsorAmount)
+    console.log(sponsorDescription)
+    // console.log(data)
+    // console.log(id)
+    const userId = req.body.userId
+    console.log(userId)
+    const event = await Event.findById(id);
+        if (!event) {
+            return res.status(404).json({ success: false, message: 'Event not found 123' });
+        }
+    const sponsor =await SponsorModel.findOne({userId});
+    console.log(sponsor)
+    if (!sponsor) {
+        return res.status(404).json({ success: false, message: 'Sponsor not found' });
+      }
+    console.log(sponsor)
+    console.log(sponsor.organizationName)
+    const newRequest ={
+        sponsorId:sponsor._id,
+        sponsorName:sponsor.organizationName,
+        sponsorEmail:sponsor.organizationEmail,
+        sponsorAmount,
+        sponsorDescription,
+        userId,
+    }
+    event.sponsorRequest.push(newRequest)
+    await event.save();
+    res.status(200).json({
+        success:true,
+        message:'Request sent Successfully'
+    })
+
+}
 
 
 module.exports = {
@@ -678,5 +716,5 @@ module.exports = {
     registerController,
     authController,applyOrganizerController,applySponsorController,getAllNotificationController,deleteAllNotificationController,checkOrganizerStatusController
     ,checkSponosrStatusController,EventDisplay,registerForEvent,unregisterForEvent,getOrganizerEvents,getEventParticipants,getUserData,UserProfile,
-    ChatroomController
+    ChatroomController,SponsorRequest,
   };

@@ -3,6 +3,7 @@ const {registerController,loginController, authController, applyOrganizerControl
   ,checkSponosrStatusController,EventDisplay,registerForEvent,getOrganizerEvents,getEventParticipants,
   getUserData,
   UserProfile,unregisterForEvent,ChatroomController,
+  SponsorRequest,
 }=require("../controllers/userCtrl");
 const AuthMiddleware = require('../middlewares/AuthMiddleware');
 const upload=require('../multer')
@@ -72,6 +73,8 @@ router.post('/getUserData',AuthMiddleware,getUserData)
 router.post('/events/:id/unregister',AuthMiddleware,unregisterForEvent)
 
 router.post('/events/:id/chat',AuthMiddleware,ChatroomController)
+
+router.post('/events/:id/sponsor',AuthMiddleware,SponsorRequest)
 
 
 
