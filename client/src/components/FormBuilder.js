@@ -169,6 +169,7 @@ const removeOption = (qIndex, optIndex) => {
                   type="checkbox"
                   checked={q.emailValidation}
                   onChange={() => toggleEmailValidation(index)}
+                  className="text-center"
                 />
                 Require email format
               </label>

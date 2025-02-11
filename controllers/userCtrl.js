@@ -7,6 +7,7 @@ const SponsorModel=require('../models/SponsorModels');
 const Event=require('../models/EventModel');
 const Participant=require('../models/ParticipantModel');
 const mongoose = require('mongoose');
+const EventModel = require('../models/EventModel');
 
 
 
@@ -451,7 +452,10 @@ const EventDisplay = async (req, res) => {
 
 const registerForEvent = async (req, res) => {
     const { id } = req.params; // Event ID from the URL
-    const { name, email, phone, } = req.body; // Participant details from the request body
+    const { name, email, phone, responses} = req.body; // Participant details from the request body
+    console.log("responses",responses)
+    const data = req.body
+    console.log("data",data)
    
     try {
         // Check if the event exists
@@ -472,21 +476,22 @@ const registerForEvent = async (req, res) => {
         }
         else{
             // Create a new participant entry
-        const newParticipant = new Participant({
+        const UserResponse = {
             eventId:id,
-            name,
-            email,
-            phone,
+            responses,
             userId: req.body.userId, // Assuming userId is the logged-in user's ID
-        });
+        };
 
         event.participants.push(req.body.userId);
+
+        event.response.push(UserResponse);
+
 
        
         // Save the updated event with the new participant
         await event.save();
 
-        await newParticipant.save();
+        //await newParticipant.save();
         }
 
         // Send a success response
@@ -600,11 +605,14 @@ const getOrganizerEvents = async (req, res) => {
 
 const getEventParticipants = async (req, res) => {
   const { eventId } = req.params;
+  console.log("Event ID",eventId)
 
   try {
     // Ensure that eventId is converted to ObjectId type
     const objectId = new mongoose.Types.ObjectId(eventId); // Use 'new' here
-    const participants = await Participant.find({ eventId: objectId });
+    console.log("Object ID",objectId)
+    const participants = await EventModel.find({ participants: objectId });
+    console.log("participants",participants)
 
     if (!participants || participants.length === 0) {
       return res.status(404).json({ message: 'No participants found for this event' });

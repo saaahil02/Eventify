@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams,Link } from 'react-router-dom';
 import axios from 'axios';
-import { Spin, Typography, Button, Modal, Form, Input, message,Checkbox,Radio,InputNumber } from 'antd';
+import { Card,Spin, Typography, Button, Modal, Form, Input, message,Checkbox,Radio,InputNumber } from 'antd';
 import Layout from '../components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../redux/features/alertSlice';
@@ -24,15 +24,42 @@ const EventRegister = () => {
   const [errors, setErrors] = useState({});
   const [isFormFilled,setIsFormFilled]=useState(false);
   const [responses, setResponses] = useState({});
+  const [step, setStep] = useState(1);
   const [form] = Form.useForm();
   const { user } = useSelector((state) => state.user); // Get user data from Redux
   const dispatch = useDispatch();
   const isOrganizerMessage = (senderId) => senderId === event.userId; // Check if the message sender is the organizer
+  const [collectedData, setCollectedData] = useState({}); // New variable to accumulate data
+  
   
   const handleChange = (index, value) => {
     setResponses({ ...responses, [index]: value });
   };
 
+  const handleNext = async () => {
+    try {
+      await form.validateFields();
+      if (step === 1) {
+        // Extract Page 1 data from the form
+       
+  
+        const page1Data = form.getFieldsValue([
+         
+        ]);
+        setCollectedData((prev) => ({ ...prev, ...page1Data }));
+      } else if (step === 2) {
+        // In Page 2, assume the custom form data is managed via the 'questions' state.
+        // Merge that data into collectedData.
+        setCollectedData((prev) => ({ ...prev,  }));
+      }
+      setStep((prev) => prev + 1);
+    } catch (error) {
+      console.error("Validation Error:", error);
+    }
+  };
+
+  // Handle Back button click
+  const handlePrev = () => setStep((prev) => prev - 1);
   // const handleSubmit = () => {
   //   console.log("Responses Submitted: ", responses);
   //   alert("Form submitted successfully!");
@@ -42,11 +69,50 @@ const EventRegister = () => {
 
     const handleSubmit2 = async () => {
       try {
+        // const finalData = {
+        //   ...collectedData,
+        //   // ...page3Data, // merge if available
+        // };
+  
+        //console.log("Final Submitted Data:", finalData);
         await form.validateFields();
-        console.log("Responses Submitted: ", responses);
-        alert("Form submitted successfully!");
+        //console.log("Responses Submitted: ", responses);
+        
+        const values = {  name: user?.name || '',
+          email: user?.email || '',
+          phone: user?.contact || '',
+          responses
+          }
+          console.log("Both",values)
+        try {
+          dispatch(showLoading());
+          const response = await axios.post(
+            `/api/v1/user/events/${id}/register`,
+            values,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+            }
+          );
+          dispatch(hideLoading());
+    
+          if (response.data.success) {
+            message.success('Registration successful!');
+            setIsModalVisible(false);
+            form.resetFields();
+            fetchEventDetails(); // Refresh event details
+          } else {
+            message.error(response.data.message || 'Registration failed');
+          }
+        } catch (err) {
+          dispatch(hideLoading());
+          console.error(err);
+          message.error(
+            err.response ? err.response.data.message : 'Registration failed'
+          );
+        }
         form.resetFields();
-        setIsModalVisible2(false);
       } catch (errorInfo) {
         console.log('Validation failed:', errorInfo);
       }
@@ -221,8 +287,21 @@ const handleSubmit = () => {
 
   return (
     <Layout>
-      <div >
-        <Title level={2}>{event.eventName}</Title>
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
+        <Card className="w-full max-w-md p-6 space-y-4 shadow-xl">
+          <Form form={form} layout="vertical" onFinish={handleSubmit2}
+          
+          onValuesChange={(changedValues, allValues) => {
+         setResponses(allValues);
+          }}
+          initialValues={responses}
+
+>
+            {step === 1 && (
+              <>
+                <h2 className="text-xl font-bold mb-4"> Event Details</h2>
+             
+                <Title level={2}>{event.eventName}</Title>
         <img
           // className="event-image"
           src={`/uploads/${event.eventBannerUrl.split('/').pop()}`}
@@ -248,25 +327,20 @@ const handleSubmit = () => {
             ? new Date(event.eventLastDate).toLocaleString()
             : 'Date not available'}
         </Paragraph>
-        
-        <Button type='primary' onClick={()=>{setIsModalVisible2(true)}}>Fill Event Form </Button>
-        <Modal
-  title="Event Form"
-  visible={isModalVisible2}
-  onCancel={() => setIsModalVisible2(false)}
-  footer={null}
->
-  <div className="form-response">
-    <h2>Submit Your Response</h2>
-    <Form
-      form={form}
-      onFinish={handleSubmit2}
-      onValuesChange={(changedValues, allValues) => {
-        setResponses(allValues);
-      }}
-      initialValues={responses}
-    >
-      {event.questions.map((q, index) => (
+
+
+                <Button type="primary" onClick={handleNext} className="w-full">
+                  Register For Event
+                </Button>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <h2 className="text-xl font-bold mb-4">Step 1: Fill Event Details</h2>
+
+                
+                {event.questions.map((q, index) => (
         <Form.Item
           key={index}
           label={<span>{q.text} {q.required && <span className="required">*</span>}</span>}
@@ -334,248 +408,33 @@ const handleSubmit = () => {
         </Form.Item>
       ))}
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-  </div>
-</Modal>
+       <div className="flex justify-between">
+                        <Button onClick={handlePrev}>Back</Button>
+                        <Button type="primary" onClick={handleNext}>
+                          Next
+                        </Button>
+                      </div>
 
-
-
-
-        <Modal
-  title="Event Form"
-  visible={isModalVisible3}
-  onCancel={() => setIsModalVisible3(false)}
-  footer={null}
->
-  <div className="form-response">
-    <h2>Submit Your Response</h2>
-    <form onSubmit={(e) => e.preventDefault()}>
-      {event.questions.map((q, index) => {
-        const hasError = errors[index];
-        return (
-          <div key={index} className={`question ${hasError ? 'error' : ''}`}>
-            <p>
-              {q.text} {q.required && <span className="required">*</span>}
-              {hasError && <span className="error-message">{hasError}</span>}
-            </p>
-
-            {q.type === "text" && (
-              <input
-                type={q.emailValidation ? "email" : "text"}
-                onChange={(e) => handleChange(index, e.target.value)}
-                required={q.required}
-                pattern={q.emailValidation ? "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$" : null}
-              />
+              </>
             )}
 
-            {q.type === "paragraph" && (
-              <textarea
-                rows={4}
-                onChange={(e) => handleChange(index, e.target.value)}
-                required={q.required}
-              ></textarea>
-            )}
-
-            {q.type === "radio" && q.options.map((option, oIndex) => (
-              <div key={oIndex}>
-                <input
-                  type="radio"
-                  id={`${index}-${oIndex}`}
-                  name={`question-${index}`}
-                  onChange={() => handleChange(index, option)}
-                  required={q.required}
-                />
-                <label htmlFor={`${index}-${oIndex}`}>{option}</label>
-              </div>
-            ))}
-
-            {q.type === "checkbox" && q.options.map((option, oIndex) => (
-              <div key={oIndex}>
-                <input
-                  type="checkbox"
-                  id={`${index}-${oIndex}`}
-                  onChange={(e) => {
-                    const current = responses[index] || [];
-                    const newValues = e.target.checked
-                      ? [...current, option]
-                      : current.filter(v => v !== option);
-                    handleChange(index, newValues);
-                  }}
-                />
-                <label htmlFor={`${index}-${oIndex}`}>{option}</label>
-              </div>
-            ))}
-
-            {q.type === "number" && (
-              <input
-                type="number"
-                onChange={(e) => handleChange(index, e.target.value)}
-                required={q.required}
-                min={q.minRange}
-                max={q.maxRange}
-                pattern={q.fixedDigits ? `\\d{${q.fixedDigits}}` : null}
-                title={
-                  q.fixedDigits 
-                    ? `Must be exactly ${q.fixedDigits} digits`
-                    : q.minRange || q.maxRange
-                    ? `Must be between ${q.minRange} and ${q.maxRange}`
-                    : null
-                }
-              />
-            )}
-          </div>
-        );
-      })}
-      <button onClick={handleSubmit}>Submit</button>
-    </form>
-  </div>
-</Modal>
-
-
-
-
-        {isUserRegistered || user._id === event.userId  ? (
-          <>
-            <Paragraph>
-              <b>You are already registered for this event.</b>
-            </Paragraph>
-            {/* <div className="chatroom">
-              <div className="messages">
-                {messages.map((msg, index) => (
-                  <div
-                    key={index}
-                    className={`message ${
-                    //  msg.isOrganizer
-                    isOrganizerMessage(msg.senderId)
-                       ? 'organizer-message' : 'user-message'
-                    }`}
-                  >
-                    <span>{msg.message}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="chat-input">
-                <Input
-                  type="text"
-                  value={newMessage}
-                  name='message'
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type your message..."
-                />
-                <Button type="primary" onClick={handleSendMessage}>
-                  Send
-                </Button>
-              </div>
-            </div> */}<hr/>
-            <div className="text-center"><h1>Chatroom</h1></div>
-            <div className="chatroom">
-            <div className="messages">
-              {messages.map((msg, index) => (
-                <div key={index} className="message-wrapper">
-                  {/* Display the user's email and message time */}
-                  <div className="message-meta">
-                    <span className="message-email"><h6>{msg.senderEmail}</h6></span> {/* Assuming msg.senderEmail exists */}
-{/*                     
-                    <span className="message-time">
-                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span> */}
-                    <span className="message-time"><h6>
-                    {new Date(msg.timestamp).toLocaleString([], { 
-                        weekday: 'short', // Short day of the week (e.g., Mon)
-                        year: 'numeric', 
-                        month: 'short', // Short month (e.g., Jan)
-                        day: 'numeric', 
-                        hour: '2-digit', 
-                        minute: '2-digit'
-                      })}
-                    </h6>
-                      
-                    </span>
-                  </div>
-
-                  {/* Display the message */}
-                  <div
-                    className={`message ${
-                      isOrganizerMessage(msg.senderId) ? 'organizer-message' : 'user-message'
-                    }`}
-                  >
-                    <span>{msg.message}</span>
-                  </div>
+            {step === 3 && (
+              <>
+                <h2 className="text-xl font-bold mb-4">Step 2: Payment Gateway</h2>
+                {/* If you have any Page 3 fields, add them as Form.Item here.
+                    For this example, we assume there are no additional fields on Page 3. */}
+                <div className="flex justify-between">
+                  <Button onClick={handlePrev}>Back</Button>
+                  {/* Clicking this Submit button triggers the onFinish handler (handleSubmit) */}
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
                 </div>
-              ))}
-            </div>
-            <div className="chat-input">
-              <Input
-                type="text"
-                value={newMessage}
-                name="message"
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your message..."
-              />
-              <Button type="primary" onClick={handleSendMessage}>
-                Send
-              </Button>
-            </div>
-          </div>
-
-          </>
-        ) : (
-          <Button type="primary" size="large" onClick={() => setIsModalVisible(true)}>
-            Register for Event
-          </Button>
-        )}
+              </>
+            )}
+          </Form>
+        </Card>
       </div>
-
-      <Modal
-        title="Register for Event"
-        visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        footer={null}
-      >
-        <Form
-          form={form}
-          initialValues={{
-            name: user?.name || '',
-            email: user?.email || '',
-            phone: user?.contact || '',
-          }}
-          onFinish={handleRegister}
-          layout="vertical"
-        >
-          <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: 'Please enter your name' }]}
-          >
-            <Input disabled />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              { required: true, message: 'Please enter your email' },
-              { type: 'email', message: 'Enter a valid email address' },
-            ]}
-          >
-            <Input disabled />
-          </Form.Item>
-          <Form.Item
-            name="phone"
-            label="Phone Number"
-            rules={[{ required: true, message: 'Please enter your phone number' }]}
-          >
-            <Input disabled />
-          </Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form>
-      </Modal>
     </Layout>
   );
 };

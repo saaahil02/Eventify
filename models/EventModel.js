@@ -1,4 +1,6 @@
 const mongoose=require('mongoose');
+const { Schema } = mongoose;
+
 
 const EventSchema = new mongoose.Schema({
     userId: {
@@ -41,9 +43,28 @@ const EventSchema = new mongoose.Schema({
     enum: ['active', 'inactive'],
     default: 'active', // Default to active
   },
+
    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
 
+  //  participants: [
+  //       {
+  //          eventId:{type:String},
+  //         //  name:{type:String,required:true},
+  //         // email:{type:String,required:true},
+  //         // phone:{type:String,required:true},
+  //         responses:[{}],
+  //         userId:{type:String}
+  //       },
+  //   ],
+
    //questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
+
+   response: {
+ 
+    type: [Schema.Types.Mixed], // Now accepts an array of any type (objects, strings, etc.)
+    default: []
+  
+  },
 
    questions:[{
     text: {
