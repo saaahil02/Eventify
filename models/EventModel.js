@@ -84,7 +84,8 @@ const EventSchema = new mongoose.Schema({
           sponsorEmail:{type:String,required:true},
           sponsorDescription:{type:String,required:true},
           sponsorAmount:{type:String,required:true},
-          userId:{type:String,required:false}
+          userId:{type:String,required:false},
+          status: { type: Boolean, default: false }
         }
         ],
 
