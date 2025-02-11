@@ -17,3 +17,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.required {
+  color: #ff4d4f;
+  margin-left: 4px;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+}

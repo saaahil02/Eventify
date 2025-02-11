@@ -45,24 +45,24 @@ function FormBuilder({ questions, setQuestions }) {
     setQuestions(updatedQuestions);
   };
 
-  // Options management for radio/checkbox
-  const handleOptionChange = (qIndex, optIndex, value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[qIndex].options[optIndex] = value;
-    setQuestions(updatedQuestions);
-  };
+  // // Options management for radio/checkbox
+  // const handleOptionChange = (qIndex, optIndex, value) => {
+  //   const updatedQuestions = [...questions];
+  //   updatedQuestions[qIndex].options[optIndex] = value;
+  //   setQuestions(updatedQuestions);
+  // };
 
-  const addOption = (qIndex) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[qIndex].options.push("");
-    setQuestions(updatedQuestions);
-  };
+  // const addOption = (qIndex) => {
+  //   const updatedQuestions = [...questions];
+  //   updatedQuestions[qIndex].options.push("");
+  //   setQuestions(updatedQuestions);
+  // };
 
-  const removeOption = (qIndex, optIndex) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[qIndex].options.splice(optIndex, 1);
-    setQuestions(updatedQuestions);
-  };
+  // const removeOption = (qIndex, optIndex) => {
+  //   const updatedQuestions = [...questions];
+  //   updatedQuestions[qIndex].options.splice(optIndex, 1);
+  //   setQuestions(updatedQuestions);
+  // };
 
   // Question reordering
   const moveQuestion = (fromIndex, toIndex) => {
@@ -72,6 +72,39 @@ function FormBuilder({ questions, setQuestions }) {
     updatedQuestions.splice(toIndex, 0, movedQuestion);
     setQuestions(updatedQuestions);
   };
+
+  // In addOption function:
+const addOption = (qIndex) => {
+  const updatedQuestions = [...questions];
+  updatedQuestions[qIndex] = {
+    ...updatedQuestions[qIndex],
+    options: [...updatedQuestions[qIndex].options, ""]
+  };
+  setQuestions(updatedQuestions);
+};
+
+// In handleOptionChange function:
+const handleOptionChange = (qIndex, optIndex, value) => {
+  const updatedQuestions = [...questions];
+  const newOptions = [...updatedQuestions[qIndex].options];
+  newOptions[optIndex] = value;
+  updatedQuestions[qIndex] = {
+    ...updatedQuestions[qIndex],
+    options: newOptions
+  };
+  setQuestions(updatedQuestions);
+};
+
+// In removeOption function:
+const removeOption = (qIndex, optIndex) => {
+  const updatedQuestions = [...questions];
+  const newOptions = updatedQuestions[qIndex].options.filter((_, idx) => idx !== optIndex);
+  updatedQuestions[qIndex] = {
+    ...updatedQuestions[qIndex],
+    options: newOptions
+  };
+  setQuestions(updatedQuestions);
+};
 
   // Other existing handlers...
   const handleValidationChange = (index, validation) => {
@@ -162,7 +195,7 @@ function FormBuilder({ questions, setQuestions }) {
                   </div>
                 ))}
                 {q.options.length < 5 && (
-                  <button className="add-option" onClick={() => addOption(index)}>
+                  <button type="button" className="add-option" onClick={() => addOption(index)}>
                     Add Option
                   </button>
                 )}

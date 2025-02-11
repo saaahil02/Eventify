@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams,Link } from 'react-router-dom';
 import axios from 'axios';
-import { Spin, Typography, Button, Modal, Form, Input, message } from 'antd';
+import { Spin, Typography, Button, Modal, Form, Input, message,Checkbox,Radio,InputNumber } from 'antd';
 import Layout from '../components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../redux/features/alertSlice';
@@ -20,21 +20,86 @@ const EventRegister = () => {
   const [newMessage, setNewMessage] = useState(''); // For user input in chatbox
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible2, setIsModalVisible2] = useState(false);
+  const [isModalVisible3, setIsModalVisible3] = useState(false);
+  const [errors, setErrors] = useState({});
   const [isFormFilled,setIsFormFilled]=useState(false);
   const [responses, setResponses] = useState({});
   const [form] = Form.useForm();
   const { user } = useSelector((state) => state.user); // Get user data from Redux
   const dispatch = useDispatch();
   const isOrganizerMessage = (senderId) => senderId === event.userId; // Check if the message sender is the organizer
-
+  
   const handleChange = (index, value) => {
     setResponses({ ...responses, [index]: value });
   };
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   console.log("Responses Submitted: ", responses);
+  //   alert("Form submitted successfully!");
+  // };
+
+    // Updated handleSubmit with validation
+
+    const handleSubmit2 = async () => {
+      try {
+        await form.validateFields();
+        console.log("Responses Submitted: ", responses);
+        alert("Form submitted successfully!");
+        form.resetFields();
+        setIsModalVisible2(false);
+      } catch (errorInfo) {
+        console.log('Validation failed:', errorInfo);
+      }
+    };
+
+const handleSubmit = () => {
+  const newErrors = {};
+
+  event.questions.forEach((q, index) => {
+    const response = responses[index];
+    let error = "";
+
+    // Check required fields
+    if (q.required && (!response || (Array.isArray(response) && response.length === 0))) {
+      error = "This field is required";
+    }
+
+    // Number validations
+    if (q.type === "number" && response) {
+      if (q.fixedDigits && response.length !== q.fixedDigits) {
+        error = `Must be exactly ${q.fixedDigits} digits`;
+      }
+      if (q.minRange !== null && Number(response) < q.minRange) {
+        error = `Minimum value is ${q.minRange}`;
+      }
+      if (q.maxRange !== null && Number(response) > q.maxRange) {
+        error = `Maximum value is ${q.maxRange}`;
+      }
+    }
+
+    // Email validation
+    if (q.type === "text" && q.emailValidation && response) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(response)) {
+        error = "Invalid email format";
+      }
+    }
+
+    if (error) newErrors[index] = error;
+
+
+  });
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    alert("Please fix the errors before submitting");
+  } else {
     console.log("Responses Submitted: ", responses);
     alert("Form submitted successfully!");
-  };
+    setErrors({});
+    // Add your submission logic here
+  }
+};
 
 
   const fetchEventDetails = async () => {
@@ -186,25 +251,128 @@ const EventRegister = () => {
         
         <Button type='primary' onClick={()=>{setIsModalVisible2(true)}}>Fill Event Form </Button>
         <Modal
-          title="Event Form"
-          visible={isModalVisible2}
-          onCancel={()=>{setIsModalVisible2(false)}}
+  title="Event Form"
+  visible={isModalVisible2}
+  onCancel={() => setIsModalVisible2(false)}
+  footer={null}
+>
+  <div className="form-response">
+    <h2>Submit Your Response</h2>
+    <Form
+      form={form}
+      onFinish={handleSubmit2}
+      onValuesChange={(changedValues, allValues) => {
+        setResponses(allValues);
+      }}
+      initialValues={responses}
+    >
+      {event.questions.map((q, index) => (
+        <Form.Item
+          key={index}
+          label={<span>{q.text} {q.required && <span className="required">*</span>}</span>}
+          name={index.toString()}
+          rules={[
+            { 
+              required: q.required, 
+              message: 'This field is required' 
+            },
+            ...(q.type === 'text' && q.emailValidation ? [{
+              type: 'email',
+              message: 'Please enter a valid email address',
+            }] : []),
+            ...(q.type === 'number' ? [
+              {
+                validator: (_, value) => {
+                  if (q.fixedDigits && value?.toString().length !== q.fixedDigits) {
+                    return Promise.reject(`Must be exactly ${q.fixedDigits} digits`);
+                  }
+                  if (q.minRange !== null && value < q.minRange) {
+                    return Promise.reject(`Minimum value is ${q.minRange}`);
+                  }
+                  if (q.maxRange !== null && value > q.maxRange) {
+                    return Promise.reject(`Maximum value is ${q.maxRange}`);
+                  }
+                  return Promise.resolve();
+                }
+              }
+            ] : [])
+          ]}
         >
-          <div className="form-response">
-      <h2>Submit Your Response</h2>
-      <form onSubmit={(e) => e.preventDefault()}>
-        {event.questions.map((q, index) => (
-          <div key={index} className="question">
+          {q.type === "text" && <Input placeholder="Your answer" />}
+          
+          {q.type === "paragraph" && (
+            <Input.TextArea rows={4} placeholder="Your answer" />
+          )}
+
+          {q.type === "radio" && (
+            <Radio.Group>
+              {q.options.map((option, oIndex) => (
+                <Radio key={oIndex} value={option}>
+                  {option}
+                </Radio>
+              ))}
+            </Radio.Group>
+          )}
+
+          {q.type === "checkbox" && (
+            <Checkbox.Group>
+              {q.options.map((option, oIndex) => (
+                <Checkbox key={oIndex} value={option}>
+                  {option}
+                </Checkbox>
+              ))}
+            </Checkbox.Group>
+          )}
+
+          {q.type === "number" && (
+            <InputNumber 
+              style={{ width: '100%' }}
+              min={q.minRange}
+              max={q.maxRange}
+            />
+          )}
+        </Form.Item>
+      ))}
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
+  </div>
+</Modal>
+
+
+
+
+        <Modal
+  title="Event Form"
+  visible={isModalVisible3}
+  onCancel={() => setIsModalVisible3(false)}
+  footer={null}
+>
+  <div className="form-response">
+    <h2>Submit Your Response</h2>
+    <form onSubmit={(e) => e.preventDefault()}>
+      {event.questions.map((q, index) => {
+        const hasError = errors[index];
+        return (
+          <div key={index} className={`question ${hasError ? 'error' : ''}`}>
             <p>
               {q.text} {q.required && <span className="required">*</span>}
+              {hasError && <span className="error-message">{hasError}</span>}
             </p>
+
             {q.type === "text" && (
               <input
-                type="text"
+                type={q.emailValidation ? "email" : "text"}
                 onChange={(e) => handleChange(index, e.target.value)}
                 required={q.required}
+                pattern={q.emailValidation ? "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$" : null}
               />
             )}
+
             {q.type === "paragraph" && (
               <textarea
                 rows={4}
@@ -212,49 +380,64 @@ const EventRegister = () => {
                 required={q.required}
               ></textarea>
             )}
-            {q.type === "radio" &&
-              q.options.map((option, oIndex) => (
-                <div key={oIndex}>
-                  <input
-                    type="radio"
-                    id={`${index}-${oIndex}`}
-                    name={`question-${index}`}
-                    onChange={(e) => handleChange(index, option)}
-                  />
-                  <label htmlFor={`${index}-${oIndex}`}>{option}</label>
-                </div>
-              ))}
-            {q.type === "checkbox" &&
-              q.options.map((option, oIndex) => (
-                <div key={oIndex}>
-                  <input
-                    type="checkbox"
-                    id={`${index}-${oIndex}`}
-                    name={`question-${index}`}
-                    onChange={(e) =>
-                      handleChange(index, [
-                        ...(responses[index] || []),
-                        option,
-                      ])
-                    }
-                  />
-                  <label htmlFor={`${index}-${oIndex}`}>{option}</label>
-                </div>
-              ))}
-            {q.type === "file" && (
+
+            {q.type === "radio" && q.options.map((option, oIndex) => (
+              <div key={oIndex}>
+                <input
+                  type="radio"
+                  id={`${index}-${oIndex}`}
+                  name={`question-${index}`}
+                  onChange={() => handleChange(index, option)}
+                  required={q.required}
+                />
+                <label htmlFor={`${index}-${oIndex}`}>{option}</label>
+              </div>
+            ))}
+
+            {q.type === "checkbox" && q.options.map((option, oIndex) => (
+              <div key={oIndex}>
+                <input
+                  type="checkbox"
+                  id={`${index}-${oIndex}`}
+                  onChange={(e) => {
+                    const current = responses[index] || [];
+                    const newValues = e.target.checked
+                      ? [...current, option]
+                      : current.filter(v => v !== option);
+                    handleChange(index, newValues);
+                  }}
+                />
+                <label htmlFor={`${index}-${oIndex}`}>{option}</label>
+              </div>
+            ))}
+
+            {q.type === "number" && (
               <input
-                type="file"
-                onChange={(e) => handleChange(index, e.target.files[0])}
+                type="number"
+                onChange={(e) => handleChange(index, e.target.value)}
                 required={q.required}
+                min={q.minRange}
+                max={q.maxRange}
+                pattern={q.fixedDigits ? `\\d{${q.fixedDigits}}` : null}
+                title={
+                  q.fixedDigits 
+                    ? `Must be exactly ${q.fixedDigits} digits`
+                    : q.minRange || q.maxRange
+                    ? `Must be between ${q.minRange} and ${q.maxRange}`
+                    : null
+                }
               />
             )}
           </div>
-        ))}
-        <button onClick={handleSubmit}>Submit</button>
-      </form>
-    </div>
-    
-        </Modal>
+        );
+      })}
+      <button onClick={handleSubmit}>Submit</button>
+    </form>
+  </div>
+</Modal>
+
+
+
 
         {isUserRegistered || user._id === event.userId  ? (
           <>

@@ -52,7 +52,7 @@ const EventSchema = new mongoose.Schema({
     },
     type: {
       type: String,
-      enum: ['text', 'radio', 'paragraph', 'checkbox'], // Restrict to valid types
+      enum: ['text', 'radio', 'paragraph', 'checkbox','number'], // Restrict to valid types
       required: true, // The question type is mandatory
     },
     options: {

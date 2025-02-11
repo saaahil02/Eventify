@@ -63,7 +63,7 @@ const createEvent = async (req, res) => {
 
     await newEvent.save();
     
-    res.status(201).json({
+    res.status(200).json({
       message: "Event created successfully",
       success: true,
       event: newEvent,  // Return the event with organizer details included

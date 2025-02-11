@@ -119,7 +119,6 @@ const CreateEvent = () => {
       } else {
         message.error(res.data.message);
       }
-      navigate('/home')
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error in submission:", error);

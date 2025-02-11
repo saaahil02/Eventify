@@ -67,8 +67,7 @@ const HomePage = () => {
 
   return (
     <Layout>
-
-      {/* <div className="container"> */}
+    {/* <div className="container"> */}
 
         {/* Page Title */}
         <h1 className="title">Upcoming Events</h1>
@@ -112,6 +111,7 @@ const HomePage = () => {
                   Email: {event.organizer.organizationEmail}
                 </Paragraph>
                 <Paragraph>
+                
                   Last Date of Registration:
                   {event.eventLastDate
                     ? new Date(event.eventLastDate).toLocaleString()
