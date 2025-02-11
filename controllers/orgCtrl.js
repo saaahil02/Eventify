@@ -10,6 +10,9 @@ const createEvent = async (req, res) => {
     // const questionSchema= questions
     // console.log('questions =' +questionSchema)
 
+    const data = req.body;
+    console.log(data)
+
     let questions = [];
 
     // Parse questions if provided as a JSON string

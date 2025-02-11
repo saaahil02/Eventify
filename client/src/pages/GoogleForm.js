@@ -22,6 +22,8 @@ const GoogleForm = () => {
   };
 
   const handleSubmit = async () => {
+    setIsSubmitted(true)
+   
     if (isSubmitted) {
       alert('You have already submitted the form!');
       return;
@@ -29,30 +31,31 @@ const GoogleForm = () => {
 
     console.log('Questions:', questions); // Print questions to the console
 
-    try {
-      dispatch(showLoading());
-      const response = await axios.post(
-        '/api/v1/user/questions',
-        { questions: questions },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      );
-      dispatch(hideLoading());
-      if (response.data.success) {
-        alert('Form created successfully');
-        setIsSubmitted(true); // Mark the form as submitted
-        navigate('/organizer/CreateEvent'); // Redirect after submission
-      } else {
-        alert('Error creating form');
-      }
-    } catch (err) {
-      console.error(err); // Log error for debugging
-      dispatch(hideLoading());
-      alert('An error occurred while creating the form');
-    }
+
+    // try {
+    //   dispatch(showLoading());
+    //   const response = await axios.post(
+    //     '/api/v1/user/questions',
+    //     { questions: questions },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+    //       },
+    //     }
+    //   );
+    //   dispatch(hideLoading());
+    //   if (response.data.success) {
+    //     alert('Form created successfully');
+    //     setIsSubmitted(true); // Mark the form as submitted
+    //     navigate('/organizer/CreateEvent'); // Redirect after submission
+    //   } else {
+    //     alert('Error creating form');
+    //   }
+    // } catch (err) {
+    //   console.error(err); // Log error for debugging
+    //   dispatch(hideLoading());
+    //   alert('An error occurred while creating the form');
+    // }
   };
 
   return (

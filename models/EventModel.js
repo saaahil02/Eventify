@@ -10,8 +10,8 @@ const EventSchema = new mongoose.Schema({
     eventLastDate:{type:Date,required:true},
     eventLocation: { type: String, required: true },
     eventCategory: { type: String, required: true },
-    eventSponser: { type: String, required: true },
-    eventSponserDescription: { type: String },
+    eventSponsor: { type: String, required: true },
+    SponsorDescription: { type: String },
     eventMaxParticipants: { type: Number, required: true },
     //isFreeEvent: { type: Boolean, default: true },
     //ticketPrice: { type: Number, default: 0 },
@@ -64,6 +64,28 @@ const EventSchema = new mongoose.Schema({
       type: Boolean, // Whether the question is mandatory
       default: false, // Default to false
     },
+    validation:{
+      type: String,
+      required:false,
+    },
+    fixedDigits:{
+      type:Number,
+      required:false,
+    },
+    minRange:{
+      type:Number,
+      required:false,
+    },
+    maxRange:{
+      type:Number,
+      required:false,
+    },
+    emailValidation:{
+      type:Boolean,
+      required:false,
+    }
+
+
   }
   ],
 
