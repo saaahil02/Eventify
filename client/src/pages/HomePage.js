@@ -70,7 +70,7 @@ const HomePage = () => {
     {/* <div className="container"> */}
 
         {/* Page Title */}
-        <h1 className="title">Upcoming Events</h1>
+        {/* <h1 className="title">Upcoming Events</h1> */}
 
         {/* Loading Spinner */}
         {loading && (
@@ -87,12 +87,12 @@ const HomePage = () => {
         )}
 
         {/* Event Cards */}
-        <div className="events">
+        <div className="aaa">
           {!loading && events.length > 0 ? (
             events.map((event) => (
-              <div key={event._id} className="event-card">
+              <div key={event._id} className="bbb">
                 {/* Event Image */}
-                <div className="event-image">
+                <div className="ccc">
                   <img
                     //src={event.eventBannerUrl || 'https://via.placeholder.com/300'}
                     src={`/uploads/${event.eventBannerUrl.split('/').pop()}`}
@@ -101,13 +101,13 @@ const HomePage = () => {
                 </div>
 
                 {/* Event Details */}
-                <h3 className="event-name">{event.eventName}</h3><hr/>
+                <h3 className="eee">{event.eventName}</h3><hr/>
                 {/* <Paragraph className="event-description">{event.eventDescription}</Paragraph> */}
                 {/* <Paragraph className="event-location">Event Location: {event.eventLocation}</Paragraph> */}
-                <Paragraph className="event-organizer">
+                <Paragraph className="fff">
                   Organizer: {event.organizer.organizationName}
                 </Paragraph>
-                <Paragraph className="event-organizer">
+                <Paragraph className="ggg">
                   Email: {event.organizer.organizationEmail}
                 </Paragraph>
                 <Paragraph>
@@ -122,9 +122,9 @@ const HomePage = () => {
                 </Paragraph> */}
 
                 {/* Actions */}
-                <div className="actions">
+                <div className="hhh">
                   <button
-                    className="view-details"
+                    className="iii"
                     onClick={() => navigate(`/user/event/${event._id}`)}
                   >
                     View Details
@@ -140,7 +140,7 @@ const HomePage = () => {
             ))
           ) : (
             !loading && (
-              <h3 className="no-events">No Events Available</h3>
+              <h3 className="jjj">No Events Available</h3>
             )
           )}
         </div>

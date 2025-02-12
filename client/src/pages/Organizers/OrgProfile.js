@@ -51,126 +51,117 @@ const OrgProfile = () => {
 
   return (
     <OrgLayout>
-      
-      <>
-      {loading ? (
-        <div className="loading-container">
-          <Spin indicator={<LoadingOutlined className="spinner" />} />
-          <p className="loading-text">Loading Profile...</p>
-        </div>
-      ) : error ? (
-        <div className="error-alert">
-          <ExclamationCircleOutlined className="error-icon" />
-          <p>{error}</p>
-        </div>
-      ) : (
-
         <>
-        <div className="profile-container">
-       <h3 className="profile-header">
-    <IdcardOutlined className="profile-icon" />
-    Organization Profile
-  </h3>
-  
-  <div className="profile-grid">
-    {/* Organization Details Card */}
-    <div className="profile-card">
-      <div className="profile-section">
-        <h4 className="section-title">
-          <BankOutlined className="section-icon" />
-          Organization Details
-        </h4>
-        
-        <div className="detail-item">
-          <span className="detail-label">Organization Name:</span>
-          <span className="detail-value">{organizerData.organizationName}</span>
-        </div>
-        
-        <div className="detail-item">
-          <span className="detail-label">Email:</span>
-          <span className="detail-value">{organizerData.organizationEmail}</span>
-        </div>
-        
-        <div className="detail-item">
-          <span className="detail-label">Type:</span>
-          <span className="detail-value">{organizerData.organizationType}</span>
-        </div>
-        
-        <div className="detail-item">
-          <span className="detail-label">Website:</span>
-          <a href={organizerData.organizationWebsite} 
-             target="_blank" 
-             rel="noopener noreferrer"
-             className="website-link">
-            <GlobalOutlined /> {organizerData.organizationWebsite}
-          </a>
-        </div>
-        
-        <div className="detail-item">
-          <span className="detail-label">Status:</span>
-          <span className={`status-badge ${organizerData.status.toLowerCase()}`}>
-            {organizerData.status}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    {/* Representative Details Card */}
-    <div className="profile-card">
-      <div className="profile-section">
-        <h4 className="section-title">
-          <UserOutlined className="section-icon" />
-          Representative Details
-        </h4>
-        
-        <div className="detail-item">
-          <span className="detail-label">Name:</span>
-          <span className="detail-value">{organizerData.representativeName}</span>
-        </div>
-        
-        <div className="detail-item">
-          <span className="detail-label">Contact:</span>
-          <span className="detail-value">{organizerData.representativeContactNo}</span>
-        </div>
-        
-        <div className="detail-item">
-          <span className="detail-label">Role:</span>
-          <span className="detail-value">{organizerData.representativeRole}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-           {/* <div>
-        <h4>Organization Details</h4>
-        <p><strong>Organization Name:</strong> {organizerData.organizationName}</p>
-        <p><strong>Organization Email:</strong> {organizerData.organizationEmail}</p>
-        <p><strong>Organization Type:</strong> {organizerData.organizationType}</p>
-        <p>
-          <strong>Website:</strong>{' '}
-          <a href={organizerData.organizationWebsite} target="_blank" rel="noopener noreferrer">
-            {organizerData.organizationWebsite}
-          </a>
-        </p>
-        <p><strong>Status:</strong> {organizerData.status}</p>
-        <hr />
-        <h4>Representative Details</h4>
-        <p><strong>Name:</strong> {organizerData.representativeName}</p>
-        <p><strong>Contact Number:</strong> {organizerData.representativeContactNo}</p>
-        <p><strong>Role:</strong> {organizerData.representativeRole}</p>
-      </div> */}
-        </>
-        
-       
+            {loading ? (
+              <div className="loading-container">
+                <Spin indicator={<LoadingOutlined className="spinner" />} />
+                <p className="loading-text">Loading Profile...</p>
+              </div>
+            ) : error ? (
+              <div className="error-alert">
+                <ExclamationCircleOutlined className="error-icon" />
+                <p>{error}</p>
+              </div>
+            ) : (
+              <div className="profile-container">
+                              {/* User Profile Box */}
+                              <div className="profile-box pop-out-card">
+                                <div className="profile-header">
+                                  <UserOutlined className="profile-icon" />
+                                  <h1>Representative Data</h1>
+                                </div>
+                                
+                                <div className="profile-details">
+                                  <div className="detail-item">
+                                    <IdcardOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Name</span>
+                                      <span className="detail-value">{organizerData.representativeName}</span>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="detail-item">
+                                    <PhoneOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Contact Number</span>
+                                      <span className="detail-value">{organizerData.representativeContactNo}</span>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="detail-item">
+                                    <UserOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Role</span>
+                                      <span className="detail-value">
+                                        {organizerData.representativeRole || 'Not provided'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                    
+                              {/* Events Participation Box */}
+                              <div className="events-box pop-out-card">
+                                <div className="events-header">
+                                  <CalendarOutlined className="section-icon" />
+                                  <h2>Organization Details</h2>
+                                 
+                                </div>
+                    
+                                <div className="profile-details">
+                                  <div className="detail-item">
+                                    <BankOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Organization Name</span>
+                                      <span className="detail-value">{organizerData.organizationName}</span>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="detail-item">
+                                    <MailOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Oganization Email</span>
+                                      <span className="detail-value">{organizerData.organizationEmail}</span>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="detail-item">
+                                    <IdcardOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Organization Type</span>
+                                      <span className="detail-value">
+                                        {organizerData.organizationType || 'Not provided'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="detail-item">
+                                    <GlobalOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Organization website</span>
+                                      <span className="detail-value">
+                                        {organizerData.organizationWebsite || 'Not provided'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="detail-item">
+                                    <ExclamationCircleOutlined className="detail-icon" />
+                                    <div className="detail-content">
+                                      <span className="detail-label">Current Status</span>
+                                      <span className="detail-value">
+                                        {organizerData.status || 'Not provided'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  
+                                  
+                                </div>
+                              </div>
+                            </div>
+            )}
       
-      )}
-
+           
+          </>
      
-    </>
     </OrgLayout>
   )
 }

@@ -454,9 +454,6 @@ const registerForEvent = async (req, res) => {
     const { id } = req.params; // Event ID from the URL
     const { name, email, phone, responses} = req.body; // Participant details from the request body
     console.log("responses",responses)
-    const data = req.body
-    console.log("data",data)
-   
     try {
         // Check if the event exists
         const event = await Event.findById(id);
@@ -482,7 +479,11 @@ const registerForEvent = async (req, res) => {
             userId: req.body.userId, // Assuming userId is the logged-in user's ID
         };
 
-        event.participants.push(req.body.userId);
+        const user = await userModel.findById(req.body.userId)
+
+       event.participants.push(req.body.userId);
+
+      
 
         event.response.push(UserResponse);
 
@@ -609,16 +610,23 @@ const getEventParticipants = async (req, res) => {
 
   try {
     // Ensure that eventId is converted to ObjectId type
-    const objectId = new mongoose.Types.ObjectId(eventId); // Use 'new' here
-    console.log("Object ID",objectId)
-    const participants = await EventModel.find({ participants: objectId });
-    console.log("participants",participants)
+    // const objectId = new mongoose.Types.ObjectId(eventId); // Use 'new' here
+    // console.log("Object ID",objectId)
+    // const participants1 = await EventModel.find({  _id:objectId});
+    // console.log("participants",participants1)
+    // const participants = participants1.participants
+    // console.log("Part",participants)
 
+    const event = await EventModel.findById(eventId).populate('participants', 'name email contact')
+
+   // console.log("Event",event)
+    const participants= event.participants
+    console.log("part",participants)
     if (!participants || participants.length === 0) {
       return res.status(404).json({ message: 'No participants found for this event' });
     }
 
-    return res.status(200).json({ data: participants });
+    return res.status(200).json({ data: participants});
   } catch (err) {
     console.error('Error fetching participants:', err);
     return res.status(500).json({ message: 'Internal server error' });

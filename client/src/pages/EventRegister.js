@@ -329,9 +329,100 @@ const handleSubmit = () => {
         </Paragraph>
 
 
-                <Button type="primary" onClick={handleNext} className="w-full">
+
+        {isUserRegistered || user._id === event.userId  ? (
+          <>
+            <Paragraph>
+              <b>You are already registered for this event.</b>
+            </Paragraph>
+            {/* <div className="chatroom">
+              <div className="messages">
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`message ${
+                    //  msg.isOrganizer
+                    isOrganizerMessage(msg.senderId)
+                       ? 'organizer-message' : 'user-message'
+                    }`}
+                  >
+                    <span>{msg.message}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="chat-input">
+                <Input
+                  type="text"
+                  value={newMessage}
+                  name='message'
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type your message..."
+                />
+                <Button type="primary" onClick={handleSendMessage}>
+                  Send
+                </Button>
+              </div>
+            </div> */}<hr/>
+            <div className="text-center"><h1>Chatroom</h1></div>
+            <div className="chatroom">
+            <div className="messages">
+              {messages.map((msg, index) => (
+                <div key={index} className="message-wrapper">
+                  {/* Display the user's email and message time */}
+                  <div className="message-meta">
+                    <span className="message-email"><h6>{msg.senderEmail}</h6></span> {/* Assuming msg.senderEmail exists */}
+{/*                     
+                    <span className="message-time">
+                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span> */}
+                    <span className="message-time"><h6>
+                    {new Date(msg.timestamp).toLocaleString([], { 
+                        weekday: 'short', // Short day of the week (e.g., Mon)
+                        year: 'numeric', 
+                        month: 'short', // Short month (e.g., Jan)
+                        day: 'numeric', 
+                        hour: '2-digit', 
+                        minute: '2-digit'
+                      })}
+                    </h6>
+                      
+                    </span>
+                  </div>
+
+                  {/* Display the message */}
+                  <div
+                    className={`message ${
+                      isOrganizerMessage(msg.senderId) ? 'organizer-message' : 'user-message'
+                    }`}
+                  >
+                    <span>{msg.message}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="chat-input">
+              <Input
+                type="text"
+                value={newMessage}
+                name="message"
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Type your message..."
+              />
+              <Button type="primary" onClick={handleSendMessage}>
+                Send
+              </Button>
+            </div>
+          </div>
+
+          </>
+        ) : (
+          <Button type="primary" onClick={handleNext} className="w-full">
                   Register For Event
                 </Button>
+        )}
+     
+
+                
               </>
             )}
 

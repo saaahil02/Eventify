@@ -194,10 +194,11 @@
   transform: translateY(-2px);
 }
 
-/* Body of Content */
+/* Body of Content IMPORTANT*/
 .content .body {
   padding: 20px;
   overflow-y: auto;
+  /* background: linear-gradient(135deg, #5a97d4, #009688); */
   background: white;
   transition: padding 0.3s ease;
 }

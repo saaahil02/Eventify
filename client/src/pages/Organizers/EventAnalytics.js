@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import OrgLayout from '../../components/OrgLayout';
 import { Table, Spin, Button, Modal, Typography } from 'antd';
 import axios from 'axios';
-
+import {useSelector} from 'react-redux'
 const { Title, Paragraph } = Typography;
 
 const EventAnalytics = () => {
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null); // For participant modal
   const [participants, setParticipants] = useState([]);
   const [participantsLoading, setParticipantsLoading] = useState(false);
-
+  const { user } = useSelector((state) => state.user);
   // Fetch organizer's events
   const fetchEvents = async () => {
     const token = localStorage.getItem('token');
@@ -126,13 +127,14 @@ const EventAnalytics = () => {
         <strong>Participant No:</strong> {index + 1} {/* Display participant number */}
       </Paragraph>
       <Paragraph>
-        <strong>Name:</strong> {participant.name}
+        <strong>Name:</strong> {participant.name
+        }
       </Paragraph>
       <Paragraph>
         <strong>Email:</strong> {participant.email}
       </Paragraph>
       <Paragraph>
-        <strong>Phone:</strong> {participant.phone}
+        <strong>Phone:</strong> {participant.contact}
       </Paragraph>
     </div>
   ))

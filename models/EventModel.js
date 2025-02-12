@@ -12,7 +12,7 @@ const EventSchema = new mongoose.Schema({
     eventLastDate:{type:Date,required:true},
     eventLocation: { type: String, required: true },
     eventCategory: { type: String, required: true },
-    eventSponsor: { type: String, required: true },
+    eventSponsor: { type: String, required: false},
     SponsorDescription: { type: String },
     eventMaxParticipants: { type: Number, required: true },
     //isFreeEvent: { type: Boolean, default: true },
@@ -44,7 +44,10 @@ const EventSchema = new mongoose.Schema({
     default: 'active', // Default to active
   },
 
-   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
+   participants: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}
+    
+
+   ],
 
   //  participants: [
   //       {
