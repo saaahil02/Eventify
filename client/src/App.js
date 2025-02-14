@@ -25,6 +25,7 @@ import EventAnalytics from './pages/Organizers/EventAnalytics';
 import GoogleForm from './pages/GoogleForm';
 import SpoHomePage from './pages/Sponsor/SpoHomepage';
 import SpoEventDetails from './pages/Sponsor/SpoEventDetails';
+import EventData from './pages/Organizers/EventData';
 
 
 function App() {
@@ -81,10 +82,12 @@ function App() {
 
       <Route path='/organizer/EventAnalytics' element={<ProtectedRoutes><OrgRoute><EventAnalytics/></OrgRoute></ProtectedRoutes>}/>
 
+      <Route path='/organizer/EventData/:id' element={<ProtectedRoutes><OrgRoute><EventData/></OrgRoute></ProtectedRoutes>}/>
       
       <Route path='/sponsor/profile' element={<ProtectedRoutes><SpoRoute><SpoProfile/></SpoRoute></ProtectedRoutes>}/>
       
       <Route path='/sponsor/listevent' element={<ProtectedRoutes><SpoRoute><SpoHomePage/></SpoRoute></ProtectedRoutes>}/>
+      
       <Route path='/sponsor/EventDetails/:id' element={<ProtectedRoutes><SpoRoute><SpoEventDetails/></SpoRoute></ProtectedRoutes>}/>
 
 

@@ -111,7 +111,31 @@ const getEvents = async (req, res) => {
     }
   };
 
- 
+  const getYourEvent = async (req,res) => {
+    try {
+      const userId = req.body.userId;
+      console.log("User ID",userId)
+      const events = await EventModel.find({userId})
+      console.log("Events are \n",events)
+      res.status(200).json({success:true,message:"Events retrieved successfully",events})
+    } catch (error) {
+      res.status(500).json({success:false,message:"Error in retieving events"})
+      console.log(error)
+    }
+   }
+   
+   const getParticipantDataCtrl = async(req,res)=> {
+    try {
+      const {id}=req.params;
+       
+      const eventData = await EventModel.findById(id).populate('participants', 'name email contact')
+        res.status(200).json({success:true,message:"Participant data retrieved successfully",eventData})
+
+    } catch (error) {
+      res.status(500).json({success:false,message:"Error in retieving events"})
+      console.log(error)
+    }
+   }
 
 
-module.exports = { createEvent,getEvents,getOrganizerProfile, };
+module.exports = { createEvent,getEvents,getOrganizerProfile, getYourEvent,getParticipantDataCtrl};
