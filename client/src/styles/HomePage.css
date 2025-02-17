@@ -4,17 +4,17 @@
 .aaa {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: left;
     gap: 20px;
     padding: 20px;
     /* background-color: #5a97d4, #009688; */
     /* background: linear-gradient(135deg, #5a97d4, #009688); */
-    background: wheat;
+    background: white;
   }
   
   /* Event Card */
   .bbb {
-    background: whitesmoke;
+    background: wheat;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;

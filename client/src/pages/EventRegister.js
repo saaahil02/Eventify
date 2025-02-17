@@ -401,13 +401,27 @@ const handleSubmit = () => {
               ))}
             </div>
             <div className="chat-input">
-              <Input
+              {/* <Input
                 type="text"
                 value={newMessage}
                 name="message"
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type your message..."
-              />
+              /> */}
+              <Input
+  type="text"
+  value={newMessage}
+  name="message"
+  onChange={(e) => setNewMessage(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      handleSendMessage();
+    }
+  }}
+  placeholder="Type your message..."
+/>
+
               <Button type="primary" onClick={handleSendMessage}>
                 Send
               </Button>

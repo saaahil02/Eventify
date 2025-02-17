@@ -112,7 +112,7 @@ const HomePage = () => {
                 </Paragraph>
                 <Paragraph>
                 
-                  Last Date of Registration:
+                  Last Date of Registration:<br/>
                   {event.eventLastDate
                     ? new Date(event.eventLastDate).toLocaleString()
                     : 'Date not available'}

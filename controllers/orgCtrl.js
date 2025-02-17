@@ -129,6 +129,22 @@ const getEvents = async (req, res) => {
       const {id}=req.params;
        
       const eventData = await EventModel.findById(id).populate('participants', 'name email contact')
+      console.log(eventData)
+      // Assuming eventData has a field "userId" for the organizer's id
+    const organizerId = eventData.userId.toString();
+
+    // Filter participants: if a participant's id matches organizerId,
+    // skip it (we send the response without that entry).
+    // const filteredParticipants = eventData.participants.filter(participant => {
+    //   // Ensure participant exists and compare ids
+    //   return participant && participant._id.toString() !== organizerId;
+    // });
+
+    // Create a new object with filtered participants for the response
+    // const updatedEventData = { 
+    //   ...eventData.toObject(), 
+    //   participants: filteredParticipants 
+    // };
         res.status(200).json({success:true,message:"Participant data retrieved successfully",eventData})
 
     } catch (error) {
