@@ -158,7 +158,7 @@ function FormPreview({ questions }) {
     //   </div>
     // </div>
     <div className="form-response">
-    <h2>Submit Your Response</h2>
+    <h2>Form Preview</h2>
     <Form
       form={form}
       layout="vertical"
