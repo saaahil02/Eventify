@@ -20,6 +20,7 @@ const CreateEvent = () => {
   const [step, setStep] = useState(1);
   const [collectedData, setCollectedData] = useState({}); // New variable to accumulate data
   const [eventSponsor, setEventSponsor] = useState();
+  const [eventFee,setEventFee]=useState();
   const [questions, setQuestions] = useState([]);
   const [activeTab, setActiveTab] = useState("create");
   const dispatch=useDispatch();
@@ -43,6 +44,8 @@ const CreateEvent = () => {
           "eventSponsor",
           "eventSponsorDescription",
           "eventMaxParticipants",
+          "eventFee",
+          "eventAmount",
           "eventBannerUrl",
         ]);
         setCollectedData((prev) => ({ ...prev, ...page1Data }));
@@ -87,6 +90,8 @@ const CreateEvent = () => {
       formData.append('eventSponsor', finalData.eventSponsor);
       formData.append('SponsorDescription', finalData.eventSponsorDescription);
       formData.append('eventMaxParticipants', finalData.eventMaxParticipants);
+      formData.append('eventFee', finalData.eventFee);
+      formData.append('eventAmount', finalData.eventAmount);
       formData.append("questions", JSON.stringify(questions));
 
       if (finalData.eventSponser === 'Yes') {
@@ -227,6 +232,29 @@ const CreateEvent = () => {
                 )}
 
                 <Form.Item
+                  label="Event Fee"
+                  name="eventFee"
+                  rules={[{ required: true, message: "Requires Fee For Event" }]}
+                >
+                  <Select placeholder="Required Fee" onChange={(value) => setEventFee(value)}>
+                    <Option value="Yes">Yes</Option>
+                    <Option value="No">No</Option>
+                  </Select>
+                </Form.Item>
+
+                {eventFee === "Yes" && (
+                  <Form.Item
+                    label="Amount"
+                    name="eventAmount"
+                    rules={[{ required: true, message: "Please enter the sponsor description" }]}
+                    //initialValue={"We are open to sponsorships"}
+                  >
+                    {/* <TextArea placeholder="Enter sponsor description" rows={4} /> */}
+                    <InputNumber placeholder="Enter Amount"></InputNumber>
+                  </Form.Item>
+                )}
+
+                <Form.Item
                   label="Maximum Participants"
                   name="eventMaxParticipants"
                   rules={[{ required: true, message: "Please enter max participants" }]}
@@ -234,6 +262,8 @@ const CreateEvent = () => {
                 >
                   <InputNumber min={1} />
                 </Form.Item>
+
+
 
                 <Form.Item
                   name="eventBannerUrl"

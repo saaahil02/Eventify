@@ -454,6 +454,8 @@ const registerForEvent = async (req, res) => {
     const { id } = req.params; // Event ID from the URL
     const { name, email, phone, responses} = req.body; // Participant details from the request body
     console.log("responses",responses)
+    const userId = req.body.userId;
+    console.log(userId)
     try {
         // Check if the event exists
         const event = await Event.findById(id);
@@ -462,7 +464,9 @@ const registerForEvent = async (req, res) => {
         }
 
        
-        const isRegistered =await Participant.findOne({eventId:id,email})
+        const isRegistered =await EventModel.findOne({_id:id,participants:userId})
+
+        console.log("Already Regitered",isRegistered)
 
         if (isRegistered) {
             return res.status(400).json({
@@ -724,6 +728,10 @@ const SponsorRequest = async (req,res) => {
         message:'Request sent Successfully'
     })
 
+}
+
+export const checkout =(req,res)=>{
+    
 }
 
 

@@ -283,6 +283,13 @@ const handleSubmit = () => {
   const isUserRegistered = event?.participants?.some(
     (participant) => participant._id.toString() === user._id.toString()
   );
+
+  const checkoutHandler = async () => {
+
+ 
+    const razor = new window.Razorpay();
+    razor.open();
+}
   
 
   return (
@@ -327,6 +334,10 @@ const handleSubmit = () => {
             ? new Date(event.eventLastDate).toLocaleString()
             : 'Date not available'}
         </Paragraph>
+        {event.eventFee==="Yes" ? <Paragraph>
+          <strong>Event Fee:</strong> {event.eventAmount || 'Event is Free'}
+        </Paragraph>:"Event is Free"}
+       
 
 
 
@@ -525,16 +536,26 @@ const handleSubmit = () => {
 
             {step === 3 && (
               <>
+             
                 <h2 className="text-xl font-bold mb-4">Step 2: Payment Gateway</h2>
-                {/* If you have any Page 3 fields, add them as Form.Item here.
-                    For this example, we assume there are no additional fields on Page 3. */}
+                
                 <div className="flex justify-between">
-                  <Button onClick={handlePrev}>Back</Button>
-                  {/* Clicking this Submit button triggers the onFinish handler (handleSubmit) */}
-                  <Button type="primary" htmlType="submit">
+                  <Button onClick={handlePrev}>Back</Button><hr/>
+               
+                  {event.eventFee === 'Yes' ? <>
+                    <Button type='primary' onClick={checkoutHandler}>Proceed to payment</Button>
+
+                  </> : 
+                  <>
+                  <h2>The following Event is Free.</h2>
+                    <Button type="primary" htmlType="submit">
                     Submit
                   </Button>
+                  </>}
+
+                  
                 </div>
+                
               </>
             )}
           </Form>
