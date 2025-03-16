@@ -35,11 +35,9 @@ app.use("/api/v1/organizer",require("./routes/organizerRoutes"));
 
 app.use("/api/v1/sponsor",require("./routes/sponsorRoutes"));
 
- const instance = new Razorpay ({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-  });
-  module.exports =  instance ;
+app.use("/api/v1/payment",require("./routes/paymentRoutes"));
+
+
 
 
     

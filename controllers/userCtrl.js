@@ -730,9 +730,7 @@ const SponsorRequest = async (req,res) => {
 
 }
 
-export const checkout =(req,res)=>{
-    
-}
+
 
 
 module.exports = {

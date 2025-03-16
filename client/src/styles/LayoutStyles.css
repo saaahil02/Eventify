@@ -17,7 +17,7 @@
 /* Sidebar Styling */
 .sidebar {
   width: 300px;
-  background-color: rgba(22, 15, 59, 0.99);
+  background: linear-gradient(to right,#1A1A1D , #2C2F33);;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -57,7 +57,7 @@
 /* Sidebar Hamburger Icon */
 .sidebar .hamburger {
   font-size: 24px;
-  color: #fff;
+  color: white;
   cursor: pointer;
   padding: 10px;
   position: absolute;
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: #fff;
+  color: #D3D3D3;
   position: relative;
   overflow: hidden;
 }
@@ -105,7 +105,8 @@
 
 /* Active Menu Item Styling */
 .menu-item.active {
-  background: linear-gradient(135deg, #e94560, #ff6b81);
+  /* background: linear-gradient(135deg, #e94560, #ff6b81); */
+  background: #FF4081;
   color: #fff;
   font-weight: bold;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -160,7 +161,7 @@
 
 /* Content Header */
 .content .header {
-  background: rgb(42, 12, 91);
+  background: #2C2F33;
   color: #fff;
   display: flex;
   align-items: center;
