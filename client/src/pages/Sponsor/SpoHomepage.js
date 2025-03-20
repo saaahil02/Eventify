@@ -2,7 +2,7 @@
 import SpoLayout from '../../components/SpoLayout';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Spin, Typography } from 'antd';
+import { Spin, Typography,Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 //import Layout from '../components/Layout';
 import '../../styles/HomePage.css'
@@ -87,63 +87,50 @@ const SpoHomepage = () => {
                 </div>
               )}
       
-              {/* Event Cards */}
-              <div className="events">
-                {!loading && events.length > 0 ? (
-                  events.map((event) => (
-                    <div key={event._id} className="event-card">
-                      {/* Event Image */}
-                      <div className="event-image">
-                        <img
-                          //src={event.eventBannerUrl || 'https://via.placeholder.com/300'}
-                          src={`/uploads/${event.eventBannerUrl.split('/').pop()}`}
-                          alt={event.eventName}
-                        />
-                      </div>
-      
-                      {/* Event Details */}
-                      <h3 className="event-name">{event.eventName}</h3><hr/>
-                      {/* <Paragraph className="event-description">{event.eventDescription}</Paragraph> */}
-                      {/* <Paragraph className="event-location">Event Location: {event.eventLocation}</Paragraph> */}
-                      <Paragraph className="event-organizer">
-                        Organizer: {event.organizer.organizationName}
-                      </Paragraph>
-                      <Paragraph className="event-organizer">
-                        Email: {event.organizer.organizationEmail}
-                      </Paragraph>
-                      <Paragraph>
-                        Last Date of Registration:
-                        {event.eventLastDate
-                          ? new Date(event.eventLastDate).toLocaleString()
-                          : 'Date not available'}
-                      </Paragraph>
-                      {/* <Paragraph className="event-date">
-                        Date/Time: {new Date(event.eventDate).toLocaleString()}
-                      </Paragraph> */}
-      
-                      {/* Actions */}
-                      <div className="actions">
-                        <button
-                          className="view-details"
-                          onClick={() => navigate(`/sponsor/EventDetails/${event._id}`)}
-                        >
-                          View Details
-                        </button>
-                        {/* <button
-                          className="register-link"
-                          onClick={() => navigate(`/register/${event._id}`)}
-                        >
-                          Register
-                        </button> */}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  !loading && (
-                    <h3 className="no-events">No Events Available</h3>
-                  )
-                )}
-              </div>
+           <div className="aaa">
+                     {!loading && events.length > 0 ? (
+                       events.map((event) => (
+                         <div key={event._id} className="bbb">
+                           {/* Event Image */}
+                           <div className="ccc">
+                             <img
+                               //src={event.eventBannerUrl || 'https://via.placeholder.com/300'}
+                               src={`/uploads/${event.eventBannerUrl.split('/').pop()}`}
+                               alt={event.eventName}
+                             />
+                           </div>
+           
+                           {/* Event Details */}
+                           <h3 className="eee">{event.eventName}</h3><hr/>
+                           {/* <Paragraph className="event-description">{event.eventDescription}</Paragraph> */}
+                           {/* <Paragraph className="event-location">Event Location: {event.eventLocation}</Paragraph> */}
+                            
+                            <Paragraph >Event Date: {new Date(event.eventDate).toLocaleString()}</Paragraph>
+           
+                            <Button type='primary' onClick={()=>{navigate(`/sponsor/EventDetails/${event._id}`)}}>View Event Data</Button>
+                          
+                           {/* <Paragraph className="event-date">
+                             Date/Time: {new Date(event.eventDate).toLocaleString()}
+                           </Paragraph> */}
+           
+                           {/* Actions */}
+                           <div className="hhh">
+                            
+                             {/* <button
+                               className="register-link"
+                               onClick={() => navigate(`/register/${event._id}`)}
+                             >
+                               Register
+                             </button> */}
+                           </div>
+                         </div>
+                       ))
+                     ) : (
+                       !loading && (
+                         <h3 className="jjj">No Events Available</h3>
+                       )
+                     )}
+                   </div>
       
             {/* </div> */}
       

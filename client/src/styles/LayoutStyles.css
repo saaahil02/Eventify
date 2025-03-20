@@ -17,7 +17,7 @@
 /* Sidebar Styling */
 .sidebar {
   width: 300px;
-  background: linear-gradient(to right,#1A1A1D , #2C2F33);;
+  background: linear-gradient(to right,#1A1A1D , #2C2F33);
   color: #fff;
   display: flex;
   flex-direction: column;

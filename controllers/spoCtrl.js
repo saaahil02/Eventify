@@ -22,7 +22,7 @@ const getSponsorProfile = async (req, res) => {
   const getSponsoredEvents =async (req,res) =>{
     try {
       // Fetch all events with organizer details (if needed, you can filter, sort, or paginate the events)
-      const events = await EventModel.find({eventSponser:"Yes"}).populate('organizer', 'organizationName organizationEmail');
+      const events = await EventModel.find({eventSponsor:"Yes"}).populate('organizer', 'organizationName organizationEmail');
   
       // Return events in response
       res.status(200).json({

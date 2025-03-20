@@ -111,26 +111,54 @@ const SponsorDashboard = () => {
       message.error('Something went wrong')
     }
 }
+
+if (!user) {
+    return (
+      <Layout>
+        <div className="form-wrapper">
+          <div className="form-container">
+            <h3 className="text-center">Loading user data...</h3>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
 if (hasSubmitted) {
   if(user.isSponsor){
     return (
-      <Layout>
-       <div className="status-card">
-          {user.isSponsor ? (
-            <>
-              <h3>Your request has been approved! 🎉</h3>
-              <p>You can now access the sponsor dashboard</p>
-              <Link to="/sponsor/profile">Access Dashboard</Link>
-            </>
-          ) : (
-            <>
-              <h3>Request Submitted Successfully! ✔️</h3>
-              <p>Your application is under review. We'll notify you once approved.</p>
-            </>
-          )}
-        </div>
+    //   <Layout>
+    //    <div className="status-card">
+    //       {user.isSponsor ? (
+    //         <>
+    //           <h3>Your request has been approved! 🎉</h3>
+    //           <p>You can now access the sponsor dashboard</p>
+    //           <Link to="/sponsor/profile">Access Dashboard</Link>
+    //         </>
+    //       ) : (
+    //         <>
+    //           <h3>Request Submitted Successfully! ✔️</h3>
+    //           <p>Your application is under review. We'll notify you once approved.</p>
+    //         </>
+    //       )}
+    //     </div>
        
-    </Layout>
+    // </Layout>
+     <Layout>
+              
+                  <h3 className="text-center">Your request has been approved!</h3>
+                  <p className="text-center">You can now access the organizer dashboard.</p>
+                  <Link to="/organizer/profile">Click here</Link>
+              
+            </Layout>
+          ); 
+        } else {
+          return (
+            <Layout>
+              
+                  <h3 className="text-center">Your request has been submitted!</h3>
+             
+            </Layout>
     ); 
   }
 }

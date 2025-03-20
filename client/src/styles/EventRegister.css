@@ -1,27 +1,73 @@
-/* Container to hold all content */
-.container {
+/* Main container for the registration page */
+.event-register-container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header section styling */
+.event-header {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
-/* Event image styling */
-.event-image {
+.event-header h2 {
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Banner image styling */
+.event-banner {
   width: 90%;
-  max-width: 500px;
-  height: auto;
-  margin: 20px auto;
+  margin: 0 auto 1.5rem;
   display: block;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  object-fit: cover;
 }
 
-.required {
-  color: #ff4d4f;
-  margin-left: 4px;
+/* Event details grid */
+.event-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.ant-form-item-label > label {
-  font-weight: 500;
+.event-details p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+/* Banner image styling */
+.spo-event-banner {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+}
+/* Action button container */
+.button-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Utility classes for form layout if needed */
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
 }

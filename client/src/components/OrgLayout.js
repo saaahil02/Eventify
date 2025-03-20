@@ -36,11 +36,18 @@ const OrgLayout = ({ children }) => {
       path:"/organizer/YourEvents",
       icon:"fa-solid fa-list-alt",
   },
-  {
-      name:"Event Analytics",
-      path:"/organizer/EventAnalytics",
-      icon:"fa-solid fa-chart-line",
-  },
+  // {
+  //     name:"Event Analytics",
+  //     path:"/organizer/EventAnalytics",
+  //     icon:"fa-solid fa-chart-line",
+  // },
+  
+      // {
+      //   name:"Sponsor Collab",
+      //   path:"/organizer/SponsorCollab",
+      //   icon:"fa-solid fa-handshake",
+      // },
+  
     {
         name:"Back to Home",
         path:"/home",

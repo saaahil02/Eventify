@@ -81,7 +81,11 @@ const Register = () => {
           label="Password"
           rules={[
             { required: true, message: 'Password is required' },
-            { min: 5, message: 'Password must be at least 5 characters' },
+            {
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{5,}$/,
+      message:
+        'Password must be at least 5 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character',
+    },
           ]}
         >
           <Input.Password placeholder="Enter your password" />

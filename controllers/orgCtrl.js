@@ -1,5 +1,6 @@
 const EventModel = require('../models/EventModel');
 const OrganizerModel = require('../models/OrganizerModels');
+const SponsorModel=require('../models/SponsorModels')
 
 
 // Create Event
@@ -154,4 +155,81 @@ const getEvents = async (req, res) => {
    }
 
 
-module.exports = { createEvent,getEvents,getOrganizerProfile, getYourEvent,getParticipantDataCtrl};
+   const sponsorCollab = async(req,res) =>{
+        try {
+          const userId=req.body.userId
+          console.log("UserId",userId)
+          const events = await EventModel.find({userId, sponsorRequest: { $exists: true, $not: { $size: 0 } },}).populate('organizer', 'organizationName organizationEmail');
+          console.log("events",events)
+          res.status(200).json({
+            message: "Events fetched successfully",
+            success: true,
+            events: events,
+          });
+        } catch (error) {
+          console.log(error)
+          res.status(500).json({
+            message: "Server error while fetching events",
+            error: error.message,
+          });
+        }
+   }
+
+
+   const acceptRequest = async(req,res) =>{
+    try {
+      const userId=req.body.userId
+      console.log("UserId",userId)
+      const eventId=req.body.id
+      console.log("Event Id",eventId)
+      const sponsor=await SponsorModel.findOne({userId})
+     
+      
+      // 1. Fetch the event
+    const event = await EventModel.findById(eventId);
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    console.log(sponsor._id.toString())
+
+    // 2. Locate the specific sponsor request by userId
+    const sponsorReq = event.sponsorRequest.find(
+      (item) => item.sponsorId.toString() === sponsor._id.toString()
+    );
+
+    console.log("Sponsor Request:", sponsorReq);
+  
+    if (!sponsorReq) {
+      return res.status(404).json({
+        success: false,
+        message: "Sponsor And Organizer Are the same..",
+      });
+    }
+    
+    // 3. Update the status
+    sponsorReq.status = true;
+
+    // 4. Save the updated event
+    await event.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Sponsor request accepted",
+      data: event,
+    });
+      
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: error.message,
+      });
+    }
+   }
+
+module.exports = { createEvent,getEvents,getOrganizerProfile, getYourEvent,getParticipantDataCtrl,sponsorCollab,acceptRequest};

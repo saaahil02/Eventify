@@ -44,9 +44,8 @@ const EventData = () => {
       key: 'participantName',
       render: (record) => {
         // Assuming responses are stored as an object with numeric keys (0,1,2,...)
-        const responses = record.responses || {};
-       // const name = responses[0] || 'N/A';
-        return responses[0] || 'N/A';
+        const participant = eventData?.participants?.find(p => p._id === record.userId);
+      return participant ? participant.name : 'N/A';
       },
     },
     {
@@ -80,9 +79,7 @@ const EventData = () => {
         </Button>
       ),
     },
-    {
-      title: 'Status',
-    },
+    
   ];
 
   return (

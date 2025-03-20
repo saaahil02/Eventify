@@ -312,7 +312,7 @@ const deleteAllNotificationController = async (req, res) => {
 
         // Check if the user has already submitted the organizer form
         const sponsor = await SponsorModel.findOne({ userId });
-
+console.log(sponsor)
         if (sponsor) {
             return res.status(200).send({
                 success: true,
@@ -427,7 +427,8 @@ const EventDisplay = async (req, res) => {
         }
 
         // Find the event by ID
-        const event = await Event.findById(eventId).populate('participants','_id').exec();
+        const event = await Event.findById(eventId).populate('participants','_id') 
+        .populate('organizer', 'representativeName representativeContactNo representativeRole').exec();
 
        
 

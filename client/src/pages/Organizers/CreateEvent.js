@@ -290,10 +290,12 @@ const CreateEvent = () => {
                   <FormBuilder questions={questions} setQuestions={setQuestions} />
                   <FormPreview questions={questions} />
                 </div>
+                
                 <div className="flex justify-between">
                   <Button onClick={handlePrev}>Back</Button>
-                  <Button type="primary" onClick={handleNext}>
-                    Next
+                  {/* Clicking this Submit button triggers the onFinish handler (handleSubmit) */}
+                  <Button type="primary" htmlType="submit">
+                    Submit
                   </Button>
                 </div>
               </>

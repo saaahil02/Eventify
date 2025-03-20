@@ -26,6 +26,8 @@ import GoogleForm from './pages/GoogleForm';
 import SpoHomePage from './pages/Sponsor/SpoHomepage';
 import SpoEventDetails from './pages/Sponsor/SpoEventDetails';
 import EventData from './pages/Organizers/EventData';
+import SponsorCollab from './pages/Organizers/SponsorCollab';
+import OrgSponsorCollab from './pages/Organizers/OrgSponsorCollab';
 
 
 function App() {
@@ -90,6 +92,10 @@ function App() {
       
       <Route path='/sponsor/EventDetails/:id' element={<ProtectedRoutes><SpoRoute><SpoEventDetails/></SpoRoute></ProtectedRoutes>}/>
 
+   
+      <Route path='/organizer/SponsorCollab' element={<ProtectedRoutes><OrgRoute><SponsorCollab/></OrgRoute></ProtectedRoutes>}/>
+
+      <Route path='/organizer/OrgSponsorCollab/:id' element={<ProtectedRoutes><OrgRoute><OrgSponsorCollab/></OrgRoute></ProtectedRoutes>}/>
 
     </Routes>
       )

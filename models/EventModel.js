@@ -46,10 +46,7 @@ const EventSchema = new mongoose.Schema({
     default: 'active', // Default to active
   },
 
-   participants: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}
-    
-
-   ],
+   participants: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}],
 
   //  participants: [
   //       {
