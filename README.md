@@ -1,19 +1,20 @@
-#Eventify Git Updating Code :-
+**Eventify - Inter-College Event Management Platform**
+Eventify is a comprehensive event management platform designed for inter-college events. It enables students and organizers to create, manage, and participate in various events. The platform simplifies event registration, communication, and verification processes.
 
-Open GIt bash .
+**Key Features:**
+Event Registration & Management – Organizers can create events, and students can register easily. Real-time Chatrooms – Participants are automatically added to chatrooms after completing payment. Google Forms Clone – Custom form creation for event registrations, similar to Google Forms. Sponsor Verification – Organizers must submit documents for sponsor verification. Role-based Access – Different user roles: Admin, Organizer, and Student.
 
-cd path/to/Eventify # Navigate to your project
+**Tech Stack**
+Frontend: React, TailwindCSS 
+Backend: Node.js, Express.js 
+Database: MongoDB 
+Authentication: JWT
 
-git pull origin main # Sync with the remote repository
+**Installation & Setup**
+git clone https://github.com/saaahil02/Eventify 
+cd eventify 
+npm install
+npm run dev
 
-git remote set-url origin https://github.com/Tanmay1809/Eventify_Project.git
 
-git remote set-url origin https://github.com/Tanmay1809/Eventify.git
-
-git add . # Stage all changes
-
-git status
-
-git commit -m "Added user profiles and fixed login bug" # Commit with a clear message
-
-git push origin main # Push the changes
+**NOTE**:To view the working of Website you can open the file **Working.pdf** on the repository
